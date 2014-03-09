@@ -2,7 +2,7 @@
 
 	/***********GameObject********************/
 	var GameObject = function(spec) {
-		var room = spec.room || {};
+
 		var that = {};
 		var id = -1; //no id until placed in world
 		var row, col;
@@ -14,6 +14,8 @@
 		//The phaser actor
 		var actor = game.add.text(-1, -1, sprite, style);
 
+		that.room = spec.room || {};
+
 		that.getId = function() {
 			return id;
 		}
@@ -23,7 +25,7 @@
 		}
 
 		that.update = function() {
-			var rowCol = room.getPosition(this);
+			var rowCol = that.room.getPosition(this);
 			var row = rowCol.row;
 			var col = rowCol.col;
 
@@ -36,29 +38,6 @@
 
 		return that;
 	};
-
-	/***********PlayerCharacter********************/
-	var PlayerCharacter = function(spec) {
-
-		var that = new GameObject(spec);
-		var actionQueue = [];
-
-		that.takeAction = function(room) {
-			if(actionQueue.length > 0) {
-				var action = actionQueue.shift();
-				room.move(that, action.row, action.col);
-			}
-		}
-
-		that.move  = function(deltaRow, deltaCol) {
-			actionQueue.push({
-				row: deltaRow, 
-				col: deltaCol
-			});
-		}
-
-		return that;
-	}
 
 	/***********Enemy********************/
 	var Enemy = function(spec) {

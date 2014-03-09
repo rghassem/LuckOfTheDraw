@@ -46,21 +46,23 @@ window.onload = function() {
     function onKeyUp(event) {
         switch (event.keyCode) {
                 case Phaser.Keyboard.LEFT:
-                    player.move(-1, 0)
+                    player.queueMove(-1, 0)
                     break;
  
                 case Phaser.Keyboard.RIGHT:
-                    player.move(1, 0)
-                    break
+                    player.queueMove(1, 0)
+                    break;
  
                 case Phaser.Keyboard.UP:
-                    player.move(0, -1)
-                    break
+                    player.queueMove(0, -1)
+                    break;
                 case Phaser.Keyboard.DOWN:
-                    player.move(0, 1)
-                    break
+                    player.queueMove(0, 1)
+                    break;
+                case Phaser.Keyboard.SPACEBAR:
+                    mainRoom.nextAction();
+                    break;
         }
-        mainRoom.nextAction();
 }
 
 };
