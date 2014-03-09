@@ -9,26 +9,6 @@ window.onload = function() {
     var player;
     var gameObjects = [];
 
-     var keys = {};
-    window.addEventListener("keydown",
-            function(e){
-                keys[e.keyCode] = true;
-                switch(e.keyCode){
-                    case 37: case 39: case 38:  case 40: // Arrow keys
-                    case 32: e.preventDefault(); break; // Space
-                    default: break; // do not block other keys
-                }
-            },
-        false);
-        window.addEventListener('keyup',
-            function(e){
-                keys[e.keyCode] = false;
-            },
-        false);
-
-    var gameObjects = [];
-
-
     function preload () {
 
         game.load.image('logo', 'phaser.png');
@@ -50,7 +30,6 @@ window.onload = function() {
 			mainRoom.add(enemy, util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
             gameObjects.push(enemy);
 		}
-
     }
 
     function updateObjects() {
@@ -81,6 +60,23 @@ window.onload = function() {
                     break
         }
         mainRoom.nextAction();
-}
+	}
 
+	//Prevent scrolling the screen
+	var keys = {};
+	window.addEventListener("keydown",
+		function(e){
+			keys[e.keyCode] = true;
+			switch(e.keyCode){
+				case 37: case 39: case 38:  case 40: // Arrow keys
+				case 32: e.preventDefault(); break; // Space
+				default: break; // do not block other keys
+			}
+		},
+		false);
+	window.addEventListener('keyup',
+		function(e){
+			keys[e.keyCode] = false;
+		},
+		false);
 };
