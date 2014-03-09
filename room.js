@@ -24,7 +24,7 @@
 		}
 
 		that.add = function(gameObject, row, col) {
-			gameObject.id = objects.length;
+			gameObject.setId(objects.length);
 
 			objects.push(gameObject);
 			positions.push({row: row, col: col});
@@ -36,7 +36,8 @@
 			return grid[row, col];
 		}
 
-		that.getPosition = function(gameObjectID) {
+		that.getPosition = function(gameObject) {
+			var gameObjectID = gameObject.getId();
 			if(gameObjectID < positions.length && positions[gameObjectID] )
 				return positions[gameObjectID];
 			else return null;
@@ -44,7 +45,7 @@
 
 		that.move = function(gameObject, deltaX, deltaY) {
 			if(gameObject === null) return false;
-			var currentGridPos = this.getPosition(gameObject.id);
+			var currentGridPos = this.getPosition(gameObject);
 			var toRow = currentGridPos.row + deltaX;
 			var toCol = currentGridPos.col + deltaY;
 			if( toRow < 0 || toCol < 0 || toRow >= grid.length || toCol >= grid[0].length)
@@ -53,7 +54,7 @@
 			if(grid[toRow][toCol] === null) {
 				grid[toRow][toCol] = gameObject;
 				grid[currentGridPos.row][currentGridPos.col] = null;
-				positions[gameObject.id] = {row: toRow, col: toCol};
+				positions[gameObject.getId()] = {row: toRow, col: toCol};
 				return true;
 			}
 			else return false;
@@ -73,24 +74,6 @@
 					go.takeAction(this);
 				}
 			}
-		}
-
-		that.update = function () {
-			for(var i = 0; i < grid.length; ++i)
-			{
-				for(var j = 0; j < grid[i].length; ++j)
-				{
-					var gameObject = grid[i][j];
-					if(gameObject)
-						gameObject.update(i, j);
-				}
-			}
-		}
-
-		that.draw = function () {
-			objects.forEach(function(gameObject){
-				gameObject.draw();
-			});
 		}
 
 		return that;

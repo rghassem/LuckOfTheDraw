@@ -7,8 +7,9 @@ window.onload = function() {
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
     var mainRoom;
     var player;
-    //Prventing default browser keyboard actions
-    var keys = {};
+    var gameObjects = [];
+
+     var keys = {};
     window.addEventListener("keydown",
             function(e){
                 keys[e.keyCode] = true;
@@ -25,6 +26,9 @@ window.onload = function() {
             },
         false);
 
+    var gameObjects = [];
+
+
     function preload () {
 
         game.load.image('logo', 'phaser.png');
@@ -36,21 +40,27 @@ window.onload = function() {
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
         mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
-        player = new PlayerCharacter({sprite:'@'});
+
+        player = new PlayerCharacter({sprite:'@', room: mainRoom});
+        gameObjects.push(player);
         mainRoom.add(player, 0, 0);
+
 		for(var i = 0; i < util.getRandomInt(5, constants.roomHeight); ++i) {
-			mainRoom.add(Enemy({sprite:'e'}),
-				util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
+            var enemy = new Enemy({sprite:'e', room: mainRoom});
+			mainRoom.add(enemy, util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
+            gameObjects.push(enemy);
 		}
+
     }
 
     function updateObjects() {
-        mainRoom.update();
+        gameObjects.forEach(function(gameObject){
+            gameObject.update();
+        })
     }
 
     function drawObjects() {
-
-        mainRoom.draw();
+        
     }
 
     function onKeyUp(event) {
