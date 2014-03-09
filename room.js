@@ -49,7 +49,7 @@
 		var currentGridPos = this.getPosition(gameObject.id);
 		var toRow = currentGridPos.row + deltaX;
 		var toCol = currentGridPos.col + deltaY;
-		if( toRow < 0 || toCol < 0 || toRow > this.grid.length || toCol > this.grid[0].length)
+		if( toRow < 0 || toCol < 0 || toRow >= this.grid.length || toCol >= this.grid[0].length)
 			return false;
 
 		if(this.grid[toRow][toCol] === null) {
