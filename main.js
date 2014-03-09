@@ -19,18 +19,13 @@ window.onload = function() {
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
-        mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
+        mainRoom = RoomFactory.generateRandomRoom();
 
         player = new PlayerCharacter({sprite:'@', room: mainRoom});
-        gameObjects.push(player);
         mainRoom.add(player, 0, 0);
+        mainRoom.playerObjectId = player.getId();
 
-		for(var i = 0; i < util.getRandomInt(5, constants.roomHeight); ++i) {
-            var enemy = new Enemy({sprite:'e', room: mainRoom});
-			mainRoom.add(enemy, util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
-            gameObjects.push(enemy);
-		}
-
+		gameObjects = mainRoom.getGameObjects();
     }
 
     function updateObjects() {
@@ -65,4 +60,21 @@ window.onload = function() {
         }
 }
 
+	//Prevent scrolling the screen
+	var keys = {};
+	window.addEventListener("keydown",
+		function(e){
+			keys[e.keyCode] = true;
+			switch(e.keyCode){
+				case 37: case 39: case 38:  case 40: // Arrow keys
+				case 32: e.preventDefault(); break; // Space
+				default: break; // do not block other keys
+			}
+		},
+		false);
+	window.addEventListener('keyup',
+		function(e){
+			keys[e.keyCode] = false;
+		},
+		false);
 };

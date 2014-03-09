@@ -11,6 +11,7 @@
 
 		var grid = [];
 		var positions = [];
+		var playerObjectId = -1;
 
 		//Initialize the game grid
 		for(var i = 0; i < width; ++i)
@@ -33,7 +34,7 @@
 		}
 
 		that.at= function(row, col) {
-			return grid[row, col];
+			return grid[row][col];
 		}
 
 		that.getPosition = function(gameObject) {
@@ -74,6 +75,10 @@
 					go.takeAction(this);
 				}
 			}
+		}
+
+		that.getGameObjects = function() {
+			return objects;
 		}
 
 		return that;

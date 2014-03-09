@@ -39,51 +39,10 @@
 		return that;
 	};
 
-	/***********Enemy********************/
-	var Enemy = function(spec) {
 
+
+	var Wall = function(spec) {
 		var that = new GameObject(spec);
-		var actionQueue = [];
-
-		that.takeAction = function(room) {
-			if(actionQueue.length > 0) {
-				var action = actionQueue.shift();
-				room.move(this, action.row, action.col);
-			}
-		}
-
-		that.move  = function(deltaRow, deltaCol) {
-			actionQueue.push({
-				row: deltaRow,
-				col: deltaCol
-			});
-		}
-
 		return that;
-	}
-
-	//TODO: Try to use real prototype inheritence?
-
-	//PlayerCharacter.prototype = new GameObject();
-
-	/*PlayerCharacter.prototype.constructor = PlayerCharacter; //Yay JavaScript!!
-
-	PlayerCharacter.prototype.takeAction = function(room) {
-		if(this.actionQueue.length > 0)
-		{
-			var action = this.actionQueue.shift();
-			room.move(this, action.row, action.col);
-		}
-	}
-	
-
-	PlayerCharacter.prototype.move = function(deltaRow, deltaCol) {
-		this.actionQueue.push({
-			row: deltaRow, 
-			col: deltaCol
-		});
-	}*/
-
-// 	return GameObject;
-
+	};
 // })();
