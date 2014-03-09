@@ -2,8 +2,10 @@
 
 	/***********GameObject********************/
 	var GameObject = function(spec) {
+		var room = spec.room || {};
 		var that = {};
 		var id = -1; //no id until placed in world
+		var row, col;
 		var sprite = spec.sprite || '@';
 		var x = 0;
 		var y = 0;
@@ -16,16 +18,18 @@
 			return id;
 		}
 
-		that.setId = function(id) {
-			that.id = id;
+		that.setId = function(newid) {
+			id = newid;
 		}
 
-		that.update = function(row , col) {
+		that.update = function() {
+			var rowCol = room.getPosition(this);
+			var row = rowCol.row;
+			var col = rowCol.col;
+
 			x = row * constants.cellSize;
 			y = col * constants.cellSize;
-		}
 
-		that.draw = function() {
 			actor.x = x;
 			actor.y = y;
 		}
@@ -42,7 +46,7 @@
 		that.takeAction = function(room) {
 			if(actionQueue.length > 0) {
 				var action = actionQueue.shift();
-				room.move(this, action.row, action.col);
+				room.move(that, action.row, action.col);
 			}
 		}
 
