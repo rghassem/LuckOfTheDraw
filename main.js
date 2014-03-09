@@ -29,12 +29,9 @@ window.onload = function() {
             }
         }
 
-
-
         mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
 
         mainRoom = RoomFactory.generateRandomRoom();
-r
 
         player = new PlayerCharacter({sprite:'@', room: mainRoom});
         mainRoom.add(player, 0, 0);
