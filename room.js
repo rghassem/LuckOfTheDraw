@@ -11,6 +11,7 @@
 
 		var grid = [];
 		var positions = [];
+		var playerObjectId = -1;
 
 		//Initialize the game grid
 		for(var i = 0; i < width; ++i)

@@ -23,6 +23,7 @@ window.onload = function() {
 
         player = new PlayerCharacter({sprite:'@', room: mainRoom});
         mainRoom.add(player, 0, 0);
+        mainRoom.playerObjectId = player.getId();
 
 		gameObjects = mainRoom.getGameObjects();
     }

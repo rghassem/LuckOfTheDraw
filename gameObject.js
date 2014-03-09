@@ -58,30 +58,7 @@
 		}
 
 		return that;
-	}
-
-	/***********Enemy********************/
-	var Enemy = function(spec) {
-
-		var that = new GameObject(spec);
-		var actionQueue = [];
-
-		that.takeAction = function(room) {
-			if(actionQueue.length > 0) {
-				var action = actionQueue.shift();
-				room.move(this, action.row, action.col);
-			}
-		}
-
-		that.move  = function(deltaRow, deltaCol) {
-			actionQueue.push({
-				row: deltaRow,
-				col: deltaCol
-			});
-		}
-
-		return that;
-	}
+	};
 
 	var Wall = function(spec) {
 		var that = new GameObject(spec);
