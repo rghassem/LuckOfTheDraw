@@ -33,7 +33,7 @@
 		}
 
 		that.at= function(row, col) {
-			return grid[row, col];
+			return grid[row][col];
 		}
 
 		that.getPosition = function(gameObject) {
@@ -74,6 +74,10 @@
 					go.takeAction(this);
 				}
 			}
+		}
+
+		that.getGameObjects = function() {
+			return objects;
 		}
 
 		return that;

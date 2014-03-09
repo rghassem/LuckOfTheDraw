@@ -2,13 +2,14 @@
 
 	/***********GameObject********************/
 	var GameObject = function(spec) {
-		var room = spec.room || {};
 		var that = {};
 		var id = -1; //no id until placed in world
 		var row, col;
 		var sprite = spec.sprite || '@';
 		var x = 0;
 		var y = 0;
+
+		that.room = spec.room || {};
 
 		var style = { font: constants.cellSize + "px monospace", fill:"#fff"};
 		//The phaser actor
@@ -23,7 +24,7 @@
 		}
 
 		that.update = function() {
-			var rowCol = room.getPosition(this);
+			var rowCol = that.room.getPosition(this);
 			var row = rowCol.row;
 			var col = rowCol.col;
 
@@ -83,28 +84,8 @@
 		return that;
 	}
 
-	//TODO: Try to use real prototype inheritence?
-
-	//PlayerCharacter.prototype = new GameObject();
-
-	/*PlayerCharacter.prototype.constructor = PlayerCharacter; //Yay JavaScript!!
-
-	PlayerCharacter.prototype.takeAction = function(room) {
-		if(this.actionQueue.length > 0)
-		{
-			var action = this.actionQueue.shift();
-			room.move(this, action.row, action.col);
-		}
-	}
-	
-
-	PlayerCharacter.prototype.move = function(deltaRow, deltaCol) {
-		this.actionQueue.push({
-			row: deltaRow, 
-			col: deltaCol
-		});
-	}*/
-
-// 	return GameObject;
-
+	var Wall = function(spec) {
+		var that = new GameObject(spec);
+		return that;
+	};
 // })();

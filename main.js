@@ -29,8 +29,6 @@ window.onload = function() {
             }
         }
 
-        mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
-
         mainRoom = RoomFactory.generateRandomRoom();
 
         player = new PlayerCharacter({sprite:'@', room: mainRoom});
@@ -75,6 +73,11 @@ window.onload = function() {
                 case Phaser.Keyboard.SPACEBAR:
                     mainRoom.nextAction();
                     break;
+                case Phaser.Keyboard.BACKSPACE:
+                    player.cancelAction();
+                    break;
+                case Phaser.Keyboard.ESC:
+                    player.clearQueue();
         }
 }
 
