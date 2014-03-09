@@ -31,13 +31,24 @@ window.onload = function() {
 
     function preload () {
 
-        game.load.image('logo', 'phaser.png');
+        game.load.image('floor', '.../art/floor-tile.png');
+
 
     }
 
     function create () {
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
+
+        for(var i = 0; i < constants.roomWidth; ++i)
+        {
+            for(var j = 0; j < constants.roomHeight; ++j)
+            {
+                game.add.sprite(i*constants.cellSize,j*constants.cellSize, 'floor');
+            }
+        }
+
+
 
         mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
 
@@ -47,10 +58,9 @@ window.onload = function() {
 
 		for(var i = 0; i < util.getRandomInt(5, constants.roomHeight); ++i) {
             var enemy = new Enemy({sprite:'e', room: mainRoom});
-			mainRoom.add(enemy, util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
+			mainRoom.add(enemy, util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));;
             gameObjects.push(enemy);
 		}
-
     }
 
     function updateObjects() {
