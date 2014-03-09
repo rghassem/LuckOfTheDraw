@@ -7,7 +7,6 @@ window.onload = function() {
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
     var mainRoom;
     var player;
-	var enemy;
 
     function preload () {
 
@@ -19,11 +18,13 @@ window.onload = function() {
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
-        mainRoom = new Room(constants.roomWidth, constants.roomHeight);
+        mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
         player = new PlayerCharacter({sprite:'@'});
-		enemy = new Enemy({sprite: 'e'});
         mainRoom.add(player, 0, 0);
-		mainRoom.add(enemy, 5, 5);
+		for(var i = 0; i < util.getRandomInt(5, constants.roomHeight); ++i) {
+			mainRoom.add(Enemy({sprite:'e'}),
+				util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
+		}
     }
 
     function updateObjects() {
