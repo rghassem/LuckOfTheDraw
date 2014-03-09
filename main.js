@@ -19,17 +19,12 @@ window.onload = function() {
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
-        mainRoom = new Room({width:constants.roomWidth, height:constants.roomHeight});
+        mainRoom = RoomFactory.generateRandomRoom();
 
         player = new PlayerCharacter({sprite:'@', room: mainRoom});
-        gameObjects.push(player);
         mainRoom.add(player, 0, 0);
 
-		for(var i = 0; i < util.getRandomInt(5, constants.roomHeight); ++i) {
-            var enemy = new Enemy({sprite:'e', room: mainRoom});
-			mainRoom.add(enemy, util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
-            gameObjects.push(enemy);
-		}
+		gameObjects = mainRoom.getGameObjects();
     }
 
     function updateObjects() {
