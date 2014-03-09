@@ -24,7 +24,7 @@
 		}
 
 		that.add = function(gameObject, row, col) {
-			gameObject.id = objects.length;
+			gameObject.setId(objects.length);
 
 			objects.push(gameObject);
 			positions.push({row: row, col: col});
@@ -44,7 +44,7 @@
 
 		that.move = function(gameObject, deltaX, deltaY) {
 			if(gameObject === null) return false;
-			var currentGridPos = this.getPosition(gameObject.id);
+			var currentGridPos = this.getPosition(gameObject.getId());
 			var toRow = currentGridPos.row + deltaX;
 			var toCol = currentGridPos.col + deltaY;
 			if( toRow < 0 || toCol < 0 || toRow >= grid.length || toCol >= grid[0].length)

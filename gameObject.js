@@ -16,6 +16,10 @@
 			return id;
 		}
 
+		that.setId = function(id) {
+			that.id = id;
+		}
+
 		that.update = function(row , col) {
 			x = row * constants.cellSize;
 			y = col * constants.cellSize;
