@@ -9,9 +9,6 @@
 
 			var objectPosition = room.getPosition(this);
 
-			console.log( 'Player: '  + playerPosition.row + ',' + playerPosition.col);
-			console.log( 'Enemy: ' + objectPosition.row + ',' + objectPosition.col);
-
 			var deltaRow = 0;
 			var deltaCol = 0;
 
