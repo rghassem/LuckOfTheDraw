@@ -1,56 +1,78 @@
 // (function(){
 
 	/***********GameObject********************/
-	var GameObject = function(sprite) {
-		this.id = -1; //no id until placed in world
-		this.sprite = sprite;
-		this.x = 0;
-		this.y = 0;
+	var GameObject = function(spec) {
+		var that = {};
+		var id = -1; //no id until placed in world
+		var sprite = spec.sprite || '@';
+		var x = 0;
+		var y = 0;
 
 		var style = { font: constants.cellSize + "px monospace", fill:"#fff"};
 		//The phaser actor
-		this.actor = game.add.text(-1, -1, this.sprite, style);
-	}
+		var actor = game.add.text(-1, -1, sprite, style);
 
-	GameObject.prototype.takeAction = function(room) {
-		//No-op on a regular game object.
-	}
+		that.getId = function() {
+			return id;
+		}
 
-	GameObject.prototype.update = function(row , col) {
-		this.x = row * constants.cellSize;
-		this.y = col * constants.cellSize;
-	}
+		that.update = function(row , col) {
+			x = row * constants.cellSize;
+			y = col * constants.cellSize;
+		}
 
-	GameObject.prototype.draw = function() {
-		this.actor.x = this.x;
-		this.actor.y = this.y;
-	}
+		that.draw = function() {
+			actor.x = x;
+			actor.y = y;
+		}
 
+		return that;
+	};
 
 	/***********PlayerCharacter********************/
-	var PlayerCharacter = function(sprite) {
+	var PlayerCharacter = function(spec) {
 
-		var gameObject = new GameObject(sprite);
+		var that = new GameObject(spec);
+		var actionQueue = [];
 
-		//GameObject.call(this, sprite);
-		gameObject.actionQueue = [];
-
-		gameObject.takeAction = function(room) {
-		if(this.actionQueue.length > 0)
-			{
-				var action = this.actionQueue.shift();
+		that.takeAction = function(room) {
+			if(actionQueue.length > 0) {
+				var action = actionQueue.shift();
 				room.move(this, action.row, action.col);
 			}
 		}
 
-		gameObject.move  = function(deltaRow, deltaCol) {
-			this.actionQueue.push({
+		that.move  = function(deltaRow, deltaCol) {
+			actionQueue.push({
 				row: deltaRow, 
 				col: deltaCol
 			});
 		}
 
-		return gameObject;
+		return that;
+	}
+
+	/***********Enemy********************/
+	var Enemy = function(spec) {
+
+		var that = new GameObject(spec);
+		var actionQueue = [];
+
+		that.takeAction = function(room) {
+			if(actionQueue.length > 0) {
+				var action = actionQueue.shift();
+				room.move(this, action.row, action.col);
+			}
+		}
+
+		that.move  = function(deltaRow, deltaCol) {
+			actionQueue.push({
+				row: deltaRow,
+				col: deltaCol
+			});
+		}
+
+		return that;
 	}
 
 	//TODO: Try to use real prototype inheritence?

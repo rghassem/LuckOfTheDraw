@@ -7,6 +7,7 @@ window.onload = function() {
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
     var mainRoom;
     var player;
+	var enemy;
 
     function preload () {
 
@@ -19,8 +20,10 @@ window.onload = function() {
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
         mainRoom = new Room(constants.roomWidth, constants.roomHeight);
-        player = new PlayerCharacter("@");
+        player = new PlayerCharacter({sprite:'@'});
+		enemy = new Enemy({sprite: 'e'});
         mainRoom.add(player, 0, 0);
+		mainRoom.add(enemy, 5, 5);
     }
 
     function updateObjects() {

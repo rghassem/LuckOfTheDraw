@@ -25,13 +25,13 @@
 
 	}
 
-	Room.prototype.add = function(gameObject, col, row) {
+	Room.prototype.add = function(gameObject, row, col) {
 		gameObject.id = this.objects.length;
 
 		this.objects.push(gameObject);
 		this.positions.push({row: row, col: col});
 
-		this.grid[col][row] = gameObject;
+		this.grid[row][col] = gameObject;
 	}
 
 	Room.prototype.at= function(row, col) {
