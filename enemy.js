@@ -1,7 +1,7 @@
 	/***********Enemy********************/
 	var Enemy = function(spec) {
 
-		var that = new GameObject(spec);
+		var that = new Character(spec);
 		var actionQueue = [];
 
 		that.takeAction = function(room) {

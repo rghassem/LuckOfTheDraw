@@ -8,12 +8,13 @@
 		var sprite = spec.sprite || '@';
 		var x = 0;
 		var y = 0;
+		var actor = game.add.text(-1, -1, sprite, { font: constants.cellSize + "px monospace", fill:"#fff"});
 
+		that.isActive = true;
+		that.actor = actor;
 		that.room = spec.room || {};
 
-		var style = { font: constants.cellSize + "px monospace", fill:"#fff"};
 		//The phaser actor
-		var actor = game.add.text(-1, -1, sprite, style);
 
 		that.getId = function() {
 			return id;
@@ -36,19 +37,22 @@
 
 		function interpolateMovement() {
 			if(!isMoving) return;
+			var progressIncrement = Math.min( game.time.elapsed /  (constants.actionDuration * 1000) , 1);
+			moveProgress = Math.min( moveProgress + progressIncrement , 1);
+
 
 			var newX = startingPos.x * (1 - moveProgress) +  moveProgress * targetPos.x;
 			var newY = startingPos.y * (1 - moveProgress) +  moveProgress* targetPos.y;
 			actor.x = newX;
 			actor.y = newY;
-			var progressIncrement = Math.min( game.time.elapsed /  (constants.actionDuration * 1000) , 1);
-			moveProgress = Math.min( moveProgress + progressIncrement , 1);
 
 			if(moveProgress === 1)
 				isMoving = false;
 		}
 
 		that.update = function() {
+			if(!that.isActive) return;
+
 			var rowCol = that.room.getPosition(this);
 			var row = rowCol.row;
 			var col = rowCol.col;
@@ -65,9 +69,23 @@
 		return that;
 	};
 
+	var Character = function(spec) {
+		var that = new GameObject(spec);
+
+		that.takeHit = function() {
+			that.room.remove(that);
+			that.isActive = false;
+			that.actor.x = -1 * constants.cellSize;
+			that.actor.y = -1 * constants.cellSize;
+		}
+
+		return that;
+	}
+
 
 	var Wall = function(spec) {
 		var that = new GameObject(spec);
+
 		return that;
 	};
 // })();

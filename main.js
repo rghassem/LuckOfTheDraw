@@ -13,8 +13,6 @@ window.onload = function() {
 
         game.load.image('floor', '.../art/floor-tile.png');
 
-
-
     }
 
     function create () {
@@ -68,20 +66,20 @@ window.onload = function() {
 
     function onKeyUp(event) {
         switch (event.keyCode) {
+            //Movement
                 case Phaser.Keyboard.LEFT:
                     player.queueMove(-1, 0)
                     break;
- 
-                case Phaser.Keyboard.RIGHT:
+                 case Phaser.Keyboard.RIGHT:
                     player.queueMove(1, 0)
                     break;
- 
-                case Phaser.Keyboard.UP:
+                 case Phaser.Keyboard.UP:
                     player.queueMove(0, -1)
                     break;
                 case Phaser.Keyboard.DOWN:
                     player.queueMove(0, 1)
                     break;
+            //Actions
                 case Phaser.Keyboard.SPACEBAR:
                     mainRoom.nextAction();
                     break;
@@ -90,6 +88,20 @@ window.onload = function() {
                     break;
                 case Phaser.Keyboard.ESC:
                     player.clearQueue();
+
+            //Shooting
+                case Phaser.Keyboard.A:
+                    player.shoot(constants.Direction.Left)
+                    break;
+                 case Phaser.Keyboard.D:
+                    player.shoot(constants.Direction.Right)
+                    break;
+                 case Phaser.Keyboard.W:
+                    player.shoot(constants.Direction.Up)
+                    break;
+                case Phaser.Keyboard.S:
+                    player.shoot(constants.Direction.Down)
+                    break;
         }
 }
 
