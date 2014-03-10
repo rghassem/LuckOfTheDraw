@@ -28,7 +28,7 @@
 		}
 
 		that.queueMove  = function(deltaRow, deltaCol) {
-			actionQueue.push( function() {
+			queueAction( function() {
 				that.room.move(that, deltaRow, deltaCol);
 			});
 		}
