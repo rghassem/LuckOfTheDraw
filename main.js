@@ -51,30 +51,30 @@ window.onload = function() {
     }
 
     function handleMouse(){
-         // var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
-         // var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
-         // var currentPos = mainRoom.getPosition(player); 
-         // if (cellX < currentPos.row)
-         //    player.queueMove(-1, 0);
-         // if (cellX > currentPos.row)
-         //    player.queueMove(1, 0);
-         // if (cellY < currentPos.col)
-         //    player.queueMove(0, -1);
-         // if (cellY > currentPos.col)
-         //    player.queueMove(0, 1); 
+         var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
+         var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
+         var currentPos = mainRoom.getPosition(player); 
+         if (cellX < currentPos.row)
+            player.queueMove(-1, 0);
+         if (cellX > currentPos.row)
+            player.queueMove(1, 0);
+         if (cellY < currentPos.col)
+            player.queueMove(0, -1);
+         if (cellY > currentPos.col)
+            player.queueMove(0, 1); 
     }
 
     function onKeyUp(event) {
         switch (event.keyCode) {
             //Movement
                 case Phaser.Keyboard.LEFT:
-                    player.queueMove(-1, 0)
+                    player.queueMove(-1, 0);
                     break;
                  case Phaser.Keyboard.RIGHT:
-                    player.queueMove(1, 0)
+                    player.queueMove(1, 0);
                     break;
                  case Phaser.Keyboard.UP:
-                    player.queueMove(0, -1)
+                    player.queueMove(0, -1);
                     break;
                 case Phaser.Keyboard.DOWN:
                     player.queueMove(0, 1)
@@ -91,17 +91,38 @@ window.onload = function() {
 
             //Shooting
                 case Phaser.Keyboard.A:
-                    player.shoot(constants.Direction.Left)
+                    player.queueShot(constants.Direction.Left)
                     break;
                  case Phaser.Keyboard.D:
-                    player.shoot(constants.Direction.Right)
+                    player.queueShot(constants.Direction.Right)
                     break;
                  case Phaser.Keyboard.W:
-                    player.shoot(constants.Direction.Up)
+                    player.queueShot(constants.Direction.Up)
                     break;
                 case Phaser.Keyboard.S:
-                    player.shoot(constants.Direction.Down)
+                    player.queueShot(constants.Direction.Down)
                     break;
+        }
+
+        //Turn logic not working
+        var turnInProgress = false;
+        function turn(actionsPerTurn) {
+            turnInProgress = true;
+
+            //Create a timer that will execute each nextAction command, with an appropriate delay for gameObjects to catch up.
+            var timer = new Phaser.Timer(game, false);
+            function finalEvent() {
+                turnInProgress = false;
+                timer.destroy();
+            }
+            function action = mainRoom.nextAction;
+            var delay = constants.actionDuration * 1000;
+            for(var i = 0; i < constants.actionQueueDepth; ++i)
+            {
+                timer.add(i * delay, action);
+            }
+            timer.add(delay * constants.actionQueueDepth, finalEvent);
+            timer.start();
         }
 }
 
