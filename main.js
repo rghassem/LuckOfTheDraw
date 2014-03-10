@@ -14,11 +14,15 @@ window.onload = function() {
         game.load.image('floor', '.../art/floor-tile.png');
 
 
+
     }
 
     function create () {
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
+
+        game.input.onDown.add(handleMouse, this);
+
 
 
         for(var i = 0; i < constants.roomWidth; ++i)
@@ -52,6 +56,20 @@ window.onload = function() {
 
     function drawObjects() {
         
+    }
+
+    function handleMouse(){
+         var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
+         var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
+         var currentPos = mainRoom.getPosition(player); 
+         if (cellX < currentPos.row)
+            player.queueMove(-1, 0);
+         if (cellX > currentPos.row)
+            player.queueMove(1, 0);
+         if (cellY < currentPos.col)
+            player.queueMove(0, -1);
+         if (cellY > currentPos.col)
+            player.queueMove(0, 1); 
     }
 
     function onKeyUp(event) {
