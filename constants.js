@@ -5,6 +5,8 @@ var constants = {
 	actionQueueDepth : 5,
 	actionDuration : 0.5, //in seconds
 
+	font : { font: "12px Arial", fill: "#ff0044", align: "center" },
+
 	Direction : {
 		Up    : {row: 0, col: -1},
 		Down  : {row: 0, col: 1},

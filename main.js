@@ -3,15 +3,25 @@
 var game;
 window.onload = function() {
 
-    game = new Phaser.Game(constants.roomWidth * constants.cellSize, constants.roomHeight * constants.cellSize,
+    game = new Phaser.Game(constants.roomWidth * constants.cellSize + 100, constants.roomHeight * constants.cellSize + 100,
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
     var mainRoom;
     var player;
     var gameObjects = [];
+    var arrowSpriteGroup;
+    var crossHairSpriteGroup;
+    var mouseActionType = "move";
+    var shootButton;
+    var moveButton;
+    var actionText;
 
     function preload () {
 
         game.load.image('floor', '.../art/floor-tile.png');
+        game.load.image('arrow', '.../art/arrow-sprite.png');
+        game.load.image('move-button', '.../art/move.png');
+         game.load.image('crosshair', '.../art/crosshair.png');
+    
 
     }
 
@@ -21,7 +31,9 @@ window.onload = function() {
 
         game.input.onDown.add(handleMouse, this);
 
-
+        arrowSpriteGroup = game.add.group();
+        crosshairSpriteGroup = game.add.group();
+        actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
 
         for(var i = 0; i < constants.roomWidth; ++i)
         {
@@ -51,19 +63,57 @@ window.onload = function() {
     }
 
     function handleMouse(){
+        function checkIsMoveValid(x, y){
+            valid = true;
+            gameObjects.forEach(function(gameObject){
+                var pos = mainRoom.getPosition(gameObject)
+                if(pos.row === x && pos.col === y){
+                    valid = false;
+                }
+         })
+            return valid;
+        }
          var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
          var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
-         var currentPos = mainRoom.getPosition(player); 
-         if (cellX < currentPos.row)
-            player.queueMove(-1, 0);
-         if (cellX > currentPos.row)
-            player.queueMove(1, 0);
-         if (cellY < currentPos.col)
-            player.queueMove(0, -1);
-         if (cellY > currentPos.col)
-            player.queueMove(0, 1); 
+         if(cellX > constants.roomWidth-1 || cellY > constants.roomHeight-1){
+            return false;
+         }
+         switch (mouseActionType){
+            case "move" :
+                 var currentPos = mainRoom.getPosition(player);
+                 if(checkIsMoveValid(cellX,cellY)){
+                 var newArrow = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow');
+                 arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
+                 if (cellX < currentPos.row)
+                    player.queueMove(-1, 0);
+                 if (cellX > currentPos.row)
+                    player.queueMove(1, 0);
+                 if (cellY < currentPos.col)
+                    player.queueMove(0, -1);
+                 if (cellY > currentPos.col)
+                    player.queueMove(0, 1); 
+                }
+                break;
+            case "shoot" :
+                 var newCrossHair = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'crosshair');
+                 crossHairSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'crosshair');
+                 if (cellX < currentPos.row)
+                     player.queueShot(constants.Direction.Left)
+                 if (cellX > currentPos.row)
+                     player.queueShot(constants.Direction.Right)
+                 if (cellY < currentPos.col)
+                     player.queueShot(constants.Direction.Up)
+                 if (cellY > currentPos.col)
+                     player.queueShot(constants.Direction.Down)
+    }
     }
 
+    function setActionType(actionType){
+       mouseActionType = actionType;
+       actionText.destroy();
+       actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
+    }
+    
     function onKeyUp(event) {
         switch (event.keyCode) {
             //Movement
@@ -79,6 +129,15 @@ window.onload = function() {
                 case Phaser.Keyboard.DOWN:
                     player.queueMove(0, 1)
                     break;
+
+            //Mouse Commands
+                case Phaser.Keyboard.M:
+                    setActionType("move");
+                    break;
+                case Phaser.Keyboard.N:
+                    setActionType("shoot");
+                    break;  
+
             //Actions
                 case Phaser.Keyboard.SPACEBAR:
                     mainRoom.nextAction();
@@ -124,6 +183,8 @@ window.onload = function() {
             timer.add(delay * constants.actionQueueDepth, finalEvent);
             timer.start();
         }
+
+
 }
 
 	//Prevent scrolling the screen
