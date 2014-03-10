@@ -51,17 +51,17 @@ window.onload = function() {
     }
 
     function handleMouse(){
-         var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
-         var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
-         var currentPos = mainRoom.getPosition(player); 
-         if (cellX < currentPos.row)
-            player.queueMove(-1, 0);
-         if (cellX > currentPos.row)
-            player.queueMove(1, 0);
-         if (cellY < currentPos.col)
-            player.queueMove(0, -1);
-         if (cellY > currentPos.col)
-            player.queueMove(0, 1); 
+         // var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
+         // var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
+         // var currentPos = mainRoom.getPosition(player); 
+         // if (cellX < currentPos.row)
+         //    player.queueMove(-1, 0);
+         // if (cellX > currentPos.row)
+         //    player.queueMove(1, 0);
+         // if (cellY < currentPos.col)
+         //    player.queueMove(0, -1);
+         // if (cellY > currentPos.col)
+         //    player.queueMove(0, 1); 
     }
 
     function onKeyUp(event) {
@@ -83,10 +83,10 @@ window.onload = function() {
                 case Phaser.Keyboard.SPACEBAR:
                     mainRoom.nextAction();
                     break;
-                case Phaser.Keyboard.BACKSPACE:
+                case Phaser.Keyboard.B:
                     player.cancelAction();
                     break;
-                case Phaser.Keyboard.ESC:
+                case Phaser.Keyboard.C:
                     player.clearQueue();
 
             //Shooting

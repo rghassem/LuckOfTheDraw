@@ -99,7 +99,7 @@
 			for(var i = 0; i < objects.length; ++i)
 			{
 				var go = objects[i];
-				if(go.takeAction) {
+				if(go.takeAction && go.isActive) {
 					go.takeAction(this);
 				}
 			}
