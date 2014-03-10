@@ -115,7 +115,7 @@ window.onload = function() {
                 turnInProgress = false;
                 timer.destroy();
             }
-            function action = mainRoom.nextAction;
+            var action = mainRoom.nextAction;
             var delay = constants.actionDuration * 1000;
             for(var i = 0; i < constants.actionQueueDepth; ++i)
             {
