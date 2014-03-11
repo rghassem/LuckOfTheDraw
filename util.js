@@ -32,7 +32,7 @@ var util = (function(){
 		}
 	}
 
-	var manhattenDistance = function(fromRow, fromCol, toRow, toCol) {
+	var manhattanDistance = function(fromRow, fromCol, toRow, toCol) {
 		var biggerRow = Math.max(fromRow, toRow);
 		var smallerRow = (biggerRow === fromRow) ? toRow : fromRow;
 
@@ -51,6 +51,6 @@ var util = (function(){
 		pixelToGrid2D : pixelToGrid2D,
 		gridToPixelCenter2D : gridToPixelCenter2D,
 
-		manhattenDistance : manhattenDistance
+		manhattanDistance : manhattanDistance
 	}
 })();

@@ -5,11 +5,17 @@
 		var that = new Character(spec);
 		var actionQueue = [];
 
+		var gun = new Gun(".");
+
 		//Add an action to the end of the queue
 		queueAction = function(action) {
 			if(actionQueue.length < constants.actionQueueDepth) {
 				actionQueue.push(action);  //Action is just a function. Could replace with Command pattern, with a do and undo function
 			}
+		}
+
+		that.setGun= function(newGun) {
+			gun = newGun;
 		}
 
 		that.cancelAction = function() {
@@ -35,7 +41,8 @@
 
 		that.queueShot = function(direction) {
 			queueAction( function() {
-				that.shoot(direction);
+				if(gun !== null)
+					gun.shoot(that, direction);
 			});
 		}
 
