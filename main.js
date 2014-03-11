@@ -22,8 +22,10 @@ window.onload = function() {
         game.load.image('floor', '../art/floor-tile.png');
         game.load.image('arrow', '../art/arrow-sprite.png');
         game.load.image('move-button', '../art/move.png');
-         game.load.image('crosshair', '../art/crosshair.png');
-    
+        game.load.image('crosshair', '../art/crosshair.png');
+		game.load.image('wall', '../art/wall.png');
+		game.load.image('enemy', '../art/enemy.png');
+		game.load.image('player', '../art/player.png')
 
     }
 
@@ -49,7 +51,7 @@ window.onload = function() {
 		floor = Floor({});
         mainRoom = floor.getCurrentRoom();
 
-        player = new PlayerCharacter({sprite:'@', room: mainRoom});
+        player = new PlayerCharacter({sprite:'player', room: mainRoom});
         mainRoom.add(player, 0, 0);
         mainRoom.playerObjectId = player.getId();
 

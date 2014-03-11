@@ -54,10 +54,10 @@ var RoomFactory = (function (){
 			for (var j = 0; j < rows[i].length; ++j) {
 				var c = rows[i].charAt(j);
 				if(c === '#'){
-					room.add(Wall({sprite:'#',room: room}),i,j);
+					room.add(Wall({sprite:'wall',room: room}),i,j);
 				}
 				else if(c === 'e'){
-					room.add(Enemy({sprite:'e',room: room}),i,j);
+					room.add(Enemy({sprite:'enemy',room: room}),i,j);
 				}
 			}
 		}

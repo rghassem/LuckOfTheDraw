@@ -8,7 +8,7 @@
 		var sprite = spec.sprite || '@';
 		var x = 0;
 		var y = 0;
-		var actor = game.add.text(-1, -1, sprite, { font: constants.cellSize + "px monospace", fill:"#fff"});
+		var actor = game.add.sprite(-1, -1, sprite);
 
 		that.isActive = true;
 		that.actor = actor;
