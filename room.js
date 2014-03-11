@@ -48,6 +48,8 @@
 			positions.push({row: row, col: col});
 
 			grid[row][col] = gameObject;
+			gameObject.setGridPosition(row, col);
+			gameObject.setActive(true);
 		}
 
 		that.remove = function(gameObject) {
@@ -102,7 +104,7 @@
 			for(var i = 0; i < objects.length; ++i)
 			{
 				var go = objects[i];
-				if(go.takeAction && go.isActive) {
+				if(go.takeAction && go.isActive()) {
 					go.takeAction(this);
 				}
 			}

@@ -9,8 +9,8 @@
 		var x = 0;
 		var y = 0;
 		var actor = game.add.sprite(-1, -1, sprite);
+		actor.kill();
 
-		that.isActive = true;
 		that.actor = actor;
 		that.room = spec.room || {};
 
@@ -22,6 +22,24 @@
 
 		that.setId = function(newid) {
 			id = newid;
+		}
+
+		that.isActive = function() {
+			return actor.exists;
+		}
+
+		that.setActive = function(active) {
+			if(active && !that.isActive()) //if we want it active and its not 'revive' it
+				actor.revive();
+			else if(!active && that.isActive())
+				actor.kill();  //if we want it dead and its not, 'kill' it
+		}
+
+		that.setGridPosition = function(row, col) {
+			x = row * constants.cellSize;
+			y = col * constants.cellSize;
+			actor.x = x;
+			actor.y = y;
 		}
 
 		var moveProgress = 1;
@@ -51,7 +69,7 @@
 		}
 
 		that.update = function() {
-			if(!that.isActive) return;
+			if(!that.isActive()) return;
 
 			var rowCol = that.room.getPosition(this);
 			var row = rowCol.row;
