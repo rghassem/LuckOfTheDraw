@@ -1,5 +1,5 @@
 var constants = {
-	cellSize : 32,
+	cellSize : 64,
 	roomWidth : 18, 
 	roomHeight : 12,
 	actionQueueDepth : 5,
