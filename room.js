@@ -7,7 +7,10 @@
 		var that = {};
 		var width = spec.width || 0;
 		var height = spec.height || 0;
+		var row = spec.row || -1;
+		var col = spec.col || -1;
 		var objects = [];
+		var exits = [];
 
 		var grid = [];
 		var positions = [];
@@ -107,6 +110,58 @@
 
 		that.getGameObjects = function() {
 			return objects;
+		}
+
+		that.getExits = function() {
+			return exits;
+		}
+
+		that.getRow = function() {
+			return row;
+		}
+
+		that.getCol = function() {
+			return col;
+		}
+
+		that.getUp = function() {
+			return {
+				direction: util.Direction.Up,
+				row: row + util.Direction.Up.row,
+				col: col + util.Direction.Up.col,
+				oppositeRow: row,
+				oppositeCol: col
+			}
+		}
+
+		that.getDown = function() {
+			return {
+				direction: util.Direction.Down,
+				row: row + util.Direction.Down.row,
+				col: col + util.Direction.Down.col,
+				oppositeRow: row,
+				oppositeCol: col
+			}
+		}
+
+		that.getLeft = function() {
+			return {
+				direction: util.Direction.Left,
+				row: row + util.Direction.Left.row,
+				col: col + util.Direction.Left.col,
+				oppositeRow: row,
+				oppositeCol: col
+			}
+		}
+
+		that.getRight = function() {
+			return {
+				direction: util.Direction.Right,
+				row: row + util.Direction.Right.row,
+				col: col + util.Direction.Right.col,
+				oppositeRow: row,
+				oppositeCol: col
+			}
 		}
 
 		return that;

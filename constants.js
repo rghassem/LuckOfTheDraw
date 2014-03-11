@@ -8,14 +8,14 @@ var constants = {
 	font : { font: "12px Arial", fill: "#ff0044", align: "center" },
 
 	Direction : {
-		Up    : {row: 0, col: -1},
-		Down  : {row: 0, col: 1},
-		Left  : {row: -1, col: 0},
-		Right : {row: 1, col: 0},
+		Up    : {row: 0, col: -1, opposite: 'Down'},
+		Down  : {row: 0, col: 1, opposite: 'Up'},
+		Left  : {row: -1, col: 0, opposite: 'Right'},
+		Right : {row: 1, col: 0, opposite: 'Left'},
 
 		UpRight   : {row: 1, col: -1},
 		UpLeft    :  {row: -1, col: -1},
 		DownRight : {row: 1, col: 1},
-		DownLeft  : {row: -1, col: 1},
+		DownLeft  : {row: -1, col: 1}
 	}
 }

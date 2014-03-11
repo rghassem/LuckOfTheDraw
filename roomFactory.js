@@ -1,7 +1,7 @@
 var RoomFactory = (function (){
-	var generateRandomRoom = function() {
+	var generateRandomRoom = function(row, col) {
 		// Generate Walls
-		var room = Room({width: constants.roomWidth, height: constants.roomWidth});
+		var room = Room({row: row, col: col, width: constants.roomWidth, height: constants.roomWidth});
 		for(var i = 0; i < 20; ++i) {
 			var row = util.getRandomInt(0, constants.roomWidth - 1);
 			var col = util.getRandomInt(0, constants.roomHeight - 1);
@@ -24,9 +24,9 @@ var RoomFactory = (function (){
 		return room;
 	}
 
-	var generateRoom = function(type) {
+	var generateRoom = function(row, col, type) {
 		if(type === 'main') {
-			return generateRoomFromString(
+			return generateRoomFromString(row, col,
 				"............\n" +
 				"............\n" +
 				"..####..##..\n" +
@@ -41,15 +41,15 @@ var RoomFactory = (function (){
 				"............\n"
 			);
 		} else if(type === 'goal') {
-
+			return generateRandomRoom(row, col);
 		} else {
-			return generateRandomRoom();
+			return generateRandomRoom(row, col);
 		}
 	};
 
-	var generateRoomFromString = function(str) {
+	var generateRoomFromString = function(row, col, str) {
 		var rows = str.split('\n');
-		var room = Room({width: constants.roomWidth, height: constants.roomWidth});
+		var room = Room({row: row, col: col, width: constants.roomWidth, height: constants.roomWidth});
 		for (var i = 0; i < rows.length; ++i) {
 			for (var j = 0; j < rows[i].length; ++j) {
 				var c = rows[i].charAt(j);
