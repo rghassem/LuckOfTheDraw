@@ -14,6 +14,7 @@ window.onload = function() {
     var shootButton;
     var moveButton;
     var actionText;
+    var phaseText;
 
     function preload () {
 
@@ -34,6 +35,7 @@ window.onload = function() {
         arrowSpriteGroup = game.add.group();
         crosshairSpriteGroup = game.add.group();
         actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
+        phaseText = game.add.text(game.world.centerX - 95, 450, "Phase: Planning", constants.font);
 
         for(var i = 0; i < constants.roomWidth; ++i)
         {
@@ -63,6 +65,7 @@ window.onload = function() {
     }
 
     function handleMouse(){
+        if(turn.isRunning()) return; //block all action during the turn
         function checkIsMoveValid(x, y){
             valid = true;
             gameObjects.forEach(function(gameObject){
@@ -121,8 +124,20 @@ window.onload = function() {
        actionText.destroy();
        actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
     }
+
+    var turn = new EventSequence();
+    var nextAction = function() { mainRoom.nextAction(); }
+    turn.add(function() { phaseText.content = "Phase: Action" });
+    turn.add(nextAction);
+    for(var i = 0; i < constants.actionQueueDepth; ++i)
+        turn.add(nextAction, constants.actionDuration);
+    turn.add(function() { phaseText.content = "Phase: Planning" });
+
     
     function onKeyUp(event) {
+
+         if(turn.isRunning()) return; //block all action during the turn
+
         switch (event.keyCode) {
             //Movement
                 case Phaser.Keyboard.LEFT:
@@ -148,7 +163,7 @@ window.onload = function() {
 
             //Actions
                 case Phaser.Keyboard.SPACEBAR:
-                    mainRoom.nextAction();
+                    turn.start();
                     break;
                 case Phaser.Keyboard.B:
                     player.cancelAction();
@@ -170,28 +185,6 @@ window.onload = function() {
                     player.queueShot(constants.Direction.Down)
                     break;
         }
-
-        //Turn logic not working
-        var turnInProgress = false;
-        function turn(actionsPerTurn) {
-            turnInProgress = true;
-
-            //Create a timer that will execute each nextAction command, with an appropriate delay for gameObjects to catch up.
-            var timer = new Phaser.Timer(game, false);
-            function finalEvent() {
-                turnInProgress = false;
-                timer.destroy();
-            }
-            var action = mainRoom.nextAction;
-            var delay = constants.actionDuration * 1000;
-            for(var i = 0; i < constants.actionQueueDepth; ++i)
-            {
-                timer.add(i * delay, action);
-            }
-            timer.add(delay * constants.actionQueueDepth, finalEvent);
-            timer.start();
-        }
-
 
 }
 
