@@ -17,12 +17,17 @@ window.onload = function() {
 
     function preload () {
 
-        game.load.image('floor', '/art/floor.jpg');
-        game.load.image('arrow', '/art/arrow-sprite.png');
-        game.load.image('crosshair', '/art/crosshair.png');
-		game.load.image('wall', '/art/wall.png');
-		game.load.image('enemy', '/art/enemy.png');
-		game.load.image('player', '/art/player.png');
+        game.load.image('floor', './art/floor.jpg');
+        game.load.image('arrow', './art/arrow-sprite.png');
+        game.load.image('crosshair', './art/crosshair.png');
+		game.load.image('wall', './art/wall.png');
+		game.load.image('enemy', './art/enemy.png');
+		game.load.image('player', './art/player.png');
+        game.load.image('bullet', './art/bullet.png');
+
+        game.load.audio("gunfire", "./sound/Shoot.wav", true);
+        game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
+        game.load.audio("wallHit", "./sound/Hit_Wall.wav", true);
 
     }
 

@@ -6,6 +6,8 @@ var Gun = function(spec) {
 	var spec = spec || {};
 	var bullet = spec.bulletSprite || "O";
 	var that = {};
+	var soundEffect = spec.soundEffect || "gunfire";
+	var sound = game.add.audio("gunfire");
 
 	var maxShotDistance = Math.max(constants.roomWidth, constants.roomHeight) ; //time the shot effect takes to cover one grid cell
 
@@ -45,11 +47,11 @@ var Gun = function(spec) {
 	}
 
 	function playShootEffect(myGridPos, targetGridPos, onComplete) {
-		var bulletStart = util.gridToPixelCenter2D(myGridPos);
-		var bulletEnd = util.gridToPixelCenter2D(targetGridPos);
+		var bulletStart = util.gridToPixel2D(myGridPos);
+		var bulletEnd = util.gridToPixel2D(targetGridPos);
 
 		
-		var bullet = game.add.text(bulletStart.x, bulletStart.y, ".", { font: "64px Arial", fill: "#ff0044", align: "center" }); //TODO: Use a sprite!
+		var bullet = game.add.sprite(bulletStart.x, bulletStart.y, "bullet"); //TODO: Use a sprite!
 
 		//Calculate appropriate speed of bullet
 		var distance = util.manhattanDistance(myGridPos.row, myGridPos.col, targetGridPos.row, targetGridPos.col);
@@ -64,6 +66,7 @@ var Gun = function(spec) {
 	    });
 	    shotAnim.start();
 
+	    sound.play();
 	}
 
 	return that;
