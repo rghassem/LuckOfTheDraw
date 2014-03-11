@@ -3,7 +3,7 @@
 var game;
 window.onload = function() {
 
-    game = new Phaser.Game(constants.roomWidth * constants.cellSize + 100, constants.roomHeight * constants.cellSize + 100,
+    game = new Phaser.Game(1280, 744,
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
     var mainRoom;
 	var floor;
@@ -12,20 +12,17 @@ window.onload = function() {
     var arrowSpriteGroup;
     var crossHairSpriteGroup;
     var mouseActionType = "move";
-    var shootButton;
-    var moveButton;
     var actionText;
     var phaseText;
 
     function preload () {
 
-        game.load.image('floor', '../art/floor-tile.png');
-        game.load.image('arrow', '../art/arrow-sprite.png');
-        game.load.image('move-button', '../art/move.png');
-        game.load.image('crosshair', '../art/crosshair.png');
-		game.load.image('wall', '../art/wall.png');
-		game.load.image('enemy', '../art/enemy.png');
-		game.load.image('player', '../art/player.png')
+        game.load.image('floor', '/art/floor-tile.png');
+        game.load.image('arrow', '/art/arrow-sprite.png');
+        game.load.image('crosshair', '/art/crosshair.png');
+		game.load.image('wall', '/art/wall.png');
+		game.load.image('enemy', '/art/enemy.png');
+		game.load.image('player', '/art/player.png')
 
     }
 
@@ -52,7 +49,7 @@ window.onload = function() {
         mainRoom = floor.getCurrentRoom();
 
         player = new PlayerCharacter({sprite:'player', room: mainRoom});
-        mainRoom.add(player, 0, 0);
+        mainRoom.add(player, 0, 5);
         mainRoom.playerObjectId = player.getId();
 
 		gameObjects = mainRoom.getGameObjects();
