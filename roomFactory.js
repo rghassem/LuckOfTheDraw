@@ -6,7 +6,7 @@ var RoomFactory = (function (){
 			var row = util.getRandomInt(0, constants.roomWidth - 1);
 			var col = util.getRandomInt(0, constants.roomHeight - 1);
 			if(!room.at(row,col)) {
-				room.add(Wall({sprite: '#', room: room}), row, col);
+				room.add(Wall({sprite: 'wall', room: room}), row, col);
 				console.log("created wall at "+row+" "+col);
 			}
 		}
@@ -15,7 +15,7 @@ var RoomFactory = (function (){
 			var row = util.getRandomInt(0, constants.roomWidth - 1);
 			var col = util.getRandomInt(0, constants.roomHeight - 1);
 			if(!room.at(row,col)) {
-				room.add(Enemy({sprite:'e', room: room}),
+				room.add(Enemy({sprite:'enemy', room: room}),
 					util.getRandomInt(1,constants.roomWidth-1), util.getRandomInt(1,constants.roomHeight-1));
 				console.log("created enemy at "+row+" "+col);
 			}
@@ -49,7 +49,6 @@ var RoomFactory = (function (){
 		var rows = str.split('\n');
 		var room = Room({row: row, col: col, width: constants.roomWidth, height: constants.roomHeight});
 		for (var i = 0; i < rows.length; ++i) {
-			alert(rows[i]);
 			for (var j = 0; j < rows[i].length; ++j) {
 				var c = rows[i].charAt(j);
 				if(c === '#'){

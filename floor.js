@@ -23,9 +23,9 @@ var Floor = function(spec){
 		return currentRoom;
 	}
 
-	that.move = function (row, col, direction) {
-		var nextRow = row + direction.row;
-		var nextCol = col + direction.col;
+	that.move = function (direction) {
+		var nextRow = currentRow + direction.row;
+		var nextCol = currentCol + direction.col;
 		var nextRoom = floor[nextRow][nextCol];
 		if(nextRoom) {
 			currentRow = nextRow;

@@ -17,16 +17,17 @@ window.onload = function() {
 
     function preload () {
 
-        game.load.image('floor', '/art/floor-tile.png');
+        game.load.image('floor', '/art/floor.jpg');
         game.load.image('arrow', '/art/arrow-sprite.png');
         game.load.image('crosshair', '/art/crosshair.png');
 		game.load.image('wall', '/art/wall.png');
 		game.load.image('enemy', '/art/enemy.png');
-		game.load.image('player', '/art/player.png')
+		game.load.image('player', '/art/player.png');
 
     }
 
     function create () {
+		game.add.sprite(0, 0, 'floor');
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
@@ -36,14 +37,6 @@ window.onload = function() {
         crosshairSpriteGroup = game.add.group();
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
-
-        for(var i = 0; i < constants.roomWidth; ++i)
-        {
-            for(var j = 0; j < constants.roomHeight; ++j)
-            {
-                game.add.sprite(i*constants.cellSize,j*constants.cellSize, 'floor');
-            }
-        }
 
 		floor = Floor({});
         mainRoom = floor.getCurrentRoom();
@@ -185,6 +178,16 @@ window.onload = function() {
                 case Phaser.Keyboard.S:
                     player.queueShot(constants.Direction.Down)
                     break;
+
+			//Dungeon test
+				case Phaser.Keyboard.H:
+					break;
+				case Phaser.Keyboard.J:
+					break;
+				case Phaser.Keyboard.K:
+					break;
+				case Phaser.Keyboard.L:
+					break;
         }
 
 }
