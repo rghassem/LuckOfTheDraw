@@ -80,7 +80,15 @@ window.onload = function() {
          }
          switch (mouseActionType){
             case "move" :
-                 var currentPos = mainRoom.getPosition(player);
+                 var currentPos = {row:0, col: 0};
+                 if(arrowSpriteGroup.length > 0){
+                      var lastArrow = arrowSpriteGroup.getAt(arrowSpriteGroup.length - 1)
+                      currentPos.row = Math.floor(lastArrow.x / constants.cellSize);
+                      currentPos.col = Math.floor(lastArrow.y / constants.cellSize);
+                 }
+                 else{
+                     var currentPos = mainRoom.getPosition(player);
+                 }
                  if(checkIsMoveValid(cellX,cellY)){
                  var newArrow = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow');
                  arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
