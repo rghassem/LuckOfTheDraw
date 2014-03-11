@@ -8,7 +8,28 @@ var util = (function(){
 	}
 
 	var pixelToGrid = function(pixels) {
-		return Math.floor(cell / constants.cellSize);
+		return Math.floor(pixels / constants.cellSize);
+	}
+
+	var gridToPixel2D = function(gridPos) {
+		return {
+			x: gridToPixel(gridPos.row),
+			y: gridToPixel(gridPos.col)
+		}
+	}
+
+	var pixelToGrid2D = function(pos) {
+		return {
+			row: pixelToGrid(pos.row),
+			col: pixelToGrid(pos.col)
+		}
+	}
+
+	var gridToPixelCenter2D = function(cell) {
+		return {
+			x: gridToPixel(cell.row) + constants.cellSize/2,
+			y: gridToPixel(cell.col) - constants.cellSize/2
+		}
 	}
 
 	var manhattenDistance = function(fromRow, fromCol, toRow, toCol) {
@@ -18,15 +39,18 @@ var util = (function(){
 		var biggerCol = Math.max(fromCol, toCol);
 		var smallerCol = (biggerCol === fromCol) ? toCol : fromCol;
 
-		return {
-			row: Math.abs(biggerRow - smallerRow);
-			col: Math.abs(biggerCol - smallerCol);
-		}
+		return Math.abs(biggerRow - smallerRow) + Math.abs(biggerCol - smallerCol);
 	}
 
 	return {
 		getRandomInt : getRandomInt,
+
 		gridToPixel : gridToPixel,
-		pixelToGrid : pixelToGrid
+		pixelToGrid : pixelToGrid,
+		gridToPixel2D : gridToPixel2D,
+		pixelToGrid2D : pixelToGrid2D,
+		gridToPixelCenter2D : gridToPixelCenter2D,
+
+		manhattenDistance : manhattenDistance
 	}
 })();
