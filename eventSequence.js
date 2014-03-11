@@ -9,9 +9,17 @@ EventSequence queues up a series of events that need to be executed in order and
 
 var EventSequence = function(spec) {
 
-	var events = [];
-	var currentEvent = 0;
-	var isRunning = false;
+	var events;
+	var currentEvent;
+	var isRunning;
+
+	function init() {
+		events = [];
+		currentEvent = 0;
+		isRunning = false;
+	}
+
+	init();
 
 	this.isRunning = function() {
 		return isRunning;
@@ -29,6 +37,8 @@ var EventSequence = function(spec) {
 		setTimeout(doNextEvent, events[currentEvent].delay); //Boy, it sure would be great if we had some sort of game engine with its own functioning damn timer. 
 		isRunning = true;
 	}
+
+	this.clear = init;
 
 	function doNextEvent() {
 		events[currentEvent].callback();
