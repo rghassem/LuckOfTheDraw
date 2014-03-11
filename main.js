@@ -37,8 +37,8 @@ window.onload = function() {
 
         arrowSpriteGroup = game.add.group();
         crosshairSpriteGroup = game.add.group();
-        actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
-        phaseText = game.add.text(game.world.centerX - 95, 450, "Phase: Planning", constants.font);
+        actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
+        phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
 
         for(var i = 0; i < constants.roomWidth; ++i)
         {
