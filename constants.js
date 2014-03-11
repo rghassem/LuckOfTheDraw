@@ -1,6 +1,6 @@
 var constants = {
 	cellSize : 64,
-	roomWidth : 14,
+	roomWidth : 13,
 	roomHeight : 10,
 	actionQueueDepth : 5,
 	actionDuration : 0.5, //in seconds

@@ -27,18 +27,16 @@ var RoomFactory = (function (){
 	var generateRoom = function(row, col, type) {
 		if(type === 'main') {
 			return generateRoomFromString(row, col,
-				"............\n" +
-				"............\n" +
-				"..####..##..\n" +
-				"..####..##..\n" +
-				"..##eeee....\n" +
-				"..##eeee....\n" +
-				"..##eeee##..\n" +
-				"..##....##..\n" +
-				"..##....##..\n" +
-				"..##....##..\n" +
-				"............\n" +
-				"............\n"
+				".............\n" +
+				"..##.....#e..\n" +
+				"..##.....#e..\n" +
+				".............\n" +
+				".....##e.....\n" +
+				".....##e.....\n" +
+				".............\n" +
+				"..##.....#e..\n" +
+				"..##.....#e..\n" +
+				".............\n"
 			);
 		} else if(type === 'goal') {
 			return generateRandomRoom(row, col);
@@ -49,15 +47,16 @@ var RoomFactory = (function (){
 
 	var generateRoomFromString = function(row, col, str) {
 		var rows = str.split('\n');
-		var room = Room({row: row, col: col, width: constants.roomWidth, height: constants.roomWidth});
+		var room = Room({row: row, col: col, width: constants.roomWidth, height: constants.roomHeight});
 		for (var i = 0; i < rows.length; ++i) {
+			alert(rows[i]);
 			for (var j = 0; j < rows[i].length; ++j) {
 				var c = rows[i].charAt(j);
 				if(c === '#'){
-					room.add(Wall({sprite:'wall',room: room}),i,j);
+					room.add(Wall({sprite:'wall',room: room}),j,i);
 				}
 				else if(c === 'e'){
-					room.add(Enemy({sprite:'enemy',room: room}),i,j);
+					room.add(Enemy({sprite:'enemy',room: room}),j,i);
 				}
 			}
 		}
