@@ -3,7 +3,7 @@ var constants = {
 	roomWidth : 14,
 	roomHeight : 10,
 	actionQueueDepth : 5,
-	actionDuration : 0.5, //in seconds
+	actionDuration : 0.75, //in seconds
 
 	font : { font: "12px Arial", fill: "#ff0044", align: "center" },
 
