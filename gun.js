@@ -1,6 +1,6 @@
 
 /*
-Gun encapsulates the firing logic and effects for a playerCharacter's projectile weapon
+Gun encapsulates the firing logic and effects for a playerCharacter's projectile weapon. Can override canShoot and shoot to get difference firing behavior
 */
 var Gun = function(spec) {
 	var spec = spec || {};
@@ -10,6 +10,19 @@ var Gun = function(spec) {
 	var sound = game.add.audio("gunfire");
 
 	var maxShotDistance = Math.max(constants.roomWidth, constants.roomHeight) ; //time the shot effect takes to cover one grid cell
+
+	//Returns the direction to shoot, or null if target not in range
+	that.getShootDirection = function(shooter, target) {
+		var room = shooter.room;
+		var shooterPos = room.getPosition(shooter);
+		var targetPos = room.getPosition(target);
+
+		var direction = util.directionTo(shooterPos.row, shooterPos.col, targetPos.row, targetPos.col);
+		var everythingInDirection = room.findInLine(shooterPos.row, shooterPos.col, direction);
+		if (everythingInDirection && everythingInDirection.length > 0 && everythingInDirection[0] === target) 
+			return direction;
+		else return null;
+	}
 
 	that.shoot = function(shooter, direction) {
 		//Get all the objects in line of the shot

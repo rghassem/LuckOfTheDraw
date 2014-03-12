@@ -42,6 +42,12 @@ var util = (function(){
 		return Math.abs(biggerRow - smallerRow) + Math.abs(biggerCol - smallerCol);
 	}
 
+	var directionTo = function(fromRow, fromCol, toRow, toCol) {
+		var rowDir = game.math.sign(toRow - fromRow);
+		var colDir = game.math.sign(toCol - fromCol);
+		return {row: rowDir, col: colDir};
+	}
+
 	return {
 		getRandomInt : getRandomInt,
 
@@ -51,6 +57,7 @@ var util = (function(){
 		pixelToGrid2D : pixelToGrid2D,
 		gridToPixelCenter2D : gridToPixelCenter2D,
 
-		manhattanDistance : manhattanDistance
+		manhattanDistance : manhattanDistance,
+		directionTo: directionTo
 	}
 })();

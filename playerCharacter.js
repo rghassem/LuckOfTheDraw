@@ -5,7 +5,7 @@
 		var that = new Character(spec);
 		var actionQueue = [];
 
-		var gun = new Gun(".");
+		var gun = spec.gun || new Gun();
 
 		//Add an action to the end of the queue
 		queueAction = function(action) {
