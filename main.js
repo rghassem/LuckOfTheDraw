@@ -73,8 +73,37 @@ window.onload = function() {
                     valid = false;
                 }
          })
+
             return valid;
         }
+        function checkIsOneFromArrow(x,y){
+            valid = false;
+            if(arrowSpriteGroup.length < 1){
+                valid = true;
+            }
+            arrowSpriteGroup.forEach(function(arrow){
+               var checkX =  Math.floor(arrow.x / constants.cellSize) - x;
+               var checkY =  Math.floor(arrow.y / constants.cellSize) - y;
+               if(checkX === 1 || checkX === -1 || checkX === 0){
+                if(checkY === 1 || checkY ===-1 || checkY === 0){
+                    valid = true;
+                }}
+               })
+            return valid;
+        }
+        function checkIsOneFromPlayer(x,y){
+            var valid = false;
+            var playerPos = mainRoom.getPosition(player);
+            var checkX =  playerPos.row - x;
+               var checkY =  playerPos.col - y;
+               if(checkX === 1 || checkX === -1 || checkX === 0){
+                if(checkY === 1 || checkY ===-1 || checkY === 0){
+                    valid = true;
+                }}
+            return valid;
+        }
+        
+
          var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
          var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
          if(cellX > constants.roomWidth-1 || cellY > constants.roomHeight-1){
@@ -91,7 +120,7 @@ window.onload = function() {
                  else{
                      var currentPos = mainRoom.getPosition(player);
                  }
-                 if(checkIsMoveValid(cellX,cellY)){
+                 if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
                  var newArrow = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow');
                  arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
                  if (cellX < currentPos.row)
