@@ -6,7 +6,10 @@
 
 		var gun = spec.gun || new Gun();
 
-		that.takeAction = function(room) {
+		//In the pre-action, the AI decides what it wants to do based on the state of the game (unchanged from previous)
+		that.takePreAction = function() {
+			var room = that.room;
+
 			var player = room.getGameObjectById(room.playerObjectId);
 			var playerPosition = room.getPosition(player);
 
@@ -26,27 +29,33 @@
 			} else if (playerPosition.col < objectPosition.col) {
 				deltaCol = - 1;
 			}
+
+			//See if we can shoot the player from here, if so pass along instructions to do that to takePostAction
+			var dir = gun.getShootDirection(that, player);
+			if( dir ) 
+				return {
+					isShoot: true,
+					direction: dir
+				};
 			
-			//TODO: We should be able to both move and shoot
-			if(!tryShoot(player))
-				room.move(this, deltaRow, deltaCol);
+			else
+				return {
+					isShoot : false,
+					delta:  { row : deltaRow, col: deltaCol}
+			};
 		}
 
-		that.move  = function(deltaRow, deltaCol) {
-			actionQueue.push({
-				row: deltaRow,
-				col: deltaCol
-			});
+		//Move commands are executed during the action phase, if it was decided to execute one in pre-action
+		that.takeAction = function(preActionReturnVal) {
+			if( preActionReturnVal && !preActionReturnVal.isShoot)
+				that.room.move(this, preActionReturnVal.delta.row, preActionReturnVal.delta.col);
+			else return preActionReturnVal;//chain along result to postAction
 		}
 
-		//Tries to shoot the target, return true if success
-		function tryShoot(target) {
-			var direction = gun.getShootDirection(that, target);
-			if( direction ) {
-				gun.shoot(that, direction);
-				return true;
-			}
-			return false;
+		//Finally, shoot commands are executed in postAction, after all GameObjects have moved
+		that.takePostAction = function(actionReturnVal) {
+			if(actionReturnVal && actionReturnVal.isShoot)
+				gun.shoot(that, actionReturnVal.direction);
 		}
 
 		return that;
