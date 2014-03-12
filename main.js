@@ -14,6 +14,7 @@ window.onload = function() {
     var mouseActionType = "move";
     var actionText;
     var phaseText;
+	var widget
 
     function preload () {
 
@@ -43,7 +44,7 @@ window.onload = function() {
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
 
-		floor = Floor({});
+		floor = Floor();
         mainRoom = floor.getCurrentRoom();
 
         player = new PlayerCharacter({sprite:'player', room: mainRoom});
@@ -51,6 +52,8 @@ window.onload = function() {
         mainRoom.playerObjectId = player.getId();
 
 		gameObjects = mainRoom.getGameObjects();
+
+		game.add.text(882, 100, floor.getMap(), constants.mapfont);
     }
 
     function updateObjects() {

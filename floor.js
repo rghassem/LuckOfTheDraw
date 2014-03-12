@@ -1,10 +1,11 @@
 var Floor = function(spec){
+	var spec = spec || {};
 	var that = {};
 	var width = spec.width || constants.dungeonWidth;
 	var height = spec.height || constants.dungeonHeight;
 	var numRooms = spec.numRooms || constants.dungeonSize;
-	var currentRow = util.getRandomInt(0, width);
-	var currentCol = util.getRandomInt(0, height);
+	var currentRow = util.getRandomInt(0, width-1);
+	var currentCol = util.getRandomInt(0, height-1);
 	var currentRoom = RoomFactory.generateRoom(currentRow, currentCol, 'main');
 	var floor = [];
 
@@ -17,6 +18,22 @@ var Floor = function(spec){
 			row.push(null);
 		}
 		floor.push(row);
+	}
+
+	that.getMap = function() {
+		var str = '';
+		for(var row = 0; row < height; row++) {
+			for(var col = 0; col < width; col++) {
+				if(floor[row][col]){
+					str += 'R';
+				} else {
+					str += '.';
+				}
+			}
+			str += '\n';
+		}
+		alert(str);
+		return str;
 	}
 
 	that.getCurrentRoom = function() {
@@ -42,30 +59,19 @@ var Floor = function(spec){
 		rooms.push(currentRoom);
 		//Create other rooms
 		for(var placed = 0; placed < numRooms; ++placed) {
-			var availableExits = getAvailableExits();
+			var availableExits = getAvailableExits(rooms);
 			//Choose one at random
-			var coord = availableExits[util.getRandomInt(0, availableExits.length)];
+			var coord = availableExits[util.getRandomInt(0, availableExits.length-1)];
 			//Create a room
 			var newRoom = RoomFactory.generateRandomRoom(coord.row, coord.col);
 			//Attach rooms to each other
-			var room = floor[coord.oppositeRow, coord.oppositeCol];
-			newRoom.getExits().push(util.Direction[coord.direction.opposite]);
+			var room = floor[coord.oppositeRow][coord.oppositeCol];
+			newRoom.getExits().push(constants.Direction[coord.direction.opposite]);
 			room.getExits().push(coord.direction);
 			//Place room
 			floor[coord.row][coord.col] = newRoom;
+			rooms.push(newRoom);
 		}
-		//Create final room
-		var availableExits = getAvailableExits();
-		//Choose one at random
-		var coord = availableExits[util.getRandomInt(0, availableExits.length)];
-		//Create a room
-		var newRoom = RoomFactory.generateRoom(coord.row, coord.col, 'goal');
-		//Attach rooms to each other
-		var room = floor[coord.oppositeRow, coord.oppositeCol];
-		newRoom.getExits().push(util.Direction[coord.direction.opposite]);
-		room.getExits().push(coord.direction);
-		//Place room
-		floor[coord.row][coord.col] = newRoom;
 	}
 
 	var getAvailableExits = function(rooms) {
@@ -97,6 +103,8 @@ var Floor = function(spec){
 			coord.row < width &&
 			coord.col < height
 	}
+
+	generateDungeon();
 
 	return that;
 }

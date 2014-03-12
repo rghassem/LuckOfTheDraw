@@ -128,9 +128,9 @@
 
 		that.getUp = function() {
 			return {
-				direction: util.Direction.Up,
-				row: row + util.Direction.Up.row,
-				col: col + util.Direction.Up.col,
+				direction: constants.Direction.Up,
+				row: row + constants.Direction.Up.row,
+				col: col + constants.Direction.Up.col,
 				oppositeRow: row,
 				oppositeCol: col
 			}
@@ -138,9 +138,9 @@
 
 		that.getDown = function() {
 			return {
-				direction: util.Direction.Down,
-				row: row + util.Direction.Down.row,
-				col: col + util.Direction.Down.col,
+				direction: constants.Direction.Down,
+				row: row + constants.Direction.Down.row,
+				col: col + constants.Direction.Down.col,
 				oppositeRow: row,
 				oppositeCol: col
 			}
@@ -148,9 +148,9 @@
 
 		that.getLeft = function() {
 			return {
-				direction: util.Direction.Left,
-				row: row + util.Direction.Left.row,
-				col: col + util.Direction.Left.col,
+				direction: constants.Direction.Left,
+				row: row + constants.Direction.Left.row,
+				col: col + constants.Direction.Left.col,
 				oppositeRow: row,
 				oppositeCol: col
 			}
@@ -158,9 +158,9 @@
 
 		that.getRight = function() {
 			return {
-				direction: util.Direction.Right,
-				row: row + util.Direction.Right.row,
-				col: col + util.Direction.Right.col,
+				direction: constants.Direction.Right,
+				row: row + constants.Direction.Right.row,
+				col: col + constants.Direction.Right.col,
 				oppositeRow: row,
 				oppositeCol: col
 			}
