@@ -153,20 +153,58 @@ window.onload = function() {
        actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
     }
 
-    var turn = new EventSequence();
-    var nextAction = function() { mainRoom.nextAction(); }
-    turn.add(function() { phaseText.content = "Phase: Action" });
-    turn.add(nextAction);
-    for(var i = 0; i < constants.actionQueueDepth; ++i)
-        turn.add(nextAction, constants.actionDuration);
-    turn.add(function() { phaseText.content = "Phase: Planning" });
+//Turn is a sequence of events over time
+var turn = new EventSequence();
+turn.usedInterrupt = false;
+
+var nextAction = function() { mainRoom.nextAction(); }
+var startActionPhase = function() { 
+    phaseText.content = "Phase: Action"; 
+    turn.usedInterrupt = false;
+}
+var endActionPhase = function() {
+    phaseText.content = "Phase: Planning";
+}
+
+turn.add(startActionPhase);
+turn.add(nextAction);
+for(var i = 0; i < constants.actionQueueDepth; ++i)
+    turn.add(nextAction, constants.actionDuration);
+turn.add(endActionPhase);
 
     
-    function onKeyUp(event) {
+function onKeyUp(event) {
 
-         if(turn.isRunning()) return; //block all action during the turn
+     if(turn.isRunning()) {
 
-        switch (event.keyCode) {
+       if(!turn.usedInterrupt) {
+
+           switch (event.keyCode) {
+
+                case Phaser.Keyboard.LEFT:
+                    player.slide(constants.Direction.Left);
+                    turn.usedInterrupt = true;
+                    break;
+                 case Phaser.Keyboard.RIGHT:
+                    player.slide(constants.Direction.Right);
+                    turn.usedInterrupt = true;
+                    break;
+                 case Phaser.Keyboard.UP:
+                    player.slide(constants.Direction.Up);
+                    turn.usedInterrupt = true;
+                    break;
+                case Phaser.Keyboard.DOWN:
+                    player.slide(constants.Direction.Down);
+                    turn.usedInterrupt = true;
+                    break;
+            }
+        }
+
+
+     }
+     else {
+
+         switch (event.keyCode) {
             //Movement
                 case Phaser.Keyboard.LEFT:
                     player.queueMove(-1, 0);
@@ -215,16 +253,17 @@ window.onload = function() {
                     player.queueShot(constants.Direction.Down)
                     break;
 
-			//Dungeon test
-				case Phaser.Keyboard.H:
-					break;
-				case Phaser.Keyboard.J:
-					break;
-				case Phaser.Keyboard.K:
-					break;
-				case Phaser.Keyboard.L:
-					break;
+            //Dungeon test
+                case Phaser.Keyboard.H:
+                    break;
+                case Phaser.Keyboard.J:
+                    break;
+                case Phaser.Keyboard.K:
+                    break;
+                case Phaser.Keyboard.L:
+                    break;
         }
+    }
 
 }
 

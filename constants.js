@@ -4,6 +4,7 @@ var constants = {
 	roomHeight : 10,
 	actionQueueDepth : 5,
 	actionDuration : 0.75, //in seconds
+	slideDistance: 2,
 
 	font : { font: "12px Arial", fill: "#ff0044", align: "center" },
 

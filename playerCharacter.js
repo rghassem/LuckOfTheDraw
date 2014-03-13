@@ -46,6 +46,14 @@
 			}));
 		}
 
+		that.slide = function(direction) {
+			that.clearQueue();
+			queueAction( new Action( "move", function() {
+				for(var i = 0; i < constants.slideDistance; ++i)
+					that.room.move(that, direction.row, direction.col);
+			}));
+		}
+
 		//Consume the queue on room actions. Consume moves during the main action callback...
 		that.takeAction = function(preActionResult) {
 			//take move actions during main action phase
