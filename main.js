@@ -121,7 +121,7 @@ window.onload = function() {
                      var currentPos = mainRoom.getPosition(player);
                  }
                  if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
-                 var newArrow = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow');
+                 //var newArrow = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow');
                  arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
                  if (cellX < currentPos.row)
                     player.queueMove(-1, 0);
@@ -192,6 +192,8 @@ window.onload = function() {
             //Actions
                 case Phaser.Keyboard.SPACEBAR:
                     turn.start();
+                    arrowSpriteGroup.removeAll();
+                    crosshairSpriteGroup.removeAll();
                     break;
                 case Phaser.Keyboard.B:
                     player.cancelAction();
