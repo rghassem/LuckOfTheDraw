@@ -148,7 +148,7 @@ window.onload = function() {
                      player.queueShot(constants.Direction.Up)
                  if (cellY > currentPos.col)
                      player.queueShot(constants.Direction.Down)
-    }
+        }
     }
 
     function setActionType(actionType){
@@ -203,8 +203,6 @@ function onKeyUp(event) {
                     break;
             }
         }
-
-
      }
      else {
 
@@ -280,6 +278,7 @@ function onKeyUp(event) {
 					break;
         }
 
+    }
 }
 
 	//Prevent scrolling the screen
