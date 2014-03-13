@@ -7,8 +7,8 @@
 		var that = {};
 		var width = spec.width || 0;
 		var height = spec.height || 0;
-		var row = spec.row || -1;
-		var col = spec.col || -1;
+		var row = spec.row || 0;
+		var col = spec.col || 0;
 		var objects = [];
 		var exits = [];
 
@@ -49,7 +49,7 @@
 
 			grid[row][col] = gameObject;
 			gameObject.setGridPosition(row, col);
-			gameObject.setActive(true);
+			gameObject.setActive(false);
 		}
 
 		that.remove = function(gameObject) {
@@ -110,12 +110,24 @@
 			}
 		}
 
+		that.initialize = function() {
+			objects.forEach(function(gameObject){
+				gameObject.setActive(true);
+			});
+		}
+
 		that.getGameObjects = function() {
 			return objects;
 		}
 
 		that.getExits = function() {
 			return exits;
+		}
+
+		that.leave = function() {
+			objects.forEach(function(gameObject) {
+				gameObject.setActive(false);
+			});
 		}
 
 		that.getRow = function() {

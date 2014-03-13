@@ -4,35 +4,51 @@ var Floor = function(spec){
 	var width = spec.width || constants.dungeonWidth;
 	var height = spec.height || constants.dungeonHeight;
 	var numRooms = spec.numRooms || constants.dungeonSize;
-	var currentRow = util.getRandomInt(0, width-1);
-	var currentCol = util.getRandomInt(0, height-1);
+	var currentRow = 5;
+	var currentCol = 5;
 	var currentRoom = RoomFactory.generateRoom(currentRow, currentCol, 'main');
 	var floor = [];
+	var player = null;
 
 	//Initialize the game grid
 	for(var i = 0; i < width; ++i)
 	{
 		var row = [];
-		for(var j = 0; j < height; ++j)
+		for(var col = 0; col < height; ++col)
 		{
 			row.push(null);
 		}
 		floor.push(row);
 	}
 
+	that.at = function (row, col) {
+		return floor[row][col];
+	}
+
+	that.getNumRooms = function () {
+		return numRooms;
+	}
+
+	that.addPlayer = function(row,col,gameObject) {
+		player = gameObject;
+		player.room = currentRoom;
+		currentRoom.add(player, row, col);
+	}
+
 	that.getMap = function() {
 		var str = '';
-		for(var row = 0; row < height; row++) {
-			for(var col = 0; col < width; col++) {
-				if(floor[row][col]){
+		for(var col = 0; col < height; col++) {
+			for(var row = 0; row < width; row++) {
+				if(row === currentRow && col === currentCol){
+					str += 'C';
+				} else if(floor[row][col]){
 					str += 'R';
 				} else {
-					str += '.';
+					str += ' ';
 				}
 			}
 			str += '\n';
 		}
-		alert(str);
 		return str;
 	}
 
@@ -40,15 +56,26 @@ var Floor = function(spec){
 		return currentRoom;
 	}
 
-	that.move = function (direction) {
+	that.move = function(direction) {
 		var nextRow = currentRow + direction.row;
 		var nextCol = currentCol + direction.col;
 		var nextRoom = floor[nextRow][nextCol];
 		if(nextRoom) {
+			currentRoom.leave();
 			currentRow = nextRow;
 			currentCol = nextCol;
 			currentRoom = nextRoom;
+			currentRoom.initialize();
 		}
+	};
+
+	that.canMove = function(direction) {
+		for(var i = 0; i < currentRoom.getExits().length; i++) {
+			if(currentRoom.getExits()[i] === direction){
+				return true;
+			}
+		}
+		return false;
 	};
 
 	var generateDungeon = function() {
@@ -60,9 +87,12 @@ var Floor = function(spec){
 		//Create other rooms
 		for(var placed = 0; placed < numRooms; ++placed) {
 			var availableExits = getAvailableExits(rooms);
+			if(availableExits.length === 0)
+				break;
 			//Choose one at random
 			var coord = availableExits[util.getRandomInt(0, availableExits.length-1)];
 			//Create a room
+			console.log(coord);
 			var newRoom = RoomFactory.generateRandomRoom(coord.row, coord.col);
 			//Attach rooms to each other
 			var room = floor[coord.oppositeRow][coord.oppositeCol];
@@ -72,6 +102,36 @@ var Floor = function(spec){
 			floor[coord.row][coord.col] = newRoom;
 			rooms.push(newRoom);
 		}
+	}
+
+	var showDoors = function() {
+		floor.forEach(function(floorRow){
+			floorRow.forEach(function(room){
+				if(room) {
+					room.getExits().forEach(function(direction){
+						console.log(direction);
+						if(direction === constants.Direction.Up) {
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Up}),5,0);
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Up}),6,0);
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Up}),7,0);
+						}
+						if(direction === constants.Direction.Down) {
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Down}),5,constants.roomHeight-1);
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Down}),6,constants.roomHeight-1);
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Down}),7,constants.roomHeight-1);
+						}
+						if(direction === constants.Direction.Left) {
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Left}),0,4);
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Left}),0,5);
+						}
+						if(direction === constants.Direction.Right) {
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Right}),constants.roomWidth-1,4);
+							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Right}),constants.roomWidth-1,5);
+						}
+					});
+				}
+			});
+		});
 	}
 
 	var getAvailableExits = function(rooms) {
@@ -105,6 +165,7 @@ var Floor = function(spec){
 	}
 
 	generateDungeon();
+	showDoors();
 
 	return that;
 }

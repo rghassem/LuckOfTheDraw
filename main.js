@@ -14,7 +14,7 @@ window.onload = function() {
     var mouseActionType = "move";
     var actionText;
     var phaseText;
-	var widget
+	var map;
 
     function preload () {
 
@@ -46,24 +46,25 @@ window.onload = function() {
 
 		floor = Floor();
         mainRoom = floor.getCurrentRoom();
-
         player = new PlayerCharacter({sprite:'player', room: mainRoom});
-        mainRoom.add(player, 0, 5);
+        mainRoom.add(player, 1, 5);
         mainRoom.playerObjectId = player.getId();
+		mainRoom.initialize();
 
 		gameObjects = mainRoom.getGameObjects();
 
-		game.add.text(882, 100, floor.getMap(), constants.mapfont);
+		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
     }
 
     function updateObjects() {
-        gameObjects.forEach(function(gameObject){
+        floor.getCurrentRoom().getGameObjects().forEach(function(gameObject){
             gameObject.update();
         })
+		map.setText(floor.getMap());
     }
 
     function drawObjects() {
-        
+
     }
 
     function handleMouse(){
@@ -218,12 +219,24 @@ window.onload = function() {
 
 			//Dungeon test
 				case Phaser.Keyboard.H:
+					if(floor.canMove(constants.Direction.Left)){
+						floor.move(constants.Direction.Left);
+					}
 					break;
 				case Phaser.Keyboard.J:
+					if(floor.canMove(constants.Direction.Down)){
+						floor.move(constants.Direction.Down);
+					}
 					break;
 				case Phaser.Keyboard.K:
+					if(floor.canMove(constants.Direction.Up)){
+						floor.move(constants.Direction.Up);
+					}
 					break;
 				case Phaser.Keyboard.L:
+					if(floor.canMove(constants.Direction.Right)){
+						floor.move(constants.Direction.Right);
+					}
 					break;
         }
 
