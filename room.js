@@ -1,4 +1,8 @@
-// var GameObject = require(["gameObject"]);
+/*
+Objects added to room must provide getId, setId, and setGridPosition methods. Room objects can receive callbacks to take action by implementing 
+takePreAction, takeAction, and takePostAction. takeAction and takePostAction receive the return value of the previous callback as a parameter.
+For each stage, the function is run for all Room objects before running the next stage callbacks.
+*/
 
 // (function(){
 
@@ -101,13 +105,32 @@
 		}
 
 		that.nextAction = function() {
-			for(var i = 0; i < objects.length; ++i)
-			{
-				var go = objects[i];
-				if(go.takeAction && go.isActive()) {
-					go.takeAction(this);
+			var preActionResults = [];
+			var actionResults = [];
+
+			objects.forEach(function(go) {
+				var result;
+				if(go.takePreAction && go.isActive()) {
+					result = go.takePreAction();
 				}
-			}
+				preActionResults.push(result);
+			});
+
+			objects.forEach(function(go) {
+				var nextResult;
+				var prevResult = preActionResults.shift();
+				if(go.takeAction && go.isActive()) {
+					nextResult = go.takeAction(prevResult);
+				}
+				actionResults.push(nextResult);
+			});
+
+			objects.forEach(function(go) {
+				var prevResult = actionResults.shift();
+				if(go.takePostAction && go.isActive()) {
+					go.takePostAction(prevResult);
+				}
+			});
 		}
 
 		that.initialize = function() {

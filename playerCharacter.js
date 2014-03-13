@@ -5,17 +5,23 @@
 		var that = new Character(spec);
 		var actionQueue = [];
 
-		var gun = new Gun(".");
+		var gun = spec.gun || new Gun();
+
+		that.setGun= function(newGun) {
+			gun = newGun;
+		}
+
+		//Actions can be queued up by the player during Planning Phase, and executed during Action Phase
+		var Action = function(type, callback) {
+			this.type = type;
+			this.do = callback;
+		}
 
 		//Add an action to the end of the queue
 		queueAction = function(action) {
 			if(actionQueue.length < constants.actionQueueDepth) {
-				actionQueue.push(action);  //Action is just a function. Could replace with Command pattern, with a do and undo function
+				actionQueue.push(action);  
 			}
-		}
-
-		that.setGun= function(newGun) {
-			gun = newGun;
 		}
 
 		that.cancelAction = function() {
@@ -26,25 +32,36 @@
 			actionQueue = [];		
 		}
 
-		that.takeAction = function(room) {
-			if(actionQueue.length > 0) {
-				var action = actionQueue.shift();
-				if(action) action();
-			}
-		}
 
 		that.queueMove  = function(deltaRow, deltaCol) {
-			queueAction( function() {
-				that.room.move(that, deltaRow, deltaCol);
-			});
+			queueAction( new Action( "move",  function() {
+					that.room.move(that, deltaRow, deltaCol);
+			}));
 		}
 
 		that.queueShot = function(direction) {
-			queueAction( function() {
-				if(gun !== null)
-					gun.shoot(that, direction);
-			});
+			queueAction( new Action( "shoot",  function() {
+					if(gun !== null)
+						gun.shoot(that, direction);
+			}));
 		}
+
+		//Consume the queue on room actions. Consume moves during the main action callback...
+		that.takeAction = function(preActionResult) {
+			//take move actions during main action phase
+			if(actionQueue.length > 0 && actionQueue[0] && actionQueue[0].type === "move") {
+					actionQueue.shift().do();
+					return true;
+			}
+		}
+
+		//...and consume shoots during the next one, after all moves are resolved. Use the result from takeAction to tell if a move was already made (and skip if so)
+		that.takePostAction = function(mainActionResult) {
+			if(!mainActionResult && actionQueue.length > 0 && actionQueue[0] && actionQueue[0].type === "shoot") {
+				actionQueue.shift().do();
+			}
+		}
+
 
 		return that;
 	}
