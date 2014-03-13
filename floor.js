@@ -93,7 +93,7 @@ var Floor = function(spec){
 			var coord = availableExits[util.getRandomInt(0, availableExits.length-1)];
 			//Create a room
 			console.log(coord);
-			var newRoom = RoomFactory.generateRandomRoom(coord.row, coord.col);
+			var newRoom = RoomFactory.generateRoom(coord.row, coord.col, '');
 			//Attach rooms to each other
 			var room = floor[coord.oppositeRow][coord.oppositeCol];
 			newRoom.getExits().push(constants.Direction[coord.direction.opposite]);

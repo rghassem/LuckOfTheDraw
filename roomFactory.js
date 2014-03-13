@@ -21,7 +21,7 @@ var RoomFactory = (function (){
 				".............\n"
 			);
 		} else {
-			return generateRandomRoom(row, col);
+			return generateRoomFromString(row, col, levels.rooms[0,util.getRandomInt(0,levels.rooms.length-1)]);
 		}
 	};
 
