@@ -12,7 +12,6 @@ window.onload = function() {
     var arrowSpriteGroup;
     var crossHairSpriteGroup;
     var movementText;
-    var moveTextGroup;
     var mouseActionType = "move";
     var actionText;
     var phaseText;
@@ -43,7 +42,6 @@ window.onload = function() {
 
         arrowSpriteGroup = game.add.group();
         crosshairSpriteGroup = game.add.group();
-        moveTextGroup = game.add.group();
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
 
@@ -223,15 +221,19 @@ function onKeyUp(event) {
             //Movement
                 case Phaser.Keyboard.LEFT:
                     player.queueMove(-1, 0);
+                    movementText.setText(movementText.text + "Left,");
                     break;
                  case Phaser.Keyboard.RIGHT:
                     player.queueMove(1, 0);
+                    movementText.setText(movementText.text + "Right,");
                     break;
                  case Phaser.Keyboard.UP:
                     player.queueMove(0, -1);
+                    movementText.setText(movementText.text + "Up,");
                     break;
                 case Phaser.Keyboard.DOWN:
                     player.queueMove(0, 1)
+                    movementText.setText(movementText.text + "Down,");
                     break;
 
             //Mouse Commands
@@ -259,15 +261,19 @@ function onKeyUp(event) {
             //Shooting
                 case Phaser.Keyboard.A:
                     player.queueShot(constants.Direction.Left)
+                     movementText.setText(movementText.text + "Shoot Left,");
                     break;
                  case Phaser.Keyboard.D:
                     player.queueShot(constants.Direction.Right)
+                    movementText.setText(movementText.text + "Shoot Right,");
                     break;
                  case Phaser.Keyboard.W:
                     player.queueShot(constants.Direction.Up)
+                    movementText.setText(movementText.text + "Shoot Up,");
                     break;
                 case Phaser.Keyboard.S:
                     player.queueShot(constants.Direction.Down)
+                     movementText.setText(movementText.text + "Shoot Down,");
                     break;
 
 			//Dungeon test
