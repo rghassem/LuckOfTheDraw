@@ -42,6 +42,10 @@ var util = (function(){
 		return Math.abs(biggerRow - smallerRow) + Math.abs(biggerCol - smallerCol);
 	}
 
+	var distance = function(fromRow, fromCol, toRow, toCol) {
+		return game.math.distance(fromRow, fromCol, toRow, toCol);
+	}
+
 	var directionTo = function(fromRow, fromCol, toRow, toCol) {
 		var rowDir = game.math.sign(toRow - fromRow);
 		var colDir = game.math.sign(toCol - fromCol);
@@ -58,6 +62,7 @@ var util = (function(){
 		gridToPixelCenter2D : gridToPixelCenter2D,
 
 		manhattanDistance : manhattanDistance,
-		directionTo: directionTo
+		directionTo: directionTo,
+		distance: distance
 	}
 })();

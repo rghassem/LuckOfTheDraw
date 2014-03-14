@@ -34,6 +34,8 @@ For each stage, the function is run for all Room objects before running the next
 		function isInBounds(row, col) {
 			return !(row < 0 || col < 0 || row >= width || col >= height)
 		}
+		
+		that.isInBounds = isInBounds;
 
 		that.at= function(row, col) {
 			return grid[row][col];
@@ -111,6 +113,22 @@ For each stage, the function is run for all Room objects before running the next
 				currentRow += direction.row;
 				currentCol += direction.col;
 			}
+			return results;
+		}
+
+		//Return all objects within radius of the given cell. Eg, if radius is one return all GameObjects bordering (row, col)
+		that.findAround = function(row, col, radius) {
+			var results = [];
+			for(var deltaX = -1; deltaX <= 1; ++deltaX)
+				for(var deltaY = -1; deltaY <= 1; ++deltaY)
+				{
+					if(deltaX == 0 && deltaY == 0) continue;
+
+					var object = that.at(row + deltaX, col + deltaY);
+					if( object ) {
+						results.push(object);
+					}
+				}
 			return results;
 		}
 

@@ -5,7 +5,6 @@ window.onload = function() {
 
     game = new Phaser.Game(1280, 744,
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
-    var mainRoom;
 	var floor;
     var player;
     var gameObjects = [];
@@ -17,6 +16,7 @@ window.onload = function() {
     var phaseText;
 	var map;
     var healthText;
+     var overlay;
 
     function preload () {
 
@@ -42,7 +42,7 @@ window.onload = function() {
         game.input.onDown.add(handleMouse, this);
 
         arrowSpriteGroup = game.add.group();
-        crosshairSpriteGroup = game.add.group();
+        crossHairSpriteGroup = game.add.group();
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
         healthText = game.add.text(game.world.centerX - 200, 720, "Luck "+constants.playerHealth, constants.font);
@@ -58,6 +58,8 @@ window.onload = function() {
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
 		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
+
+        overlay = new Overlay(floor.getCurrentRoom());
     }
 
     function updateObjects() {
@@ -72,93 +74,54 @@ window.onload = function() {
 
     function handleMouse(){
         if(turn.isRunning()) return; //block all action during the turn
-        function checkIsMoveValid(x, y){
-            valid = true;
-            gameObjects.forEach(function(gameObject){
-                var pos = mainRoom.getPosition(gameObject)
-                if(pos.row === x && pos.col === y){
-                    valid = false;
-                }
-         })
-
-            return valid;
-        }
-        function checkIsOneFromArrow(x,y){
-            valid = false;
-            if(arrowSpriteGroup.length < 1){
-                valid = true;
-            }
-            arrowSpriteGroup.forEach(function(arrow){
-               var checkX =  Math.floor(arrow.x / constants.cellSize) - x;
-               var checkY =  Math.floor(arrow.y / constants.cellSize) - y;
-               if(checkX === 1 || checkX === -1 || checkX === 0){
-                if(checkY === 1 || checkY ===-1 || checkY === 0){
-                    valid = true;
-                }}
-               })
-            return valid;
-        }
-        function checkIsOneFromPlayer(x,y){
-            var valid = false;
-            var playerPos = mainRoom.getPosition(player);
-            var checkX =  playerPos.row - x;
-               var checkY =  playerPos.col - y;
-               if(checkX === 1 || checkX === -1 || checkX === 0){
-                if(checkY === 1 || checkY ===-1 || checkY === 0){
-                    valid = true;
-                }}
-            return valid;
-        }
         
+        function setMovementText(delta) {
+            var  row = "";
+            var col = "";
+            if(delta.row > 0) row = "Right";
+            if(delta.row < 0) row = "Left";
+            if(delta.col > 0) col = "Down";
+            if(delta.col < 0) col = "Up";
+
+            movementText.setText(movementText.text + row + col);
+        }
 
          var cellX = Math.floor(game.input.mousePointer.x / constants.cellSize);
          var cellY = Math.floor(game.input.mousePointer.y / constants.cellSize);
          if(cellX > constants.roomWidth-1 || cellY > constants.roomHeight-1){
             return false;
          }
+
+         var currentPos = {row:0, col: 0};
+         if(arrowSpriteGroup.length > 0){
+              var lastArrow = arrowSpriteGroup.getAt(arrowSpriteGroup.length - 1)
+              currentPos.row = Math.floor(lastArrow.x / constants.cellSize);
+              currentPos.col = Math.floor(lastArrow.y / constants.cellSize);
+         }
+         else{
+             var currentPos = floor.getCurrentRoom().getPosition(player);
+         }
+
          switch (mouseActionType){
             case "move" :
-                 var currentPos = {row:0, col: 0};
-                 if(arrowSpriteGroup.length > 0){
-                      var lastArrow = arrowSpriteGroup.getAt(arrowSpriteGroup.length - 1)
-                      currentPos.row = Math.floor(lastArrow.x / constants.cellSize);
-                      currentPos.col = Math.floor(lastArrow.y / constants.cellSize);
-                 }
-                 else{
-                     var currentPos = mainRoom.getPosition(player);
-                 }
-                 if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
-                 arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
-                 if (cellX < currentPos.row){
-                    player.queueMove(-1, 0);
-                    movementText.setText(movementText.text + "Left,");
-                }
-                 if (cellX > currentPos.row){
-                    player.queueMove(1, 0);
-                     movementText.setText(movementText.text + "Right,");
-                }
-                 if (cellY < currentPos.col){
-                    player.queueMove(0, -1);
-                    movementText.setText(movementText.text+ "Up,");
-                }
-                 if (cellY > currentPos.col){
-                    player.queueMove(0, 1); 
-                    movementText.setText(movementText.text+"Down,");
 
-                }
+                 var distanceFromCurrentPos = Math.floor(util.distance(currentPos.row, currentPos.col, cellX, cellY));
+                 //if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
+                    if( distanceFromCurrentPos === 1 && overlay.markerCount() < constants.actionQueueDepth ) {
+
+                    overlay.placeMarker( cellX, cellY, new MoveMarker(arrowSpriteGroup) );
+
+                    var delta = util.directionTo(currentPos.row, currentPos.col, cellX, cellY );
+                    player.queueMove(delta.row, delta.col);
+                    setMovementText(delta);
+
                 }
                 break;
             case "shoot" :
                  var newCrossHair = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'crosshair');
-                 crossHairSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'crosshair');
-                 if (cellX < currentPos.row)
-                     player.queueShot(constants.Direction.Left)
-                 if (cellX > currentPos.row)
-                     player.queueShot(constants.Direction.Right)
-                 if (cellY < currentPos.col)
-                     player.queueShot(constants.Direction.Up)
-                 if (cellY > currentPos.col)
-                     player.queueShot(constants.Direction.Down)
+                 crossHairSpriteGroup.add(newCrossHair);
+
+                 player.queueShot( util.directionTo(currentPos.row,currentPos.col, cellX, cellY) );
         }
     }
 
@@ -249,7 +212,7 @@ function onKeyUp(event) {
                 case Phaser.Keyboard.SPACEBAR:
                     turn.start();
                     arrowSpriteGroup.removeAll();
-                    crosshairSpriteGroup.removeAll();
+                    crossHairSpriteGroup.removeAll();
                     movementText.setText("");
                     break;
                 case Phaser.Keyboard.B:

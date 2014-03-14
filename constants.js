@@ -15,14 +15,14 @@ var constants = {
 	mapfont : { font: "48px Courier", fill: "#ff0044", align: "center" },
 
 	Direction : {
-		Up    : {row: 0, col: -1, opposite: 'Down'},
-		Down  : {row: 0, col: 1, opposite: 'Up'},
-		Left  : {row: -1, col: 0, opposite: 'Right'},
-		Right : {row: 1, col: 0, opposite: 'Left'},
+		Up    : {row: 0, col: -1, string: "Up", opposite: 'Down'},
+		Down  : {row: 0, col: 1, string: "Down", opposite: 'Up'},
+		Left  : {row: -1, col: 0,  string: "Left", opposite: 'Right'},
+		Right : {row: 1, col: 0, string: "Right", opposite: 'Left'},
 
-		UpRight   : {row: 1, col: -1},
-		UpLeft    :  {row: -1, col: -1},
-		DownRight : {row: 1, col: 1},
-		DownLeft  : {row: -1, col: 1}
+		UpRight   : {row: 1, col: -1, string: "UpRight"},
+		UpLeft    :  {row: -1, col: -1, string: "UpLeft"},
+		DownRight : {row: 1, col: 1, string: "DownRight"},
+		DownLeft  : {row: -1, col: 1, string: "DownLeft"}
 	}
 }
