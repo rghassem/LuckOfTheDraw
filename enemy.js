@@ -1,6 +1,6 @@
 	/***********Enemy********************/
 	var Enemy = function(spec) {
-
+		spec.type = spec.type || 'Enemy';
 		var that = new Character(spec);
 		var actionQueue = [];
 
@@ -14,7 +14,6 @@
 			var playerPosition = room.getPosition(player);
 
 			var objectPosition = room.getPosition(this);
-
 			var deltaRow = 0;
 			var deltaCol = 0;
 

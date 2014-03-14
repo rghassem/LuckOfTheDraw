@@ -1,5 +1,6 @@
 
 var Wall = function(spec) {
+	spec.type = spec.type || 'Wall';
 	var that = new GameObject(spec);
 
 	var hitSoundEffect = spec.hitSoundEffect || "wallHit";

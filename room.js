@@ -15,6 +15,7 @@ For each stage, the function is run for all Room objects before running the next
 		var col = spec.col || 0;
 		var objects = [];
 		var exits = [];
+		var objCounts = {};
 
 		var grid = [];
 		var positions = [];
@@ -50,6 +51,11 @@ For each stage, the function is run for all Room objects before running the next
 
 			objects.push(gameObject);
 			positions.push({row: row, col: col});
+			if(!objCounts[gameObject.getType()]) {
+				objCounts[gameObject.getType()] = 1;
+			} else {
+				objCounts[gameObject.getType()]++;
+			}
 
 			grid[row][col] = gameObject;
 			gameObject.setGridPosition(row, col);
@@ -61,12 +67,20 @@ For each stage, the function is run for all Room objects before running the next
 			if(pos !== null) {
 				grid[pos.row][pos.col] = null;
 			}
+			objCounts[gameObject.getType()]--;
 		}
 
+		that.countObjects = function(type) {
+			if(objCounts[type]){
+				return objCounts[type];
+			} else {
+				return 0;
+			}
+		}
 
 		that.move = function(gameObject, deltaX, deltaY) {
 			if(gameObject === null) return false;
-			var currentGridPos = this.getPosition(gameObject);
+			var currentGridPos = that.getPosition(gameObject);
 			var toRow = currentGridPos.row + deltaX;
 			var toCol = currentGridPos.col + deltaY;
 			if( !isInBounds(toRow, toCol) )
@@ -77,8 +91,10 @@ For each stage, the function is run for all Room objects before running the next
 				grid[currentGridPos.row][currentGridPos.col] = null;
 				positions[gameObject.getId()] = {row: toRow, col: toCol};
 				return true;
-			}
-			else return false;
+			} else if( grid[toRow][toCol].getType() === 'Door') {
+				grid[toRow][toCol].open();
+				return true;
+			} else return false;
 		}
 
 		//Starting from (row, col) not inclusively, moving in direction (constants.Direction), return all non-null GameObjects in the order encountered

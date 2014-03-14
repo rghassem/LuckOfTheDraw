@@ -47,22 +47,19 @@ window.onload = function() {
 
         movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
 
-		floor = Floor();
-        mainRoom = floor.getCurrentRoom();
-        player = new PlayerCharacter({sprite:'player', room: mainRoom});
-        mainRoom.add(player, 1, 5);
-        mainRoom.playerObjectId = player.getId();
-		mainRoom.initialize();
+		floor = Floor();;
+        player = new PlayerCharacter({sprite:'player', room: floor.getCurrentRoom()});
+        floor.addPlayer(1, 5,player);
+		floor.getCurrentRoom().playerObjectId = player.getId();
+		floor.getCurrentRoom().initialize();
 
-		gameObjects = mainRoom.getGameObjects();
+		gameObjects = floor.getCurrentRoom().getGameObjects();
 
 		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
     }
 
     function updateObjects() {
-        floor.getCurrentRoom().getGameObjects().forEach(function(gameObject){
-            gameObject.update();
-        })
+        floor.update();
 		map.setText(floor.getMap());
     }
 
@@ -172,12 +169,13 @@ window.onload = function() {
 var turn = new EventSequence();
 turn.usedInterrupt = false;
 
-var nextAction = function() { mainRoom.nextAction(); }
+var nextAction = function() { floor.getCurrentRoom().nextAction(); }
 var startActionPhase = function() { 
     phaseText.content = "Phase: Action"; 
     turn.usedInterrupt = false;
 }
 var endActionPhase = function() {
+	floor.checkGameStatus();
     phaseText.content = "Phase: Planning";
 }
 

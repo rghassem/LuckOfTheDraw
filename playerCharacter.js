@@ -1,7 +1,7 @@
 
 	/***********PlayerCharacter********************/
 	var PlayerCharacter = function(spec) {
-
+		spec.type = spec.type || 'PlayerCharacter';
 		var that = new Character(spec);
 		var actionQueue = [];
 

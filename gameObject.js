@@ -2,6 +2,7 @@
 
 	/***********GameObject********************/
 	var GameObject = function(spec) {
+		var type = spec.type || 'gameObject';
 		var that = {};
 		var id = -1; //no id until placed in world
 		var row, col;
@@ -18,6 +19,10 @@
 
 		that.getId = function() {
 			return id;
+		}
+
+		that.getType = function() {
+			return type;
 		}
 
 		that.setId = function(newid) {
@@ -69,6 +74,7 @@
 		}
 
 		that.update = function() {
+
 			if(!that.isActive()) return;
 
 			var rowCol = that.room.getPosition(this);

@@ -4,11 +4,12 @@ var Floor = function(spec){
 	var width = spec.width || constants.dungeonWidth;
 	var height = spec.height || constants.dungeonHeight;
 	var numRooms = spec.numRooms || constants.dungeonSize;
+	var clearedRooms = 0;
 	var currentRow = 5;
 	var currentCol = 5;
 	var currentRoom = RoomFactory.generateRoom(currentRow, currentCol, 'main');
 	var floor = [];
-	var player = null;
+	var player = spec.player || null;
 
 	//Initialize the game grid
 	for(var i = 0; i < width; ++i)
@@ -30,9 +31,11 @@ var Floor = function(spec){
 	}
 
 	that.addPlayer = function(row,col,gameObject) {
-		player = gameObject;
-		player.room = currentRoom;
+		if(gameObject)
+			player = gameObject;
 		currentRoom.add(player, row, col);
+		player.room = currentRoom;
+		currentRoom.playerObjectId = player.getId();
 	}
 
 	that.getMap = function() {
@@ -64,7 +67,23 @@ var Floor = function(spec){
 			currentRoom.leave();
 			currentRow = nextRow;
 			currentCol = nextCol;
+			var oldRoom = currentRoom;
 			currentRoom = nextRoom;
+			switch(direction) {
+				case constants.Direction.Up:
+					that.addPlayer(oldRoom.getPosition(player).row, constants.roomHeight - 1);
+					break;
+				case constants.Direction.Down:
+					that.addPlayer(oldRoom.getPosition(player).row, 0);
+					break;
+				case constants.Direction.Left:
+					that.addPlayer(constants.roomWidth-1, oldRoom.getPosition(player).col);
+					break;
+				case constants.Direction.Right:
+					that.addPlayer(0, oldRoom.getPosition(player).col);
+					break;
+			}
+			currentRoom.playerObjectId = player.getId();
 			currentRoom.initialize();
 		}
 	};
@@ -104,34 +123,50 @@ var Floor = function(spec){
 		}
 	}
 
-	var showDoors = function() {
-		floor.forEach(function(floorRow){
-			floorRow.forEach(function(room){
-				if(room) {
-					room.getExits().forEach(function(direction){
-						console.log(direction);
-						if(direction === constants.Direction.Up) {
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Up}),5,0);
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Up}),6,0);
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Up}),7,0);
-						}
-						if(direction === constants.Direction.Down) {
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Down}),5,constants.roomHeight-1);
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Down}),6,constants.roomHeight-1);
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Down}),7,constants.roomHeight-1);
-						}
-						if(direction === constants.Direction.Left) {
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Left}),0,4);
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Left}),0,5);
-						}
-						if(direction === constants.Direction.Right) {
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Right}),constants.roomWidth-1,4);
-							room.add(Door({sprite:'wall',room: room, direction: constants.Direction.Right}),constants.roomWidth-1,5);
-						}
-					});
+	var showDoors = function(room) {
+		if(room) {
+			room.getExits().forEach(function(direction){
+				if(direction === constants.Direction.Up) {
+					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Up});
+					room.add(d,5,0);
+					d.setActive(true);
+					pos = {row: 6, col:0};
+					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Up});
+					room.add(d,6,0);
+					d.setActive(true);
+					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Up});
+					room.add(d,7,0);
+					d.setActive(true);
+				}
+				if(direction === constants.Direction.Down) {
+					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Down});
+					room.add(d,5,constants.roomHeight-1);
+					d.setActive(true);
+					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Down});
+					room.add(d,6,constants.roomHeight-1);
+					d.setActive(true);
+					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Down});
+					room.add(d,7,constants.roomHeight-1);
+					d.setActive(true);
+				}
+				if(direction === constants.Direction.Left) {
+					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Left});
+					room.add(d,0,4);
+					d.setActive(true);
+					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Left});
+					room.add(d,0,5);
+					d.setActive(true);
+				}
+				if(direction === constants.Direction.Right) {
+					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Right});
+					room.add(d,constants.roomWidth-1,4);
+					d.setActive(true);
+					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Right});
+					room.add(d,constants.roomWidth-1,5);
+					d.setActive(true);
 				}
 			});
-		});
+		}
 	}
 
 	var getAvailableExits = function(rooms) {
@@ -164,8 +199,28 @@ var Floor = function(spec){
 			coord.col < height
 	}
 
+	that.update = function() {
+		currentRoom.getGameObjects().forEach(function(gameObject){
+			gameObject.update();
+		});
+	}
+
+	that.checkGameStatus = function() {
+		console.log("in checkGameStatus Enemies="+currentRoom.countObjects('Enemy')+" Doors="+currentRoom.countObjects('Door'));
+		if(currentRoom.countObjects('Enemy') === 0 && currentRoom.countObjects('Door') === 0) {
+			console.log('Enemies Cleared')
+			clearedRooms++;
+			showDoors(currentRoom);
+		}
+		if(clearedRooms === numRooms) {
+			//Win
+		}
+		if(currentRoom.countObjects('Player') === 0) {
+			//Lose
+		}
+	}
+
 	generateDungeon();
-	showDoors();
 
 	return that;
 }

@@ -1,5 +1,6 @@
 
 var Character = function(spec) {
+	spec.type = spec.type || 'Character';
 	var that = new GameObject(spec);
 
 	var hitSoundEffect = spec.hitSoundEffect || "characterHit";
