@@ -16,6 +16,7 @@ window.onload = function() {
     var actionText;
     var phaseText;
 	var map;
+    var overlay;
 
     function preload () {
 
@@ -57,6 +58,8 @@ window.onload = function() {
 		gameObjects = mainRoom.getGameObjects();
 
 		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
+
+        overlay = new Overlay(mainRoom);
     }
 
     function updateObjects() {
@@ -128,24 +131,26 @@ window.onload = function() {
                      var currentPos = mainRoom.getPosition(player);
                  }
                  if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
-                 arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
-                 if (cellX < currentPos.row){
-                    player.queueMove(-1, 0);
-                    movementText.setText(movementText.text + "Left,");
-                }
-                 if (cellX > currentPos.row){
-                    player.queueMove(1, 0);
-                     movementText.setText(movementText.text + "Right,");
-                }
-                 if (cellY < currentPos.col){
-                    player.queueMove(0, -1);
-                    movementText.setText(movementText.text+ "Up,");
-                }
-                 if (cellY > currentPos.col){
-                    player.queueMove(0, 1); 
-                    movementText.setText(movementText.text+"Down,");
 
-                }
+                    overlay.placeMarker( cellX, cellY, new MoveMarker(arrowSpriteGroup) );
+
+                     if (cellX < currentPos.row){
+                        player.queueMove(-1, 0);
+                        movementText.setText(movementText.text + "Left,");
+                    }
+                     if (cellX > currentPos.row){
+                        player.queueMove(1, 0);
+                         movementText.setText(movementText.text + "Right,");
+                    }
+                     if (cellY < currentPos.col){
+                        player.queueMove(0, -1);
+                        movementText.setText(movementText.text+ "Up,");
+                    }
+                     if (cellY > currentPos.col){
+                        player.queueMove(0, 1); 
+                        movementText.setText(movementText.text+"Down,");
+
+                    }
                 }
                 break;
             case "shoot" :
