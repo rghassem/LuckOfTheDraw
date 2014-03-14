@@ -30,6 +30,39 @@
 				deltaCol = - 1;
 			}
 
+			var blockingObject = room.getGameObjectByPosition(objectPosition.row + deltaRow, objectPosition.col + deltaCol);
+
+			if (blockingObject !== null) {
+				var blockingObjectPosition = room.getPosition(blockingObject);
+
+				if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
+					deltaRow = 1;
+					deltaCol = 0;
+				} else if (blockingObjectPosition.row === objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
+					deltaRow = -1;
+					deltaCol = 0;
+				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = - 1;
+				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col === objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = - 1;
+				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
+					deltaRow = 1;
+					deltaCol = 0;
+				}  else if (blockingObjectPosition.row === objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
+					deltaRow = 1;
+					deltaCol = 0;
+				}   else if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = 1;
+				}  else if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col === objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = 1;
+				} 
+
+			}
+
 			//See if we can shoot the player from here, if so pass along instructions to do that to takePostAction
 			var dir = gun.getShootDirection(that, player);
 			if( dir ) 

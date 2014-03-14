@@ -104,6 +104,10 @@ For each stage, the function is run for all Room objects before running the next
 			else return null;
 		}
 
+		that.getGameObjectByPosition = function(row, col) {
+			return 	grid[row][col];
+		}
+
 		that.nextAction = function() {
 			var preActionResults = [];
 			var actionResults = [];
