@@ -16,7 +16,8 @@ window.onload = function() {
     var phaseText;
 	var map;
     var healthText;
-     var overlay;
+    var overlay;
+    var totalMoves;
 
     function preload () {
 
@@ -46,6 +47,7 @@ window.onload = function() {
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
         healthText = game.add.text(game.world.centerX - 200, 720, "Luck "+constants.playerHealth, constants.font);
+        totalMoves = constants.actionQueueDepth;
 
         movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
 
@@ -185,19 +187,31 @@ function onKeyUp(event) {
             //Movement
                 case Phaser.Keyboard.LEFT:
                     player.queueMove(-1, 0);
+                    if(totalMoves > 0){
                     movementText.setText(movementText.text + "Left,");
+                    totalMoves = totalMoves - 1
+                    }
                     break;
                  case Phaser.Keyboard.RIGHT:
                     player.queueMove(1, 0);
+                     if(totalMoves > 0){
                     movementText.setText(movementText.text + "Right,");
+                       totalMoves = totalMoves - 1
+                     }
                     break;
                  case Phaser.Keyboard.UP:
                     player.queueMove(0, -1);
+                     if(totalMoves > 0){
                     movementText.setText(movementText.text + "Up,");
+                       totalMoves = totalMoves - 1
+                    }
                     break;
                 case Phaser.Keyboard.DOWN:
                     player.queueMove(0, 1)
+                     if(totalMoves > 0){
                     movementText.setText(movementText.text + "Down,");
+                       totalMoves = totalMoves - 1
+                    }
                     break;
 
             //Mouse Commands
@@ -214,30 +228,41 @@ function onKeyUp(event) {
                     arrowSpriteGroup.removeAll();
                     crossHairSpriteGroup.removeAll();
                     movementText.setText("");
+                    totalMoves = constants.actionQueueDepth;
                     break;
                 case Phaser.Keyboard.B:
                     player.cancelAction();
+                    totalMoves = totalMoves++;
                     break;
                 case Phaser.Keyboard.C:
                     player.clearQueue();
                     movementText.setText("");
+                    totalMoves = constants.actionQueueDepth;
 
             //Shooting
                 case Phaser.Keyboard.A:
                     player.queueShot(constants.Direction.Left)
+                     if(totalMoves > 0){
                      movementText.setText(movementText.text + "Shoot Left,");
+                    }
                     break;
                  case Phaser.Keyboard.D:
                     player.queueShot(constants.Direction.Right)
+                     if(totalMoves > 0){
                     movementText.setText(movementText.text + "Shoot Right,");
+                }
                     break;
                  case Phaser.Keyboard.W:
                     player.queueShot(constants.Direction.Up)
+                     if(totalMoves > 0){
                     movementText.setText(movementText.text + "Shoot Up,");
+                }
                     break;
                 case Phaser.Keyboard.S:
                     player.queueShot(constants.Direction.Down)
+                     if(totalMoves > 0){
                      movementText.setText(movementText.text + "Shoot Down,");
+                 }
                     break;
 
 			//Dungeon test
