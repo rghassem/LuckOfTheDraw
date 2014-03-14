@@ -16,6 +16,7 @@ window.onload = function() {
     var actionText;
     var phaseText;
 	var map;
+    var healthText;
 
     function preload () {
 
@@ -44,11 +45,12 @@ window.onload = function() {
         crosshairSpriteGroup = game.add.group();
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
+        healthText = game.add.text(game.world.centerX - 200, 720, "Luck "+constants.playerHealth, constants.font);
 
         movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
 
 		floor = Floor();;
-        player = new PlayerCharacter({sprite:'player', room: floor.getCurrentRoom()});
+        player = new PlayerCharacter({sprite:'player', room: floor.getCurrentRoom(), health: constants.playerHealth});
         floor.addPlayer(1, 5,player);
 		floor.getCurrentRoom().playerObjectId = player.getId();
 		floor.getCurrentRoom().initialize();
@@ -61,6 +63,7 @@ window.onload = function() {
     function updateObjects() {
         floor.update();
 		map.setText(floor.getMap());
+        healthText.setText("Luck "+player.getHealth());
     }
 
     function drawObjects() {

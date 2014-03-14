@@ -9,6 +9,7 @@
 		var sprite = spec.sprite || '@';
 		var x = 0;
 		var y = 0;
+		var health = spec.health || 1;
 		var actor = game.add.sprite(-1, -1, sprite);
 		actor.kill();
 
@@ -21,8 +22,17 @@
 			return id;
 		}
 
+
 		that.getType = function() {
 			return type;
+		}
+
+		that.setHealth = function(newHealth){
+			health = newHealth;
+		}
+
+		that.getHealth = function(){
+			return health;
 		}
 
 		that.setId = function(newid) {

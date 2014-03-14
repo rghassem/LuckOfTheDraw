@@ -7,10 +7,15 @@ var Character = function(spec) {
 	var hitSound = game.add.audio(hitSoundEffect);
 
 	that.takeHit = function() {
-		that.room.remove(that);
-		that.setActive(false);
-		that.actor.x = -1 * constants.cellSize;
-		that.actor.y = -1 * constants.cellSize;
+		var health = that.getHealth();
+		health = health - 20;
+		that.setHealth(health);
+		if(health <= 0) {
+			that.room.remove(that);
+			that.setActive(false);
+			that.actor.x = -1 * constants.cellSize;
+			that.actor.y = -1 * constants.cellSize;
+		}
 
 		hitSound.play();
 	}

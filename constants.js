@@ -8,6 +8,8 @@ var constants = {
 	actionQueueDepth : 5,
 	actionDuration : 0.75, //in seconds
 	slideDistance: 2,
+	playerHealth: 100,
+	enemyHealth: 20,
 
 	font : { font: "12px Arial", fill: "#ff0044", align: "center" },
 	mapfont : { font: "48px Courier", fill: "#ff0044", align: "center" },

@@ -35,7 +35,7 @@ var RoomFactory = (function (){
 					room.add(Wall({sprite:'wall',room: room}),j,i);
 				}
 				else if(c === 'e'){
-					room.add(Enemy({sprite:'enemy',room: room}),j,i);
+					room.add(Enemy({sprite:'enemy',room: room, health: constants.enemyHealth}),j,i);
 				}
 			}
 		}
