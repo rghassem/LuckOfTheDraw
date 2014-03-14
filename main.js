@@ -11,6 +11,8 @@ window.onload = function() {
     var gameObjects = [];
     var arrowSpriteGroup;
     var crossHairSpriteGroup;
+    var movementText;
+    var moveTextGroup;
     var mouseActionType = "move";
     var actionText;
     var phaseText;
@@ -41,8 +43,11 @@ window.onload = function() {
 
         arrowSpriteGroup = game.add.group();
         crosshairSpriteGroup = game.add.group();
+        moveTextGroup = game.add.group();
         actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
         phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
+
+        movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
 
 		floor = Floor();
         mainRoom = floor.getCurrentRoom();
@@ -125,16 +130,24 @@ window.onload = function() {
                      var currentPos = mainRoom.getPosition(player);
                  }
                  if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
-                 //var newArrow = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow');
                  arrowSpriteGroup.create(cellX*constants.cellSize,cellY*constants.cellSize, 'arrow'); 
-                 if (cellX < currentPos.row)
+                 if (cellX < currentPos.row){
                     player.queueMove(-1, 0);
-                 if (cellX > currentPos.row)
+                    movementText.setText(movementText.text + "Left,");
+                }
+                 if (cellX > currentPos.row){
                     player.queueMove(1, 0);
-                 if (cellY < currentPos.col)
+                     movementText.setText(movementText.text + "Right,");
+                }
+                 if (cellY < currentPos.col){
                     player.queueMove(0, -1);
-                 if (cellY > currentPos.col)
+                    movementText.setText(movementText.text+ "Up,");
+                }
+                 if (cellY > currentPos.col){
                     player.queueMove(0, 1); 
+                    movementText.setText(movementText.text+"Down,");
+
+                }
                 }
                 break;
             case "shoot" :
@@ -234,12 +247,14 @@ function onKeyUp(event) {
                     turn.start();
                     arrowSpriteGroup.removeAll();
                     crosshairSpriteGroup.removeAll();
+                    movementText.setText("");
                     break;
                 case Phaser.Keyboard.B:
                     player.cancelAction();
                     break;
                 case Phaser.Keyboard.C:
                     player.clearQueue();
+                    movementText.setText("");
 
             //Shooting
                 case Phaser.Keyboard.A:
