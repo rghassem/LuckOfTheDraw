@@ -18,6 +18,7 @@ window.onload = function() {
     var healthBar;
     var turnManager;
     var tutorialText;
+    var backGroundPic;
 
     function preload () {
 
@@ -35,6 +36,7 @@ window.onload = function() {
         game.load.image('healthBar', './art/healthBar.png');
         game.load.image('loseScreen', './art/loseScreen.png');
         game.load.image('winScreen', './art/winScreen.png');
+        game.load.image('backGround', './art/BurntPaper.png');
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
@@ -43,12 +45,12 @@ window.onload = function() {
     }
 
     function create () {
+        backGroundPic = game.add.sprite(0,0,'backGround');
 		game.add.sprite(0, 0, 'floor');
         // init keyboard commands
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
         game.input.onDown.add(handleMouse, this);
-
         actionText = game.add.text(game.world.centerX - 195, 700, "Action Type: " + mouseActionType, constants.font);
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
