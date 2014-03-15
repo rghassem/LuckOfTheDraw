@@ -15,6 +15,7 @@ window.onload = function() {
     var overlay;
     var totalMoves;
     var turn;
+    var healthBar;
 
     function preload () {
 
@@ -25,6 +26,8 @@ window.onload = function() {
 		game.load.image('enemy', './art/enemy.png');
 		game.load.image('player', './art/player.png');
         game.load.image('bullet', './art/bullet.png');
+        game.load.image('healthBar', './art/healthBar.png');
+
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
@@ -39,9 +42,12 @@ window.onload = function() {
 
         game.input.onDown.add(handleMouse, this);
 
-        actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
-        healthText = game.add.text(game.world.centerX - 200, 720, "Luck "+constants.playerHealth, constants.font);
+        actionText = game.add.text(game.world.centerX - 195, 700, "Action Type: " + mouseActionType, constants.font);
         totalMoves = constants.actionQueueDepth;
+        healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
+
+        healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");
+        healthBar.cropEnabled = true;
 
 
 		floor = Floor(turn);;
@@ -61,7 +67,10 @@ window.onload = function() {
     function updateObjects() {
         floor.update();
 		map.setText(floor.getMap());
-        healthText.setText("Luck "+player.getHealth());
+        healthBar.crop.width = player.getHealth() * 2;
+        if(player.getHealth() === 0){
+            healthText.setText("Git Gud Scrub");
+        }
     }
 
     function drawObjects() {

@@ -7,7 +7,7 @@ var Turn = function(player, floor) {
 
 	overlay = new Overlay();
 
-	phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
+	phaseText = game.add.text(game.world.centerX - 195, 720, "Phase: Planning", constants.font);
 
 	//Turn is a sequence of events over time
 	var turn = new EventSequence();
@@ -104,7 +104,7 @@ var Turn = function(player, floor) {
         if(delta.col > 0) col = "Down";
         if(delta.col < 0) col = "Up";
 
-        movementText.setText(movementText.text + row + col);
+        movementText.setText(movementText.text + row + col + " ");
     }
 
 }
