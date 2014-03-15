@@ -96,13 +96,14 @@ window.onload = function() {
 
         healthText = game.add.text(game.world.centerX - 550, 675, "Luck ", constants.font);
 
-        tutorialText = game.add.text(game.world.centerX + 250, 590, 
+        tutorialText = game.add.text(game.world.centerX + 250, 560,
             //Columns are aligned with spaces
             "MOUSE:       Place Actions\n" + 
-             "SPACE:        Execute All Actions\n" + 
+             "SPACE:        Execute All Actions\n" +
             "M:                   Move Action\n" +
-             "N:                    Shoot Action\n" + 
-            "ARROWS:   During Action Phase to Dive", 
+             "N:                    Shoot Action\n" +
+				"B:                    Cancel Action\n" +
+            "ARROWS:   During Action Phase to Dive",
             constants.instructionFont);
 
         titleText = game.add.text(game.world.centerX + 200, 24, "Luck Of The Draw", constants.displayfont);
