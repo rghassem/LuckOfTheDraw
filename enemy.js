@@ -28,7 +28,7 @@
 				deltaCol = - 1;
 			}
 
-			var direction = moveAroundObjects(deltaRow, deltaCol, objectPosition, room);
+			var direction = moveAroundObjects(deltaRow, deltaCol, objectPosition, room, 0);
 
 			deltaRow = direction.deltaRow; 
 			deltaCol = direction.deltaCol;
@@ -48,10 +48,11 @@
 			};
 		}
 
-		var moveAroundObjects = function(deltaRow, deltaCol, objectPosition, room) {
+		var moveAroundObjects = function(deltaRow, deltaCol, objectPosition, room, numberOfTimesLookingForAMove) {
 			var blockingObject = room.getGameObjectByPosition(objectPosition.row + deltaRow, objectPosition.col + deltaCol);
 
-			if (blockingObject !== null && blockingObject.type !== 'Enemy') {
+
+			if (blockingObject !== null && blockingObject.type !== 'Enemy' && numberOfTimesLookingForAMove < 8) {
 				var blockingObjectPosition = room.getPosition(blockingObject);
 
 				var blah = 0;
@@ -89,7 +90,7 @@
 					deltaCol = 1;
 					blah = 8;
 				}
-				return moveAroundObjects(deltaRow, deltaCol, objectPosition, room);
+				return moveAroundObjects(deltaRow, deltaCol, objectPosition, room, numberOfTimesLookingForAMove +);
 			}
 
 			return {deltaRow : deltaRow, deltaCol : deltaCol};
