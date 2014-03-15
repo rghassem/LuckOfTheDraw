@@ -106,9 +106,7 @@ window.onload = function() {
 
          switch (mouseActionType){
             case "move" :
-
-                 var distanceFromCurrentPos = Math.floor(util.distance(currentPos.row, currentPos.col, cellX, cellY));
-                 //if(checkIsMoveValid(cellX,cellY) && (checkIsOneFromPlayer(cellX,cellY) || checkIsOneFromArrow(cellX,cellY))){
+                     var distanceFromCurrentPos = Math.floor(util.distance(currentPos.row, currentPos.col, cellX, cellY));
                     if( distanceFromCurrentPos === 1 && overlay.markerCount() < constants.actionQueueDepth ) {
 
                     overlay.placeMarker( cellX, cellY, new MoveMarker(arrowSpriteGroup) );
@@ -116,14 +114,11 @@ window.onload = function() {
                     var delta = util.directionTo(currentPos.row, currentPos.col, cellX, cellY );
                     player.queueMove(delta.row, delta.col);
                     setMovementText(delta);
-
                 }
                 break;
             case "shoot" :
-                 var newCrossHair = game.add.sprite(cellX*constants.cellSize,cellY*constants.cellSize, 'crosshair');
-                 crossHairSpriteGroup.add(newCrossHair);
-
-                 player.queueShot( util.directionTo(currentPos.row,currentPos.col, cellX, cellY) );
+                overlay.placeMarker( cellX, cellY, new ShootMarker(crossHairSpriteGroup) );
+                player.queueShot( util.directionTo(currentPos.row,currentPos.col, cellX, cellY) );
         }
     }
 
@@ -144,6 +139,7 @@ var startActionPhase = function() {
 var endActionPhase = function() {
 	floor.checkGameStatus();
     phaseText.content = "Phase: Planning";
+    overlay.clear();
 }
 
 turn.add(startActionPhase);
