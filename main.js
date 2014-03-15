@@ -39,13 +39,15 @@ window.onload = function() {
         game.load.image('winScreen', './art/winScreen.png');
         game.load.image('backGround', './art/BurntPaper.png');
     	game.load.image('actionQueueBox', './art/actionQueueBox.png');
-	   game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png');
+	    game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png');
 
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
         game.load.audio("characterMiss", "./sound/Hit_Wall.wav", true);
         game.load.audio("wallHit", "./sound/Hit_Wall.wav", true);
+        game.load.audio("gunLoad", "./sound/gunLoad.wav", true);
+        game.load.audio("heartbeat", "./sound/heartbeat.wav", true);
 
 
     }

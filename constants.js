@@ -11,9 +11,13 @@ var constants = {
 	playerHealth: 100,
 	enemyHealth: 20,
 
+	titleOverlayDuration: 2.5, //seconds
+
 	font : { font: "20px Blackadder ITC", fill: "#000000", align: "center" },
 	mapfont : { font: "48px Courier", fill: "##000000", align: "center" },
-	displayfont : { font: "48px Blackadder ITC", fill: "##000000", align: "center" },
+	
+	overlayFontRed: {font: "48px Impact", fill: "#C13131", align: "center" },
+	overlayFontBlack: {font: "48px Impact", fill: "#000000", align: "center" },
 
 	Direction : {
 		Up    : {row: 0, col: -1, string: "Up", opposite: 'Down'},
