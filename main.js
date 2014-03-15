@@ -28,7 +28,8 @@ window.onload = function() {
 		game.load.image('player', './art/player.png');
         game.load.image('bullet', './art/bullet.png');
         game.load.image('healthBar', './art/healthBar.png');
-
+        game.load.image('loseScreen', './art/loseScreen.png');
+        game.load.image('winScreen', './art/winScreen.png');
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
@@ -72,6 +73,7 @@ window.onload = function() {
         healthBar.crop.width = player.getHealth() * 2;
         if(player.getHealth() === 0){
             healthText.setText("Git Gud Scrub");
+            game.add.sprite(0,0, "loseScreen");
         }
     }
 

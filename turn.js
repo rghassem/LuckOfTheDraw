@@ -22,6 +22,10 @@ var TurnManager = function(player, floor) {
 		floor.checkGameStatus();
 	    phaseText.content = "Phase: Planning";
 	    overlay.clear();
+	    if(player.getHealth() === 0){
+            healthText.setText("Git Gud Scrub");
+            game.add.sprite(0,0, "loseScreen");
+        }
 	}
 
 	turn.add(startActionPhase);

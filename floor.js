@@ -224,9 +224,10 @@ var Floor = function(spec){
 		}
 		if(clearedRooms === numRooms) {
 			//Win
+			game.add.sprite(0,0, "winScreen");
 		}
 		if(currentRoom.countObjects('Player') === 0) {
-			//Lose
+			
 		}
 	}
 
