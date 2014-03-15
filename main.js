@@ -25,6 +25,7 @@ window.onload = function() {
     var backGroundPic;
     var titleText;
     var moveButton, shootButton;
+    var buttonSound;
 
 
     function preload () {
@@ -58,6 +59,7 @@ window.onload = function() {
         game.load.audio("wallHit", "./sound/Hit_Wall.wav", true);
         game.load.audio("gunLoad", "./sound/gunLoad.wav", true);
         game.load.audio("heartbeat", "./sound/heartbeat.wav", true);
+        game.load.audio("button", "./sound/button.mp3", true);
 
     }
 
@@ -83,6 +85,7 @@ window.onload = function() {
         floor.addPlayer(1, 5,player);
 		floor.getCurrentRoom().playerObjectId = player.getId();
 		floor.getCurrentRoom().initialize();
+        buttonSound = game.add.audio('button');
 
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
@@ -119,12 +122,14 @@ window.onload = function() {
 
         moveButton = new TwoStateButton(buttonPos, "arrow", function() {
             setActionType("move");
+            buttonSound.play();
             if(shootButton)
                 shootButton.release();
         });
 
         shootButton = new TwoStateButton({x: buttonPos.x + buttonWidth + padding, y: buttonPos.y}, "crosshair", function() {
             setActionType("shoot");
+            buttonSound.play();
             if(moveButton)
                 moveButton.release();
         });
