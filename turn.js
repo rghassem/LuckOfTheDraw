@@ -5,12 +5,14 @@ var TurnManager = function(player, floor) {
 	var arrowSpriteGroup = game.add.group();
     var crossHairSpriteGroup = game.add.group();
     var actionQueueBorder = game.add.group();
+
+    var planningHearbeat = game.add.audio("heartbeat");
  
 
   //ActionQueueUI is an internal object for managing the queue visualization
 	var actionQueueUI ={
 		x: util.gridToPixel(constants.roomWidth/2), 
-		y: util.gridToPixel(constants.roomHeight),
+		y: util.gridToPixel(constants.roomHeight + 0.3), //add a little spacing
 		sprite : 'actionQueueBox',
 		highlightSprite : 'actionQueueBoxHightlight'
 	}
@@ -64,21 +66,33 @@ var TurnManager = function(player, floor) {
 	var usedInterrupt = false;
 	var actionIndex = 0;
 
+	//Called at the start of the planning phase
+	var startPlanningPhase = function() {
+		planningHearbeat.stop();//make sure its stopped!
+		planningHearbeat.play("", 0, 0.5, true, true);
+		var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 }
+		showTitle("Planning Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontBlack);
+	}
+
+	//Called before every action
 	var nextAction = function() { 
 		actionQueueUI.highlightAction(actionIndex++);
 		floor.getCurrentRoom().nextAction(); 
 	}
+
+	//Called at the start of the action phase (which is also the end of the planning phase)
 	var startActionPhase = function() {
+		planningHearbeat.stop();
 	    phaseText.content = "Phase: Action"; 
 	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 }
 	    showTitle("Action Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontRed, 'gunLoad');
 	    usedInterrupt = false;
 	}
+
+	//Called at the end of the action phase
 	var endActionPhase = function() {
 		floor.checkGameStatus();
 	    phaseText.content = "Phase: Planning";
-	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 }
-	    showTitle("Planning Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontBlack);
 	    overlay.clear();
 	    actionQueueUI.clear();
 	    actionIndex = 0;
@@ -93,12 +107,17 @@ var TurnManager = function(player, floor) {
 	turn.add(nextAction);
 	for(var i = 0; i < constants.actionQueueDepth; ++i)
 	    turn.add(nextAction, constants.actionDuration);
-	turn.add(endActionPhase);
+	turn.add(endActionPhase, constants.actionDuration);
+	turn.add(startPlanningPhase);
 
     var movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
 
     this.getTurn = function() {
     	return turn;
+    }
+
+    this.startGame = function() {
+    	startPlanningPhase();
     }
 
 	this.queueDirectionalMove = function(direction) {
