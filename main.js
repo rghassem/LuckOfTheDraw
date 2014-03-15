@@ -129,8 +129,7 @@ window.onload = function() {
 
     function setActionType(actionType){
        mouseActionType = actionType;
-       actionText.destroy();
-       actionText = game.add.text(game.world.centerX - 95, 400, "Action Type: " + mouseActionType, constants.font);
+       actionText.content = "Action Type: "+actionType
     }
 
 //Turn is a sequence of events over time
