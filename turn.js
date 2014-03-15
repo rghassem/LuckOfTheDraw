@@ -87,6 +87,7 @@ var TurnManager = function(player, floor) {
 
 	//Called at the end of the action phase
 	var endActionPhase = function() {
+		console.log('next phase clearing action queue');
 		floor.checkGameStatus();
 	    overlay.clear();
 	    actionQueueUI.clear();

@@ -36,6 +36,7 @@ var Floor = function(spec){
 			player = gameObject;
 		currentRoom.add(player, row, col);
 		player.room = currentRoom;
+		player.clearActionQueue();
 		currentRoom.playerObjectId = player.getId();
 	}
 

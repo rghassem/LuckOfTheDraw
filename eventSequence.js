@@ -56,12 +56,14 @@ var EventSequence = function(spec) {
 		if(!reset && currentEvent < events.length){
 			event = setTimeout(doNextEvent, events[currentEvent].delay);
 			eventIds.push(event);
-		}
-		else
-		{
+		} else if(reset) {
 			isRunning = false;
 			currentEvent = 0;
-			events[events.length-1].callback();
+			events[0].callback();
+			reset = false;
+		} else {
+			isRunning = false;
+			currentEvent = 0;
 			reset = false;
 		}
 	}

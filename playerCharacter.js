@@ -36,6 +36,10 @@
 			}
 		}
 
+		that.clearActionQueue = function() {
+			actionQueue = [];
+		}
+
 		//Actions can be queued up by the player during Planning Phase, and executed during Action Phase
 		var Action = function(type, callback) {
 			this.type = type;
