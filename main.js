@@ -106,53 +106,21 @@ window.onload = function() {
     
 function onKeyUp(event) {
 
-   switch (event.keyCode) {
-
-        case Phaser.Keyboard.LEFT:
-            turnManager.sendDirectionalInput(constants.Direction.Left);
-            break;
-         case Phaser.Keyboard.RIGHT:
-            turnManager.sendDirectionalInput(constants.Direction.Right);
-            break;
-         case Phaser.Keyboard.UP:
-            turnManager.sendDirectionalInput(constants.Direction.Up);
-            break;
-        case Phaser.Keyboard.DOWN:
-            turnManager.sendDirectionalInput(constants.Direction.Down);
-            break;
-    }
-
-
  switch (event.keyCode) {
-    //Movement
-        /*case Phaser.Keyboard.LEFT:
-            player.queueMove(-1, 0);
-            if(totalMoves > 0){
-            movementText.setText(movementText.text + "Left,");
-            totalMoves = totalMoves - 1
-            }
+
+    //Movement/Interrupt
+        case Phaser.Keyboard.LEFT:
+            turnManager.queueDirectionalMove(constants.Direction.Left);
             break;
-         case Phaser.Keyboard.RIGHT:
-            player.queueMove(1, 0);
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Right,");
-               totalMoves = totalMoves - 1
-             }
+        case Phaser.Keyboard.RIGHT:
+            turnManager.queueDirectionalMove(constants.Direction.Right);
             break;
          case Phaser.Keyboard.UP:
-            player.queueMove(0, -1);
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Up,");
-               totalMoves = totalMoves - 1
-            }
+            turnManager.queueDirectionalMove(constants.Direction.Up);
             break;
         case Phaser.Keyboard.DOWN:
-            player.queueMove(0, 1)
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Down,");
-               totalMoves = totalMoves - 1
-            }
-            break;*/
+            turnManager.queueDirectionalMove(constants.Direction.Down);
+            break;
 
     //Mouse Commands
         case Phaser.Keyboard.M:
@@ -178,30 +146,18 @@ function onKeyUp(event) {
             totalMoves = constants.actionQueueDepth;
 
     //Shooting
-        /*case Phaser.Keyboard.A:
-            player.queueShot(constants.Direction.Left)
-             if(totalMoves > 0){
-             movementText.setText(movementText.text + "Shoot Left,");
-            }
+        case Phaser.Keyboard.A:
+            turnManager.queueDirectionalShoot(constants.Direction.Left)
             break;
          case Phaser.Keyboard.D:
-            player.queueShot(constants.Direction.Right)
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Shoot Right,");
-        }
+            turnManager.queueDirectionalShoot(constants.Direction.Right)
             break;
          case Phaser.Keyboard.W:
-            player.queueShot(constants.Direction.Up)
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Shoot Up,");
-        }
+            turnManager.queueDirectionalShoot(constants.Direction.Up)
             break;
         case Phaser.Keyboard.S:
-            player.queueShot(constants.Direction.Down)
-             if(totalMoves > 0){
-             movementText.setText(movementText.text + "Shoot Down,");
-         }
-            break;*/
+            turnManager.queueDirectionalShoot(constants.Direction.Down)
+            break;
 
 	//Dungeon test
 		case Phaser.Keyboard.H:
