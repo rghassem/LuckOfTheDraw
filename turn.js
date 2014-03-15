@@ -70,11 +70,15 @@ var TurnManager = function(player, floor) {
 	}
 	var startActionPhase = function() {
 	    phaseText.content = "Phase: Action"; 
+	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 }
+	    showTitle("Action Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontRed, 'gunLoad');
 	    usedInterrupt = false;
 	}
 	var endActionPhase = function() {
 		floor.checkGameStatus();
 	    phaseText.content = "Phase: Planning";
+	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 }
+	    showTitle("Planning Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontBlack);
 	    overlay.clear();
 	    actionQueueUI.clear();
 	    actionIndex = 0;
