@@ -59,7 +59,9 @@ var EventSequence = function(spec) {
 		} else if(reset) {
 			isRunning = false;
 			currentEvent = 0;
-			events[0].callback();
+			events[events.length-2].callback(); // call endActionPhase
+			events[events.length-1].callback(); // call startPlanningPhase
+
 			reset = false;
 		} else {
 			isRunning = false;

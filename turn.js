@@ -72,7 +72,7 @@ var TurnManager = function(player, floor) {
 	}
 
 	//Called before every action
-	var nextAction = function() { 
+	var nextAction = function() {
 		actionQueueUI.highlightAction(actionIndex++);
 		floor.getCurrentRoom().nextAction(); 
 	}

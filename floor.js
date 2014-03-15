@@ -11,6 +11,7 @@ var Floor = function(spec){
 	var floor = [];
 	var player = spec.player || null;
 	var eventSequence = spec.eventSequence || null;
+	var isNewRoom = false;
 
 	//Initialize the game grid
 	for(var i = 0; i < width; ++i)
@@ -22,6 +23,7 @@ var Floor = function(spec){
 		}
 		floor.push(row);
 	}
+
 
 	that.at = function (row, col) {
 		return floor[row][col];
@@ -122,8 +124,9 @@ var Floor = function(spec){
 					break;
 			}
 			currentRoom.playerObjectId = player.getId();
-			eventSequence.reset();
+			
 			currentRoom.initialize(currentRoom.cleared);
+			eventSequence.reset();
 		}
 	};
 
