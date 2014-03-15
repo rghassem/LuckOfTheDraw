@@ -86,7 +86,7 @@ window.onload = function() {
 
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
-		map = game.add.text(882, 130, floor.getMap(), constants.mapfont);
+		map = game.add.text(882, 250, floor.getMap(), constants.mapfont);
         turnManager.startGame();
 
     //Various UI displays
@@ -102,7 +102,7 @@ window.onload = function() {
             "ARROWS:   During Action Phase to Dive", 
             constants.instructionFont);
 
-        titleText = game.add.text(game.world.centerX + 230, 24, "Luck Of The Draw", constants.displayfont);
+        titleText = game.add.text(game.world.centerX + 200, 24, "Luck Of The Draw", constants.displayfont);
 
         healthBar = game.add.sprite(game.world.centerX - 500, 675, "healthBar");
         healthBar.cropEnabled = true;
@@ -110,7 +110,7 @@ window.onload = function() {
 
     //Buttons for switching action mode:
 
-        var padding = 32;
+        var padding = 22;
         var buttonWidth = 96;
         var buttonPos = { 
             x: screenBorderXCenter - buttonWidth/2 - 10, 
