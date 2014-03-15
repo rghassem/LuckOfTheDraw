@@ -20,8 +20,8 @@ var util = (function(){
 
 	var pixelToGrid2D = function(pos) {
 		return {
-			row: pixelToGrid(pos.row),
-			col: pixelToGrid(pos.col)
+			row: pixelToGrid(pos.x),
+			col: pixelToGrid(pos.y)
 		}
 	}
 
