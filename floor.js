@@ -60,6 +60,10 @@ var Floor = function(spec){
 		return currentRoom;
 	}
 
+	that.setTurn = function(turn) {
+		eventSequence = turn;
+	}
+
 	that.move = function(direction) {
 		var nextRow = currentRow + direction.row;
 		var nextCol = currentCol + direction.col;
