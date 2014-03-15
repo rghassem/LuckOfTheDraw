@@ -56,13 +56,11 @@ window.onload = function() {
         game.input.keyboard.addCallbacks(null, null, onKeyUp);
 
         game.input.onDown.add(handleMouse, this);
-        actionText = game.add.text(game.world.centerX - 195, 700, "Action Type: " + mouseActionType, constants.font);
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
 
         tutorialText = game.add.text(game.world.centerX + 200, 650, "SPACE: Start turn, M: Move Action, N: Shoot Action", constants.font)
-
-        titleText =   tutorialText = game.add.text(game.world.centerX + 250, 0, "Luck Of The Draw", constants.mapfont)
+        actionText = game.add.text(game.world.centerX + 250, 0, "Action Type: " + mouseActionType, constants.mapfont);
 
         healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");
         healthBar.cropEnabled = true;
