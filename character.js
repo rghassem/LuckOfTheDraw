@@ -4,7 +4,7 @@ var Character = function(spec) {
 	var that = new GameObject(spec);
 
 	var hitSoundEffect = spec.hitSoundEffect || "characterHit";
-	var hitSound = game.add.audio(hitSoundEffect);
+	that.hitSound = game.add.audio(hitSoundEffect);
 
 	that.takeHit = function() {
 		var health = that.getHealth();
@@ -17,7 +17,7 @@ var Character = function(spec) {
 			that.actor.y = -1 * constants.cellSize;
 		}
 
-		hitSound.play();
+		that.hitSound.play();
 	}
 
 	return that;

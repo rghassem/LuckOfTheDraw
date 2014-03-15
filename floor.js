@@ -78,7 +78,6 @@ var Floor = function(spec){
 								break;
 						}
 					});
-					console.log('mapstring=' + mapString + ' content=' + constants.MapCharacters[mapString]);
 					str += constants.MapCharacters[mapString];
 				} else {
 					str += ' ';

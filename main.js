@@ -44,6 +44,7 @@ window.onload = function() {
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
+        game.load.audio("characterMiss", "./sound/Hit_Wall.wav", true);
         game.load.audio("wallHit", "./sound/Hit_Wall.wav", true);
 
 

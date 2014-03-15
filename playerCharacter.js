@@ -4,11 +4,36 @@
 		spec.type = spec.type || 'PlayerCharacter';
 		var that = new Character(spec);
 		var actionQueue = [];
-
+		var chanceModifier = .9;
 		var gun = spec.gun || new Gun();
+		var missSoundEffect = spec.missSoundEffect || "characterMiss";
+		var missSound = game.add.audio(missSoundEffect);
 
 		that.setGun= function(newGun) {
 			gun = newGun;
+		}
+
+		that.takeHit = function() {
+			var health = that.getHealth();
+			var chanceToHit = health / constants.playerHealth * chanceModifier;
+			var roll = Math.random();
+			if (roll < chanceToHit){
+				//Miss
+				console.log('miss');
+				chanceModifier = chanceModifier - .15;
+				missSound.play();
+			} else {
+				health = health - 20;
+				that.setHealth(health);
+				if(health <= 0) {
+					that.room.remove(that);
+					that.setActive(false);
+					that.actor.x = -1 * constants.cellSize;
+					that.actor.y = -1 * constants.cellSize;
+				}
+
+				that.hitSound.play();
+			}
 		}
 
 		//Actions can be queued up by the player during Planning Phase, and executed during Action Phase
