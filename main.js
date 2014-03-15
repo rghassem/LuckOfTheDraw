@@ -14,7 +14,6 @@ window.onload = function() {
     var player;
     var gameObjects = [];
     var mouseActionType = "move";
-    var actionText;
 	var map;
     var healthText;
     var overlay;
@@ -25,6 +24,8 @@ window.onload = function() {
     var tutorialText;
     var backGroundPic;
     var titleText;
+    var moveButton, shootButton;
+
 
     function preload () {
 
@@ -45,9 +46,11 @@ window.onload = function() {
         game.load.image('backGround', './art/BurntPaper.png');
     	game.load.image('actionQueueBox', './art/actionQueueBox.png');
 	    game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png');
+        game.load.image('buttonUp', './art/buttonUp.png');
+        game.load.image('buttonOver', './art/buttonOver.png');
+        game.load.image('buttonDown', './art/buttonDown.png');
 
-        game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png')
-
+        game.load.spritesheet('button', 'art/button_highlighted.png', 96,96);
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
@@ -70,21 +73,6 @@ window.onload = function() {
 
         game.input.onDown.add(handleMouse, this);
         totalMoves = constants.actionQueueDepth;
-        healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
-
-        tutorialText = game.add.text(game.world.centerX + 250, 590, 
-            //Columns are aligned with spaces
-            "MOUSE:       Place Actions\n" + 
-             "SPACE:        Execute All Actions\n" + 
-            "M:                   Move Action\n" +
-             "N:                    Shoot Action\n" + 
-            "ARROWS:   During Action Phase to Dive", 
-            constants.instructionFont);
-
-        actionText = game.add.text(game.world.centerX + 250, 0, "Action Type: " + mouseActionType, constants.displayfont);
-
-        healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");
-        healthBar.cropEnabled = true;
 
 
 		floor = Floor();
@@ -98,28 +86,50 @@ window.onload = function() {
 
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
-		map = game.add.text(882, 150, floor.getMap(), constants.mapfont);
+		map = game.add.text(882, 130, floor.getMap(), constants.mapfont);
         turnManager.startGame();
+
+    //Various UI displays
+
+        healthText = game.add.text(game.world.centerX - 550, 675, "Luck ", constants.font);
+
+        tutorialText = game.add.text(game.world.centerX + 250, 590, 
+            //Columns are aligned with spaces
+            "MOUSE:       Place Actions\n" + 
+             "SPACE:        Execute All Actions\n" + 
+            "M:                   Move Action\n" +
+             "N:                    Shoot Action\n" + 
+            "ARROWS:   During Action Phase to Dive", 
+            constants.instructionFont);
+
+        titleText = game.add.text(game.world.centerX + 230, 24, "Luck Of The Draw", constants.displayfont);
+
+        healthBar = game.add.sprite(game.world.centerX - 500, 675, "healthBar");
+        healthBar.cropEnabled = true;
+
 
     //Buttons for switching action mode:
 
-        //Swtich to Move button
         var padding = 32;
         var buttonWidth = 96;
         var buttonPos = { 
-            x: screenBorderXCenter - buttonWidth/2 - 20, 
-            y: screenHeight/4 
+            x: screenBorderXCenter - buttonWidth/2 - 10, 
+            y: screenHeight/4 + 30 
         };
-        var moveButton = game.add.button(buttonPos.x, buttonPos.y, 'arrow', function() {
-            setActionType("move");
-        });
-        moveButton.anchor = new Phaser.Point(0.5, 0.5);
 
-        //Switch to Shoot button
-        var shootButton =  game.add.button(buttonPos.x + buttonWidth + padding, buttonPos.y, 'crosshair', function() {
-            setActionType("shoot");
+        moveButton = new TwoStateButton(buttonPos, "arrow", function() {
+            setActionType("move");
+            if(shootButton)
+                shootButton.release();
         });
-        shootButton.anchor = new Phaser.Point(0.5, 0.5);
+
+        shootButton = new TwoStateButton({x: buttonPos.x + buttonWidth + padding, y: buttonPos.y}, "crosshair", function() {
+            setActionType("shoot");
+            if(moveButton)
+                moveButton.release();
+        });
+
+        moveButton.press(); //start in the move state
     }
 
     function updateObjects() {
@@ -132,7 +142,7 @@ window.onload = function() {
     }
 
     function drawObjects() {
-
+        //Unused. We don't have any fancy post-update rendering to do.
     }
 
     function handleMouse(){
@@ -154,8 +164,7 @@ window.onload = function() {
     }
 
     function setActionType(actionType){
-       mouseActionType = actionType;
-       actionText.content = "Action Type: "+actionType
+        mouseActionType = actionType;
     }
 
 
@@ -180,10 +189,10 @@ function onKeyUp(event) {
 
     //Mouse Commands
         case Phaser.Keyboard.M:
-            setActionType("move");
+            moveButton.press();
             break;
         case Phaser.Keyboard.N:
-            setActionType("shoot");
+            shootButton.press();
             break;  
 
     //Actions

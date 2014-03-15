@@ -2,8 +2,8 @@ var constants = {
 	cellSize : 64,
 	roomWidth : 13,
 	roomHeight : 10,
-	dungeonWidth : 8,
-	dungeonHeight : 8,
+	dungeonWidth : 6,
+	dungeonHeight : 6,
 	dungeonSize : 8,
 	actionQueueDepth : 5,
 	actionDuration : 0.75, //in seconds
@@ -17,7 +17,7 @@ var constants = {
 
 	font : { font: "20px Blackadder ITC", fill: "#000000", align: "center" },
 	mapfont : { font: "48px Courier", fill: "##000000", align: "center" },
-	displayfont: { font: "48px Blackadder ITC", fill: "#000000", align: "center" },
+	displayfont: { font: "58px Blackadder ITC", fill: "#000000", align: "center" },
 	instructionFont: {font: "24px Impact", fill: "#000000", align: "left" },
 	overlayFontRed: {font: "48px Impact", fill: "#C13131", align: "center" },
 	overlayFontBlack: {font: "48px Impact", fill: "#000000", align: "center" },

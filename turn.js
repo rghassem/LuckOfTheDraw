@@ -58,9 +58,6 @@ var TurnManager = function(player, floor) {
 
 	overlay = new Overlay();
 
-	phaseText = game.add.text(game.world.centerX + 250, 50, "Phase: Planning", constants.displayfont);
-
-
   //Turn is a sequence of events over time
 	var turn = new EventSequence();
 	var usedInterrupt = false;
@@ -83,7 +80,6 @@ var TurnManager = function(player, floor) {
 	//Called at the start of the action phase (which is also the end of the planning phase)
 	var startActionPhase = function() {
 		planningHearbeat.stop();
-	    phaseText.content = "Phase: Action"; 
 	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 };
 	    showTitle("Action Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontRed, 'gunLoad');
 	    usedInterrupt = false;
@@ -92,7 +88,6 @@ var TurnManager = function(player, floor) {
 	//Called at the end of the action phase
 	var endActionPhase = function() {
 		floor.checkGameStatus();
-	    phaseText.content = "Phase: Planning";
 	    overlay.clear();
 	    actionQueueUI.clear();
 	    actionIndex = 0;
