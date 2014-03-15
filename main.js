@@ -24,21 +24,22 @@ window.onload = function() {
     function preload () {
 
         game.load.image('floor', './art/floor.jpg');
-        game.load.image('arrow', './art/arrow-sprite.png');
+        game.load.image('arrow', './art/arrowHead.png');
         game.load.image('crosshair', './art/crosshair.png');
-		game.load.image('wall', './art/wall.png');
-		game.load.image('doorLeft', './art/doorLeft.png');
-		game.load.image('doorRight', './art/doorRight.png');
-		game.load.image('doorUp', './art/doorUp.png');
-		game.load.image('doorDown', './art/doorDown.png');
-		game.load.image('enemy', './art/enemy.png');
-		game.load.image('player', './art/player.png');
+        game.load.image('wall', './art/wall.png');
+        game.load.image('doorLeft', './art/doorLeft.png');
+        game.load.image('doorRight', './art/doorRight.png');
+        game.load.image('doorUp', './art/doorUp.png');
+        game.load.image('doorDown', './art/doorDown.png');
+        game.load.image('enemy', './art/enemy.png');
+        game.load.image('player', './art/player.png');
         game.load.image('bullet', './art/bullet.png');
         game.load.image('healthBar', './art/healthBar.png');
         game.load.image('loseScreen', './art/loseScreen.png');
         game.load.image('winScreen', './art/winScreen.png');
         game.load.image('backGround', './art/BurntPaper.png');
     	game.load.image('actionQueueBox', './art/actionQueueBox.png');
+	   game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png');
 
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
@@ -59,7 +60,7 @@ window.onload = function() {
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
 
-        tutorialText = game.add.text(game.world.centerX - 200, 650, "SPACE: Start turn, M: Move Action, N: Shoot Action", constants.font)
+        tutorialText = game.add.text(game.world.centerX + 200, 650, "SPACE: Start turn, M: Move Action, N: Shoot Action", constants.font)
 
         titleText =   tutorialText = game.add.text(game.world.centerX + 250, 0, "Luck Of The Draw", constants.mapfont)
 

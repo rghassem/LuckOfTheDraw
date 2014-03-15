@@ -10,12 +10,16 @@ var TurnManager = function(player, floor) {
   //ActionQueueUI is an internal object for managing the queue visualization
 	var actionQueueUI ={
 		x: util.gridToPixel(constants.roomWidth/2), 
-		y: util.gridToPixel(constants.roomHeight)
+		y: util.gridToPixel(constants.roomHeight),
+		sprite : 'actionQueueBox',
+		highlightSprite : 'actionQueueBoxHightlight'
 	}
+	actionQueueUI.highlight = game.add.sprite(-1, -1, actionQueueUI.highlightSprite);
+	actionQueueUI.highlight.kill();
 
 	//Create the action queue UI
 	for(var i = 0; i < constants.actionQueueDepth; ++i)
-		actionQueueBorder.create(actionQueueUI.x + (i * constants.cellSize), actionQueueUI.y, 'actionQueueBox');
+		actionQueueBorder.create(actionQueueUI.x + (i * constants.cellSize), actionQueueUI.y, actionQueueUI.sprite);
 
 	actionQueueUI.actionQueueSprites = [];
 
@@ -36,8 +40,17 @@ var TurnManager = function(player, floor) {
 			actionQueueUI.popAction();
 	}
 
-	actionQueueUI.highlightAction = function() {
-
+	actionQueueUI.highlightAction = function(index) {
+		if(index < actionQueueBorder.length && index >= 0 ) {
+			if(!actionQueueUI.highlight.exists) 
+				actionQueueUI.highlight.revive();
+			var box = actionQueueBorder.getAt(index);
+			actionQueueUI.highlight.x = box.x;
+			actionQueueUI.highlight.y = box.y;
+			actionQueueUI.highlight.renderable = true;
+		}
+		else
+			actionQueueUI.highlight.kill();
 	}
 
 	overlay = new Overlay();
@@ -48,19 +61,22 @@ var TurnManager = function(player, floor) {
   //Turn is a sequence of events over time
 	var turn = new EventSequence();
 	var usedInterrupt = false;
+	var actionIndex = 0;
 
-	var nextAction = function() { console.log('nextAction'); floor.getCurrentRoom().nextAction(); }
+	var nextAction = function() { 
+		actionQueueUI.highlightAction(actionIndex++);
+		floor.getCurrentRoom().nextAction(); 
+	}
 	var startActionPhase = function() {
-		console.log('changed to action phade');
 	    phaseText.content = "Phase: Action"; 
 	    usedInterrupt = false;
 	}
 	var endActionPhase = function() {
-		console.log('changed to planning phase');
 		floor.checkGameStatus();
 	    phaseText.content = "Phase: Planning";
 	    overlay.clear();
 	    actionQueueUI.clear();
+	    actionIndex = 0;
 	     
 	    if(player.getHealth() === 0){
             healthText.setText("Git Gud Scrub");
