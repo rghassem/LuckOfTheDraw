@@ -53,7 +53,7 @@ window.onload = function() {
 
         game.load.spritesheet('button', 'art/button_highlighted.png', 96,96);
 
-        game.load.audio("gunfire", "./sound/Shoot.wav", true);
+        game.load.audio("gunfire", "./sound/Shoot.mp3", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
         game.load.audio("characterMiss", "./sound/Hit_Wall.wav", true);
         game.load.audio("wallHit", "./sound/Hit_Wall.wav", true);
