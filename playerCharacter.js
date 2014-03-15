@@ -19,9 +19,8 @@
 			var roll = Math.random();
 			if (roll < chanceToHit){
 				//Miss
-				console.log('miss');
+				showTitle('Miss!', {x:that.actor.x+32,y:that.actor.y-10}, 1, constants.luckfont, missSound);
 				chanceModifier = chanceModifier - .15;
-				missSound.play();
 			} else {
 				health = health - 20;
 				that.setHealth(health);
