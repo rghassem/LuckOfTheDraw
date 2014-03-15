@@ -3,13 +3,49 @@
 var TurnManager = function(player, floor) {
 
 	var arrowSpriteGroup = game.add.group();
-    var crossHairSpriteGroup = game.add.group();;
+    var crossHairSpriteGroup = game.add.group();
+    var actionQueueBorder = game.add.group();
+ 
+
+  //ActionQueueUI is an internal object for managing the queue visualization
+	var actionQueueUI ={
+		x: util.gridToPixel(constants.roomWidth/2), 
+		y: util.gridToPixel(constants.roomHeight)
+	}
+
+	//Create the action queue UI
+	for(var i = 0; i < constants.actionQueueDepth; ++i)
+		actionQueueBorder.create(actionQueueUI.x + (i * constants.cellSize), actionQueueUI.y, 'actionQueueBox');
+
+	actionQueueUI.actionQueueSprites = [];
+
+	actionQueueUI.queueAction = function(index, sprite) {
+		if(index < actionQueueBorder.length) {
+			var box = actionQueueBorder.getAt(index);
+			var spriteObj = game.add.sprite(box.x, box.y, sprite);
+			actionQueueUI.actionQueueSprites.push(spriteObj);
+		}
+	}
+
+	actionQueueUI.popAction = function() {
+		actionQueueUI.actionQueueSprites.pop().destroy();
+	}
+
+	actionQueueUI.clear = function() {
+		while(actionQueueUI.actionQueueSprites.length > 0)
+			actionQueueUI.popAction();
+	}
+
+	actionQueueUI.highlightAction = function() {
+
+	}
 
 	overlay = new Overlay();
 
 	phaseText = game.add.text(game.world.centerX - 195, 720, "Phase: Planning", constants.font);
 
-	//Turn is a sequence of events over time
+
+  //Turn is a sequence of events over time
 	var turn = new EventSequence();
 	var usedInterrupt = false;
 
@@ -22,6 +58,8 @@ var TurnManager = function(player, floor) {
 		floor.checkGameStatus();
 	    phaseText.content = "Phase: Planning";
 	    overlay.clear();
+	    actionQueueUI.clear();
+	     
 	    if(player.getHealth() === 0){
             healthText.setText("Git Gud Scrub");
             game.add.sprite(0,0, "loseScreen");
@@ -66,11 +104,12 @@ var TurnManager = function(player, floor) {
         var distanceFromCurrentPos = Math.floor(util.distance(currentPos.row, currentPos.col, cellX, cellY));
         if( distanceFromCurrentPos === 1 && overlay.markerCount() < constants.actionQueueDepth ) {
 
+        	actionQueueUI.queueAction(overlay.markerCount(), 'arrow');
 	        overlay.placeMarker( cellX, cellY, new MoveMarker(arrowSpriteGroup) );
 
 	        var delta = util.directionTo(currentPos.row, currentPos.col, cellX, cellY );
 	        player.queueMove(delta.row, delta.col);
-	        setMovementText(delta);
+	        actionQueueUI.queueAction('arrow');
     	}
 	}
 
@@ -81,6 +120,7 @@ var TurnManager = function(player, floor) {
 
 		var currentPos = getMovePoint();
 
+        actionQueueUI.queueAction(overlay.markerCount(), 'crosshair');
 		overlay.placeMarker( cellX, cellY, new ShootMarker(crossHairSpriteGroup) );
         player.queueShot( util.directionTo(currentPos.row,currentPos.col, cellX, cellY) );
 	}
@@ -92,8 +132,20 @@ var TurnManager = function(player, floor) {
 		usedInterrupt = true;
 	}
 
+	this.cancelAction = function() {
+		player.cancelAction();
+		overlay.popMarker();
+		actionQueueUI.popAction();
+	}
+
+	this.clearActions = function() {
+		player.clearQueue();
+		overlay.clear();
+	}
+
 	this.runTurn = function() {
         turn.start();
+        overlay.clear();
         arrowSpriteGroup.removeAll();
         crossHairSpriteGroup.removeAll();
 	}
@@ -126,5 +178,5 @@ var TurnManager = function(player, floor) {
 		return player.room.getPosition(player);
 	}
 
-
 }
+
