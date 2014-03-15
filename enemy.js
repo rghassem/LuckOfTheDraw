@@ -90,7 +90,7 @@
 					deltaCol = 1;
 					blah = 8;
 				}
-				return moveAroundObjects(deltaRow, deltaCol, objectPosition, room, numberOfTimesLookingForAMove +);
+				return moveAroundObjects(deltaRow, deltaCol, objectPosition, room, numberOfTimesLookingForAMove + 1);
 			}
 
 			return {deltaRow : deltaRow, deltaCol : deltaCol};
