@@ -16,6 +16,7 @@ var constants = {
 	titleOverlayDuration: 2.5, //seconds
 
 	font : { font: "20px Blackadder ITC", fill: "#000000", align: "center" },
+	luckfont : {font: "20px Blackadder ITC", fill: "#FFCC00", align: "center"},
 	mapfont : { font: "40px Courier", fill: "##000000", align: "center" },
 	displayfont: { font: "58px Blackadder ITC", fill: "#000000", align: "center" },
 	instructionFont: {font: "24px Impact", fill: "#000000", align: "left" },

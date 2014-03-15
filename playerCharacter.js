@@ -15,16 +15,17 @@
 
 		that.takeHit = function() {
 			var health = that.getHealth();
-			var chanceToHit = health / constants.playerHealth * chanceModifier;
+			var chanceToHit = (health / constants.playerHealth) * chanceModifier;
 			var roll = Math.random();
 			if (roll < chanceToHit){
 				//Miss
-				console.log('miss');
+				showTitle('Miss!', {x:that.actor.x+32,y:that.actor.y-10}, 1, constants.luckfont, missSound);
 				chanceModifier = chanceModifier - .15;
-				missSound.play();
 			} else {
 				health = health - 20;
 				that.setHealth(health);
+				chanceModifier = Math.random()+.9;
+				console.log('new chance='+chanceModifier);
 				if(health <= 0) {
 					that.room.remove(that);
 					that.setActive(false);
