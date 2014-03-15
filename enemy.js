@@ -22,45 +22,16 @@
 			} else if (playerPosition.row < objectPosition.row) {
 				deltaRow = - 1;
 			}
-
 			if (playerPosition.col > objectPosition.col) {
 				deltaCol = 1;
 			} else if (playerPosition.col < objectPosition.col) {
 				deltaCol = - 1;
 			}
 
-			var blockingObject = room.getGameObjectByPosition(objectPosition.row + deltaRow, objectPosition.col + deltaCol);
+			var direction = moveAroundObjects(deltaRow, deltaCol, objectPosition, room);
 
-			if (blockingObject !== null) {
-				var blockingObjectPosition = room.getPosition(blockingObject);
-
-				if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
-					deltaRow = 1;
-					deltaCol = 0;
-				} else if (blockingObjectPosition.row === objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
-					deltaRow = -1;
-					deltaCol = 0;
-				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
-					deltaRow = 0;
-					deltaCol = - 1;
-				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col === objectPosition.col) {
-					deltaRow = 0;
-					deltaCol = - 1;
-				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
-					deltaRow = 1;
-					deltaCol = 0;
-				}  else if (blockingObjectPosition.row === objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
-					deltaRow = 1;
-					deltaCol = 0;
-				}   else if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
-					deltaRow = 0;
-					deltaCol = 1;
-				}  else if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col === objectPosition.col) {
-					deltaRow = 0;
-					deltaCol = 1;
-				} 
-
-			}
+			deltaRow = direction.deltaRow; 
+			deltaCol = direction.deltaCol;
 
 			//See if we can shoot the player from here, if so pass along instructions to do that to takePostAction
 			var dir = gun.getShootDirection(that, player);
@@ -75,6 +46,53 @@
 					isShoot : false,
 					delta:  { row : deltaRow, col: deltaCol}
 			};
+		}
+
+		var moveAroundObjects = function(deltaRow, deltaCol, objectPosition, room) {
+			var blockingObject = room.getGameObjectByPosition(objectPosition.row + deltaRow, objectPosition.col + deltaCol);
+
+			if (blockingObject !== null && blockingObject.type !== 'Enemy') {
+				var blockingObjectPosition = room.getPosition(blockingObject);
+
+				var blah = 0;
+
+				if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
+					deltaRow = -1;
+					deltaCol = 0;
+					blah = 1;
+				} else if (blockingObjectPosition.row === objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
+					deltaRow = -1;
+					deltaCol = 0;
+					blah = 2;
+				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col < objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = - 1;
+					blah = 3;
+				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col === objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = - 1;
+					blah = 4;
+				} else if (blockingObjectPosition.row > objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
+					deltaRow = 1;
+					deltaCol = 0;
+					blah = 5;
+				}  else if (blockingObjectPosition.row === objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
+					deltaRow = 1;
+					deltaCol = 0;
+					blah = 6;
+				}   else if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col > objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = 1;
+					blah = 7;
+				}  else if (blockingObjectPosition.row < objectPosition.row && blockingObjectPosition.col === objectPosition.col) {
+					deltaRow = 0;
+					deltaCol = 1;
+					blah = 8;
+				}
+				return moveAroundObjects(deltaRow, deltaCol, objectPosition, room);
+			}
+
+			return {deltaRow : deltaRow, deltaCol : deltaCol};
 		}
 
 		//Move commands are executed during the action phase, if it was decided to execute one in pre-action

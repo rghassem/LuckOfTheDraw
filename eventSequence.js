@@ -12,11 +12,16 @@ var EventSequence = function(spec) {
 	var events;
 	var currentEvent;
 	var isRunning;
+	var event;
+	var eventIds;
+	var reset;
 
 	function init() {
 		events = [];
+		eventIds = [];
 		currentEvent = 0;
 		isRunning = false;
+		reset = false;
 	}
 
 	init();
@@ -29,26 +34,35 @@ var EventSequence = function(spec) {
 		delaySecs = delaySecs || 0;
 		delaySecs *= 1000; //convert to seconds
 		events.push({ delay: delaySecs, callback: eventCallback });
-	} 
+	}
 
 	this.start = function() {
 		if(events.length === 0 || isRunning) return;
 
-		setTimeout(doNextEvent, events[currentEvent].delay); //Boy, it sure would be great if we had some sort of game engine with its own functioning damn timer. 
+		event = setTimeout(doNextEvent, events[currentEvent].delay); //Boy, it sure would be great if we had some sort of game engine with its own functioning damn timer.
+		eventIds.push(event);
 		isRunning = true;
 	}
 
 	this.clear = init;
 
+	this.reset = function() {
+		reset = true;
+	}
+
 	function doNextEvent() {
 		events[currentEvent].callback();
 		++currentEvent;
-		if(currentEvent < events.length)
-			setTimeout(doNextEvent, events[currentEvent].delay)
+		if(!reset && currentEvent < events.length){
+			event = setTimeout(doNextEvent, events[currentEvent].delay);
+			eventIds.push(event);
+		}
 		else
 		{
 			isRunning = false;
 			currentEvent = 0;
+			events[events.length-1].callback();
+			reset = false;
 		}
 	}
 

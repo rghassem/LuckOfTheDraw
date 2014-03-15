@@ -89,6 +89,7 @@ var Floor = function(spec){
 					break;
 			}
 			currentRoom.playerObjectId = player.getId();
+			eventSequence.reset();
 			currentRoom.initialize(currentRoom.cleared);
 		}
 	};

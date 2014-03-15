@@ -37,10 +37,13 @@ window.onload = function() {
         game.load.image('loseScreen', './art/loseScreen.png');
         game.load.image('winScreen', './art/winScreen.png');
         game.load.image('backGround', './art/BurntPaper.png');
+    	game.load.image('actionQueueBox', './art/actionQueueBox.png');
+
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
         game.load.audio("wallHit", "./sound/Hit_Wall.wav", true);
+
 
     }
 
@@ -144,17 +147,12 @@ function onKeyUp(event) {
     //Actions
         case Phaser.Keyboard.SPACEBAR:
             turnManager.runTurn();
-            //movementText.setText("");
-            totalMoves = constants.actionQueueDepth;
             break;
         case Phaser.Keyboard.B:
-            player.cancelAction();
-            totalMoves = totalMoves++;
+            turnManager.cancelAction();
             break;
         case Phaser.Keyboard.C:
-            player.clearQueue();
-            //movementText.setText("");
-            totalMoves = constants.actionQueueDepth;
+            turnManager.clearActions();
 
     //Shooting
         case Phaser.Keyboard.A:

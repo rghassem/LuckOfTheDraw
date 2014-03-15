@@ -12,6 +12,7 @@ var Overlay = function() {
 		markerCount = 0;
 		while(markers.length > 0)
 			markers.pop().destroy();
+		markerPos = {};
 	}
 
 	that.placeMarker = function(row, col, marker) {
@@ -23,7 +24,7 @@ var Overlay = function() {
 		var x = util.gridToPixel(row) + ( constants.cellSize/2 ) - marker.getWidth()/2 ;
 		var y = util.gridToPixel(col) + ( constants.cellSize/2 ) - marker.getHeight()/2;
 
-		if(markerPos[""+row+col]) {
+		if(markerPos[""+row+col] && !markerPos[""+row+col] ) {
 			marker.blend(markerPos[""+row+col], x, y);
 		}
 		else {
@@ -63,6 +64,7 @@ var ShootMarker = (function() {
 
 		var sprite = group.create(-1, -1, 'crosshair');
 		sprite.renderable = false;
+		this.destroyed = false;
 
 		this.getHeight = function() {
 			return sprite.bounds.height;
@@ -80,6 +82,7 @@ var ShootMarker = (function() {
 
 		this.destroy = function() {
 			sprite.destroy();
+			this.destroyed = true;
 		}
 
 		this.blend = function(otherMarker, x, y) {
@@ -108,6 +111,8 @@ var MoveMarker = (function() {
 		this.text.renderable = false;
 		group.add(this.text);
 
+		this.destroyed = false;
+
 		this.getHeight = function() {
 			return size;
 		}
@@ -125,10 +130,12 @@ var MoveMarker = (function() {
 		this.destroy = function() {
 			this.text.destroy();
 			currentMoveCount--;
+			this.destroyed = true;
 		}
 
 		this.blend = function(otherMarker, x, y) {
-			this.text.content = otherMarker.text.content + "," + this.text.content;
+			if(otherMarker.text)
+				this.text.content = otherMarker.text.content + "," + this.text.content;
 			otherMarker.destroy();
 			currentMoveCount++; //still the blended one
 			this.setPosition(x, y);
