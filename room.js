@@ -171,9 +171,13 @@ For each stage, the function is run for all Room objects before running the next
 			});
 		}
 
-		that.initialize = function() {
+		that.initialize = function(cleared) {
 			objects.forEach(function(gameObject){
-				gameObject.setActive(true);
+				if(cleared && gameObject.getType() !== 'Enemy'){
+					gameObject.setActive(true);
+				} else if (!cleared) {
+					gameObject.setActive(true);
+				}
 			});
 		}
 

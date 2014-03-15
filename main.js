@@ -51,7 +51,7 @@ window.onload = function() {
 
         movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
 
-		floor = Floor();;
+		floor = Floor(turn);;
         player = new PlayerCharacter({sprite:'player', room: floor.getCurrentRoom(), health: constants.playerHealth});
         floor.addPlayer(1, 5,player);
 		floor.getCurrentRoom().playerObjectId = player.getId();

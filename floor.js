@@ -10,6 +10,7 @@ var Floor = function(spec){
 	var currentRoom = RoomFactory.generateRoom(currentRow, currentCol, 'main');
 	var floor = [];
 	var player = spec.player || null;
+	var eventSequence = spec.eventSequence || null;
 
 	//Initialize the game grid
 	for(var i = 0; i < width; ++i)
@@ -71,20 +72,20 @@ var Floor = function(spec){
 			currentRoom = nextRoom;
 			switch(direction) {
 				case constants.Direction.Up:
-					that.addPlayer(oldRoom.getPosition(player).row, constants.roomHeight - 1);
+					that.addPlayer(oldRoom.getPosition(player).row, constants.roomHeight - 2);
 					break;
 				case constants.Direction.Down:
-					that.addPlayer(oldRoom.getPosition(player).row, 0);
+					that.addPlayer(oldRoom.getPosition(player).row, 1);
 					break;
 				case constants.Direction.Left:
-					that.addPlayer(constants.roomWidth-1, oldRoom.getPosition(player).col);
+					that.addPlayer(constants.roomWidth-2, oldRoom.getPosition(player).col);
 					break;
 				case constants.Direction.Right:
-					that.addPlayer(0, oldRoom.getPosition(player).col);
+					that.addPlayer(1, oldRoom.getPosition(player).col);
 					break;
 			}
 			currentRoom.playerObjectId = player.getId();
-			currentRoom.initialize();
+			currentRoom.initialize(currentRoom.cleared);
 		}
 	};
 
@@ -201,7 +202,11 @@ var Floor = function(spec){
 
 	that.update = function() {
 		currentRoom.getGameObjects().forEach(function(gameObject){
-			gameObject.update();
+			if(currentRoom.cleared && gameObject.getType() !== 'Enemy'){
+				gameObject.update();
+			} else if (!currentRoom.cleared){
+				gameObject.update();
+			}
 		});
 	}
 
@@ -210,6 +215,7 @@ var Floor = function(spec){
 		if(currentRoom.countObjects('Enemy') === 0 && currentRoom.countObjects('Door') === 0) {
 			console.log('Enemies Cleared')
 			clearedRooms++;
+			currentRoom.cleared = true;
 			showDoors(currentRoom);
 		}
 		if(clearedRooms === numRooms) {
