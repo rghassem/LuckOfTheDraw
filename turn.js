@@ -7,7 +7,7 @@ var TurnManager = function(player, floor) {
 
 	overlay = new Overlay();
 
-	phaseText = game.add.text(game.world.centerX - 95, 720, "Phase: Planning", constants.font);
+	phaseText = game.add.text(game.world.centerX - 195, 720, "Phase: Planning", constants.font);
 
 	//Turn is a sequence of events over time
 	var turn = new EventSequence();
@@ -36,13 +36,20 @@ var TurnManager = function(player, floor) {
     	return turn;
     }
 
-	this.sendDirectionalInput = function(direction) {
+	this.queueDirectionalMove = function(direction) {
 		if(turn.isRunning())
 			this.dive(direction);
 		else {
 			var movePoint = getMovePoint();
 			this.queueMoveAction(movePoint.row + direction.row, movePoint.col + direction.col);
 		}
+	}
+
+	this.queueDirectionalShoot = function(direction) {
+		var pos = getMovePoint();
+		var row = pos.row + direction.row;
+		var col = pos.col + direction.col;
+		this.queueShootAction(row, col);
 	}
 
 
@@ -66,6 +73,7 @@ var TurnManager = function(player, floor) {
 	this.queueShootAction = function(cellX, cellY) {
 
 		if(turn.isRunning()) return; //block queuing anything during action phase
+		if(overlay.markerCount() >= constants.actionQueueDepth) return;
 
 		var currentPos = getMovePoint();
 
@@ -76,7 +84,7 @@ var TurnManager = function(player, floor) {
 	this.dive = function(direction) {
 		if(usedInterrupt) return;
 
-		player.slide(constants.Direction.Right);
+		player.slide(direction);
 		usedInterrupt = true;
 	}
 
@@ -86,15 +94,15 @@ var TurnManager = function(player, floor) {
         crossHairSpriteGroup.removeAll();
 	}
 
+
 	function getMovePoint() {
-		 var currentPos = {row:0, col: 0};
+		 var currentPos;
          if(arrowSpriteGroup.length > 0){
               var lastArrow = arrowSpriteGroup.getAt(arrowSpriteGroup.length - 1)
-              currentPos.row = Math.floor(lastArrow.x / constants.cellSize);
-              currentPos.col = Math.floor(lastArrow.y / constants.cellSize);
+              currentPos = util.pixelToGrid2D(lastArrow);
          }
          else{
-             var currentPos = player.room.getPosition(player);
+             var currentPos = getPlayerPosition();
          }
          return currentPos;
 	}
@@ -107,8 +115,12 @@ var TurnManager = function(player, floor) {
         if(delta.col > 0) col = "Down";
         if(delta.col < 0) col = "Up";
 
-        movementText.setText(movementText.text + row + col);
+        movementText.setText(movementText.text + row + col + " ");
     }
+
+    function getPlayerPosition() {
+		return player.room.getPosition(player);
+	}
 
 
 }

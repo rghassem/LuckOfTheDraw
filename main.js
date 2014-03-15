@@ -14,6 +14,8 @@ window.onload = function() {
     var healthText;
     var overlay;
     var totalMoves;
+    var turn;
+    var healthBar;
     var turnManager;
 
     function preload () {
@@ -29,6 +31,8 @@ window.onload = function() {
 		game.load.image('enemy', './art/enemy.png');
 		game.load.image('player', './art/player.png');
         game.load.image('bullet', './art/bullet.png');
+        game.load.image('healthBar', './art/healthBar.png');
+
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
@@ -43,9 +47,12 @@ window.onload = function() {
 
         game.input.onDown.add(handleMouse, this);
 
-        actionText = game.add.text(game.world.centerX - 95, 700, "Action Type: " + mouseActionType, constants.font);
-        healthText = game.add.text(game.world.centerX - 200, 720, "Luck "+constants.playerHealth, constants.font);
+        actionText = game.add.text(game.world.centerX - 195, 700, "Action Type: " + mouseActionType, constants.font);
         totalMoves = constants.actionQueueDepth;
+        healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
+
+        healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");
+        healthBar.cropEnabled = true;
 
 
 		floor = Floor();
@@ -66,7 +73,10 @@ window.onload = function() {
     function updateObjects() {
         floor.update();
 		map.setText(floor.getMap());
-        healthText.setText("Luck "+player.getHealth());
+        healthBar.crop.width = player.getHealth() * 2;
+        if(player.getHealth() === 0){
+            healthText.setText("Git Gud Scrub");
+        }
     }
 
     function drawObjects() {
@@ -100,53 +110,21 @@ window.onload = function() {
     
 function onKeyUp(event) {
 
-   switch (event.keyCode) {
-
-        case Phaser.Keyboard.LEFT:
-            turnManager.sendDirectionalInput(constants.Direction.Left);
-            break;
-         case Phaser.Keyboard.RIGHT:
-            turnManager.sendDirectionalInput(constants.Direction.Right);
-            break;
-         case Phaser.Keyboard.UP:
-            turnManager.sendDirectionalInput(constants.Direction.Up);
-            break;
-        case Phaser.Keyboard.DOWN:
-            turnManager.sendDirectionalInput(constants.Direction.Down);
-            break;
-    }
-
-
  switch (event.keyCode) {
-    //Movement
-        /*case Phaser.Keyboard.LEFT:
-            player.queueMove(-1, 0);
-            if(totalMoves > 0){
-            movementText.setText(movementText.text + "Left,");
-            totalMoves = totalMoves - 1
-            }
+
+    //Movement/Interrupt
+        case Phaser.Keyboard.LEFT:
+            turnManager.queueDirectionalMove(constants.Direction.Left);
             break;
-         case Phaser.Keyboard.RIGHT:
-            player.queueMove(1, 0);
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Right,");
-               totalMoves = totalMoves - 1
-             }
+        case Phaser.Keyboard.RIGHT:
+            turnManager.queueDirectionalMove(constants.Direction.Right);
             break;
          case Phaser.Keyboard.UP:
-            player.queueMove(0, -1);
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Up,");
-               totalMoves = totalMoves - 1
-            }
+            turnManager.queueDirectionalMove(constants.Direction.Up);
             break;
         case Phaser.Keyboard.DOWN:
-            player.queueMove(0, 1)
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Down,");
-               totalMoves = totalMoves - 1
-            }
-            break;*/
+            turnManager.queueDirectionalMove(constants.Direction.Down);
+            break;
 
     //Mouse Commands
         case Phaser.Keyboard.M:
@@ -172,30 +150,18 @@ function onKeyUp(event) {
             totalMoves = constants.actionQueueDepth;
 
     //Shooting
-        /*case Phaser.Keyboard.A:
-            player.queueShot(constants.Direction.Left)
-             if(totalMoves > 0){
-             movementText.setText(movementText.text + "Shoot Left,");
-            }
+        case Phaser.Keyboard.A:
+            turnManager.queueDirectionalShoot(constants.Direction.Left)
             break;
          case Phaser.Keyboard.D:
-            player.queueShot(constants.Direction.Right)
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Shoot Right,");
-        }
+            turnManager.queueDirectionalShoot(constants.Direction.Right)
             break;
          case Phaser.Keyboard.W:
-            player.queueShot(constants.Direction.Up)
-             if(totalMoves > 0){
-            movementText.setText(movementText.text + "Shoot Up,");
-        }
+            turnManager.queueDirectionalShoot(constants.Direction.Up)
             break;
         case Phaser.Keyboard.S:
-            player.queueShot(constants.Direction.Down)
-             if(totalMoves > 0){
-             movementText.setText(movementText.text + "Shoot Down,");
-         }
-            break;*/
+            turnManager.queueDirectionalShoot(constants.Direction.Down)
+            break;
 
 	//Dungeon test
 		case Phaser.Keyboard.H:
