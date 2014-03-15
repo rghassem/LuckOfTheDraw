@@ -1,9 +1,14 @@
 // var Room = require(["room"]);
 
 var game;
+
+var screenWidth = 1280;
+var screenHeight = 744;
+
 window.onload = function() {
 
-    game = new Phaser.Game(1280, 744,
+
+    game = new Phaser.Game(screenWidth, screenHeight,
                              Phaser.AUTO, '', { preload: preload, create: create, update: updateObjects, render: drawObjects });
 	var floor;
     var player;
@@ -41,6 +46,8 @@ window.onload = function() {
     	game.load.image('actionQueueBox', './art/actionQueueBox.png');
 	    game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png');
 
+        game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png')
+
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);
@@ -49,10 +56,13 @@ window.onload = function() {
         game.load.audio("gunLoad", "./sound/gunLoad.wav", true);
         game.load.audio("heartbeat", "./sound/heartbeat.wav", true);
 
-
     }
 
     function create () {
+
+        var screenBorderWidth = screenWidth - (constants.roomWidth * constants.cellSize);
+        var screenBorderXCenter = (constants.roomWidth * constants.cellSize)  + screenBorderWidth/2;
+
         backGroundPic = game.add.sprite(0,0,'backGround');
 		game.add.sprite(0, 0, 'floor');
         // init keyboard commands
@@ -62,12 +72,13 @@ window.onload = function() {
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
 
-        tutorialText = game.add.text(game.world.centerX + 250, 600, 
-            "MOUSE: Place Actions\n" + 
-             "SPACE:  Execute All Actions\n" + 
-            "M:             Move Action\n" +
-             "N:              Shoot Action\n" + 
-            "ARROWS: During Action Phase to Dive", 
+        tutorialText = game.add.text(game.world.centerX + 250, 590, 
+            //Columns are aligned with spaces
+            "MOUSE:       Place Actions\n" + 
+             "SPACE:        Execute All Actions\n" + 
+            "M:                   Move Action\n" +
+             "N:                    Shoot Action\n" + 
+            "ARROWS:   During Action Phase to Dive", 
             constants.instructionFont);
 
         actionText = game.add.text(game.world.centerX + 250, 0, "Action Type: " + mouseActionType, constants.displayfont);
@@ -87,8 +98,28 @@ window.onload = function() {
 
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
-		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
+		map = game.add.text(882, 150, floor.getMap(), constants.mapfont);
         turnManager.startGame();
+
+    //Buttons for switching action mode:
+
+        //Swtich to Move button
+        var padding = 32;
+        var buttonWidth = 96;
+        var buttonPos = { 
+            x: screenBorderXCenter - buttonWidth/2 - 20, 
+            y: screenHeight/4 
+        };
+        var moveButton = game.add.button(buttonPos.x, buttonPos.y, 'arrow', function() {
+            setActionType("move");
+        });
+        moveButton.anchor = new Phaser.Point(0.5, 0.5);
+
+        //Switch to Shoot button
+        var shootButton =  game.add.button(buttonPos.x + buttonWidth + padding, buttonPos.y, 'crosshair', function() {
+            setActionType("shoot");
+        });
+        shootButton.anchor = new Phaser.Point(0.5, 0.5);
     }
 
     function updateObjects() {

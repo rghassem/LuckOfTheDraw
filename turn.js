@@ -84,7 +84,7 @@ var TurnManager = function(player, floor) {
 	var startActionPhase = function() {
 		planningHearbeat.stop();
 	    phaseText.content = "Phase: Action"; 
-	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 }
+	    var screenCenter = {x: (constants.roomWidth * constants.cellSize)/2, y: (constants.roomHeight * constants.cellSize)/2 };
 	    showTitle("Action Phase", screenCenter, constants.titleOverlayDuration, constants.overlayFontRed, 'gunLoad');
 	    usedInterrupt = false;
 	}
