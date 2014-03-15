@@ -62,7 +62,7 @@ window.onload = function() {
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
 
-        tutorialText = game.add.text(game.world.centerX + 200, 650, "SPACE: Start turn, M: Move Action, N: Shoot Action", constants.font)
+        tutorialText = game.add.text(game.world.centerX + 250, 630, "SPACE: Start turn\nM: Move Action, N: Shoot Action\nArrow During Action Phase to Dive", constants.instructionFont)
         actionText = game.add.text(game.world.centerX + 250, 0, "Action Type: " + mouseActionType, constants.displayfont);
 
         healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");
@@ -81,7 +81,7 @@ window.onload = function() {
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
 		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
-
+        turnManager.startGame();
     }
 
     function updateObjects() {
