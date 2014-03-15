@@ -15,7 +15,7 @@
 
 		that.takeHit = function() {
 			var health = that.getHealth();
-			var chanceToHit = health / constants.playerHealth * chanceModifier;
+			var chanceToHit = (health / constants.playerHealth) * chanceModifier;
 			var roll = Math.random();
 			if (roll < chanceToHit){
 				//Miss
@@ -24,6 +24,8 @@
 			} else {
 				health = health - 20;
 				that.setHealth(health);
+				chanceModifier = Math.random()+.9;
+				console.log('new chance='+chanceModifier);
 				if(health <= 0) {
 					that.room.remove(that);
 					that.setActive(false);
