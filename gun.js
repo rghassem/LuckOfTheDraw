@@ -41,19 +41,15 @@ var Gun = function(spec) {
 		}
 		else{
 			//Figure out where the edge of the board is in our direction...
-			var endOfLine = {};
+			var endOfLine = {row: pos.row, col: pos.col};
 
-			if(direction.row === 0)
-				endOfLine.row = pos.row;
-			else if(direction.row === 1)
-				endOfLine.row = constants.roomWidth;
-			else endOfLine.row = 0;
+			//Too tired for math
+			if(direction.row === 0 && direction.col === 0) return;  
+			while( shooter.room.isInBounds(endOfLine.row, endOfLine.col) ) {
+				endOfLine.row += direction.row;
+				endOfLine.col += direction.col;
+			}
 
-			if(direction.col === 0)
-				endOfLine.col = pos.col;
-			else if(direction.col === 1)
-				endOfLine.col = constants.roomHeight;
-			else endOfLine.col = 0;
 			//...and shoot it
 			playShootEffect(pos, endOfLine);
 		}
