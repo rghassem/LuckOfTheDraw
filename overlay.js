@@ -8,14 +8,10 @@ var Overlay = function() {
 	var markerPos = {};
 
 
-	that.clearOverlay = function() {
-		that.clearmarkers();
-		that.clearShootMarkers();
-	}
-
-	that.clearMarkers = function() {
+	that.clear = function() {
 		markerCount = 0;
-		markers = [];
+		while(markers.length > 0)
+			markers.pop().destroy();
 	}
 
 	that.placeMarker = function(row, col, marker) {
