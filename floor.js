@@ -44,7 +44,7 @@ var Floor = function(spec){
 		for(var col = 0; col < height; col++) {
 			for(var row = 0; row < width; row++) {
 				if(row === currentRow && col === currentCol){
-					str += 'C'
+					str += '@'
 				} else if(floor[row][col]) {
 					var r = floor[row][col];
 					var exits = r.getExits();
@@ -249,7 +249,7 @@ var Floor = function(spec){
 
 	that.checkGameStatus = function() {
 		console.log("in checkGameStatus Enemies="+currentRoom.countObjects('Enemy')+" Doors="+currentRoom.countObjects('Door'));
-		if(currentRoom.countObjects('Enemy') === 0 && currentRoom.countObjects('Door') === 0) {
+		if(currentRoom.countObjects('Enemy') >= 0 && currentRoom.countObjects('Door') === 0) {
 			console.log('Enemies Cleared')
 			clearedRooms++;
 			currentRoom.cleared = true;
