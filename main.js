@@ -17,6 +17,7 @@ window.onload = function() {
     var turn;
     var healthBar;
     var turnManager;
+    var tutorialText;
 
     function preload () {
 
@@ -51,6 +52,8 @@ window.onload = function() {
         actionText = game.add.text(game.world.centerX - 195, 700, "Action Type: " + mouseActionType, constants.font);
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
+
+        tutorialText = game.add.text(game.world.centerX - 200, 650, "SPACE: Start turn, M: Move Action, N: Shoot Action", constants.font)
 
         healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");
         healthBar.cropEnabled = true;
