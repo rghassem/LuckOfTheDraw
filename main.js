@@ -23,18 +23,19 @@ window.onload = function() {
         game.load.image('floor', './art/floor.jpg');
         game.load.image('arrow', './art/arrow-sprite.png');
         game.load.image('crosshair', './art/crosshair.png');
-		game.load.image('wall', './art/wall.png');
-		game.load.image('doorLeft', './art/doorLeft.png');
-		game.load.image('doorRight', './art/doorRight.png');
-		game.load.image('doorUp', './art/doorUp.png');
-		game.load.image('doorDown', './art/doorDown.png');
-		game.load.image('enemy', './art/enemy.png');
-		game.load.image('player', './art/player.png');
+        game.load.image('wall', './art/wall.png');
+        game.load.image('doorLeft', './art/doorLeft.png');
+        game.load.image('doorRight', './art/doorRight.png');
+        game.load.image('doorUp', './art/doorUp.png');
+        game.load.image('doorDown', './art/doorDown.png');
+        game.load.image('enemy', './art/enemy.png');
+        game.load.image('player', './art/player.png');
         game.load.image('bullet', './art/bullet.png');
         game.load.image('healthBar', './art/healthBar.png');
         game.load.image('loseScreen', './art/loseScreen.png');
         game.load.image('winScreen', './art/winScreen.png');
-	game.load.image('actionQueueBox', './art/actionQueueBox.png');
+        game.load.image('actionQueueBox', './art/actionQueueBox.png');
+        game.load.image('actionQueueBoxHightlight', './art/actionQueueBoxHighlight.png');
 
         game.load.audio("gunfire", "./sound/Shoot.wav", true);
         game.load.audio("characterHit", "./sound/Hit_Hurt.wav", true);

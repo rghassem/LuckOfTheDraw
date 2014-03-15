@@ -24,7 +24,7 @@ var Overlay = function() {
 		var x = util.gridToPixel(row) + ( constants.cellSize/2 ) - marker.getWidth()/2 ;
 		var y = util.gridToPixel(col) + ( constants.cellSize/2 ) - marker.getHeight()/2;
 
-		if(markerPos[""+row+col] && !markerPos[""+row+col] ) {
+		if(markerPos[""+row+col] && !markerPos[""+row+col].destroyed ) {
 			marker.blend(markerPos[""+row+col], x, y);
 		}
 		else {
