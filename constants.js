@@ -11,8 +11,8 @@ var constants = {
 	playerHealth: 100,
 	enemyHealth: 20,
 
-	font : { font: "20px Blackadder ITC", fill: "#000000", align: "center" },
-	mapfont : { font: "48px Blackadder ITC", fill: "##000000", align: "center" },
+	font : { font: "20px Impact", fill: "#000000", align: "center" },
+	mapfont : { font: "48px Impact", fill: "##000000", align: "center" },
 
 	Direction : {
 		Up    : {row: 0, col: -1, string: "Up", opposite: 'Down'},
