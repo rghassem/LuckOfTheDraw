@@ -35,11 +35,6 @@ var TurnManager = function(player, floor) {
 		actionQueueUI.actionQueueSprites.pop().destroy();
 	}
 
-	actionQueueUI.clear = function() {
-		while(actionQueueUI.actionQueueSprites.length > 0)
-			actionQueueUI.popAction();
-	}
-
 	actionQueueUI.highlightAction = function(index) {
 		if(index < actionQueueBorder.length && index >= 0 ) {
 			if(!actionQueueUI.highlight.exists) 
@@ -51,6 +46,12 @@ var TurnManager = function(player, floor) {
 		}
 		else
 			actionQueueUI.highlight.kill();
+	}
+
+	actionQueueUI.clear = function() {
+		while(actionQueueUI.actionQueueSprites.length > 0)
+			actionQueueUI.popAction();
+		actionQueueUI.highlightAction(-1)
 	}
 
 	overlay = new Overlay();
@@ -148,6 +149,7 @@ var TurnManager = function(player, floor) {
 
 		player.slide(direction);
 		usedInterrupt = true;
+		actionQueueUI.clear();
 	}
 
 	this.cancelAction = function() {
