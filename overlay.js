@@ -10,8 +10,11 @@ var Overlay = function() {
 
 	that.clear = function() {
 		markerCount = 0;
-		while(markers.length > 0)
-			markers.pop().destroy();
+		while(markers.length > 0) {
+			var lastMarker = markers.pop();
+			if(!lastMarker.destroyed)
+				lastMarker.destroy();
+		}
 		markerPos = {};
 	}
 
@@ -37,18 +40,24 @@ var Overlay = function() {
 	that.popMarker = function() {
 		if(markers.length <= 0)
 			return;
-		markers.pop().destroy();
-		markerCount--;
+		var lastMarker = markers.pop();
+		if(!lastMarker.destroyed) {
+			lastMarker.destroy();
+			markerCount--;
+		}
 	}
 
 	that.shiftMarker = function() {
 		if(markers.length <= 0)
 			return;
-		markers.shift().destroy();
-		markerCount--;
+		var firstMarker = markers.shift();
+		if(!firstMarker.destroyed) {
+			firstMarker.destroy();
+			markerCount--;
+		}
 	}
 
-	that.markerCount= function(){
+	that.markerCount = function(){
 		return markerCount;
 	}
 
@@ -106,6 +115,8 @@ var MoveMarker = (function() {
 			fill: "#fff"
 		}
 
+		var countValue = 1;
+
 		++currentMoveCount;
 		this.text = game.add.text(-1, -1, "" + currentMoveCount, style);
 		this.text.renderable = false;
@@ -129,7 +140,7 @@ var MoveMarker = (function() {
 
 		this.destroy = function() {
 			this.text.destroy();
-			currentMoveCount--;
+			currentMoveCount -= countValue;
 			this.destroyed = true;
 		}
 
@@ -137,7 +148,8 @@ var MoveMarker = (function() {
 			if(otherMarker.text)
 				this.text.content = otherMarker.text.content + "," + this.text.content;
 			otherMarker.destroy();
-			currentMoveCount++; //still the blended one
+			currentMoveCount++; //still count the blended one
+			countValue++;//..this text object becomes worth 2
 			this.setPosition(x, y);
 		}
 	}

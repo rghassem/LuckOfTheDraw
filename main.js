@@ -62,7 +62,14 @@ window.onload = function() {
         totalMoves = constants.actionQueueDepth;
         healthText = game.add.text(game.world.centerX - 550, 650, "Luck ", constants.font);
 
-        tutorialText = game.add.text(game.world.centerX + 250, 630, "SPACE: Start turn\nM: Move Action, N: Shoot Action\nArrow During Action Phase to Dive", constants.instructionFont)
+        tutorialText = game.add.text(game.world.centerX + 250, 600, 
+            "MOUSE: Place Actions\n" + 
+             "SPACE:  Execute All Actions\n" + 
+            "M:             Move Action\n" +
+             "N:              Shoot Action\n" + 
+            "ARROWS: During Action Phase to Dive", 
+            constants.instructionFont);
+
         actionText = game.add.text(game.world.centerX + 250, 0, "Action Type: " + mouseActionType, constants.displayfont);
 
         healthBar = game.add.sprite(game.world.centerX - 500, 650, "healthBar");

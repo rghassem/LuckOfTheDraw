@@ -7,6 +7,8 @@ var constants = {
 	dungeonSize : 8,
 	actionQueueDepth : 5,
 	actionDuration : 0.75, //in seconds
+	actionMoveFraction : 0.5, //how much of actionDuration to use for movement (seconds)
+	actionShootFraction: 0.5, //how much of actionDuration to use for shootin' (seconds)
 	slideDistance: 2,
 	playerHealth: 100,
 	enemyHealth: 20,
