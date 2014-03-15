@@ -64,11 +64,11 @@ var Gun = function(spec) {
 		var bulletEnd = util.gridToPixel2D(targetGridPos);
 
 		
-		var bullet = game.add.sprite(bulletStart.x, bulletStart.y, "bullet"); //TODO: Use a sprite!
+		var bullet = game.add.sprite(bulletStart.x, bulletStart.y, "bullet"); 
 
 		//Calculate appropriate speed of bullet
 		var distance = util.manhattanDistance(myGridPos.row, myGridPos.col, targetGridPos.row, targetGridPos.col);
-		var effectDuration = (distance/maxShotDistance) * constants.actionDuration;
+		var effectDuration = (distance/maxShotDistance) * constants.actionDuration * constants.actionShootFraction;
 
 		var shotAnim = game.add.tween(bullet);
 	    shotAnim.to( { x: bulletEnd.x, y: bulletEnd.y }, effectDuration * 1000 );

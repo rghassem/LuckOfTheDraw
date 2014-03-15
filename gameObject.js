@@ -70,7 +70,7 @@
 
 		function interpolateMovement() {
 			if(!isMoving) return;
-			var progressIncrement = Math.min( game.time.elapsed /  (constants.actionDuration * 1000) , 1);
+			var progressIncrement = Math.min( game.time.elapsed /  (constants.actionDuration * constants.actionMoveFraction * 1000) , 1);
 			moveProgress = Math.min( moveProgress + progressIncrement , 1);
 
 
