@@ -4,7 +4,7 @@ var constants = {
 	roomHeight : 10,
 	dungeonWidth : 8,
 	dungeonHeight : 8,
-	dungeonSize : 15,
+	dungeonSize : 8,
 	actionQueueDepth : 5,
 	actionDuration : 0.75, //in seconds
 	slideDistance: 2,
@@ -12,7 +12,8 @@ var constants = {
 	enemyHealth: 20,
 
 	font : { font: "20px Blackadder ITC", fill: "#000000", align: "center" },
-	mapfont : { font: "48px Blackadder ITC", fill: "##000000", align: "center" },
+	mapfont : { font: "48px Courier", fill: "##000000", align: "center" },
+	displayfont : { font: "48px Blackadder ITC", fill: "##000000", align: "center" },
 
 	Direction : {
 		Up    : {row: 0, col: -1, string: "Up", opposite: 'Down'},
@@ -24,5 +25,23 @@ var constants = {
 		UpLeft    :  {row: -1, col: -1, string: "UpLeft"},
 		DownRight : {row: 1, col: 1, string: "DownRight"},
 		DownLeft  : {row: -1, col: 1, string: "DownLeft"}
+	},
+
+	MapCharacters: {
+		U: '▣',
+		D: '▣',
+		L: '▣',
+		R: '▣',
+		UD: '║',
+		UL: '╝',
+		UR: '╚',
+		DL: '╗',
+		DR: '╔',
+		LR: '═',
+		UDL: '╣',
+		UDR: '╠',
+		ULR: '╩',
+		DLR: '╦',
+		UDLR: '╬'
 	}
 }

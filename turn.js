@@ -55,7 +55,7 @@ var TurnManager = function(player, floor) {
 
 	overlay = new Overlay();
 
-	phaseText = game.add.text(game.world.centerX + 250, 50, "Phase: Planning", constants.mapfont);
+	phaseText = game.add.text(game.world.centerX + 250, 50, "Phase: Planning", constants.displayfont);
 
 
   //Turn is a sequence of events over time

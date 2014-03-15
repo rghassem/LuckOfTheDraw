@@ -1,10 +1,4 @@
 var RoomFactory = (function (){
-	var generateRandomRoom = function(row, col) {
-		// Generate Walls
-		var room = Room({row: row, col: col, width: constants.roomWidth, height: constants.roomWidth});
-		// Return Room
-		return room;
-	}
 
 	var generateRoom = function(row, col, type) {
 		if(type === 'main') {
@@ -43,7 +37,6 @@ var RoomFactory = (function (){
 	};
 
 	return {
-		generateRandomRoom : generateRandomRoom,
 		generateRoom : generateRoom
 	}
 }());

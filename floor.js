@@ -44,9 +44,42 @@ var Floor = function(spec){
 		for(var col = 0; col < height; col++) {
 			for(var row = 0; row < width; row++) {
 				if(row === currentRow && col === currentCol){
-					str += 'C';
-				} else if(floor[row][col]){
-					str += 'R';
+					str += 'C'
+				} else if(floor[row][col]) {
+					var r = floor[row][col];
+					var exits = r.getExits();
+					var mapString = '';
+					//It's 4 am.
+					exits.forEach(function(entry) {
+						switch(entry) {
+							case constants.Direction.Up:
+								mapString+= 'U';
+								break;
+						}
+					});
+					exits.forEach(function(entry) {
+						switch(entry) {
+							case constants.Direction.Down:
+								mapString+= 'D';
+								break;
+						}
+					});
+					exits.forEach(function(entry) {
+						switch(entry) {
+							case constants.Direction.Left:
+								mapString+= 'L';
+								break;
+						}
+					});
+					exits.forEach(function(entry) {
+						switch(entry) {
+							case constants.Direction.Right:
+								mapString+= 'R';
+								break;
+						}
+					});
+					console.log('mapstring=' + mapString + ' content=' + constants.MapCharacters[mapString]);
+					str += constants.MapCharacters[mapString];
 				} else {
 					str += ' ';
 				}
