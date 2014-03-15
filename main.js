@@ -16,6 +16,7 @@ window.onload = function() {
     var totalMoves;
     var turn;
     var healthBar;
+    var turnManager;
 
     function preload () {
 
@@ -50,8 +51,11 @@ window.onload = function() {
         healthBar.cropEnabled = true;
 
 
-		floor = Floor(turn);;
+		floor = Floor();
         player = new PlayerCharacter({sprite:'player', room: floor.getCurrentRoom(), health: constants.playerHealth});
+        turnManager = new TurnManager(player, floor);
+
+        floor.setTurn(turnManager.getTurn());
         floor.addPlayer(1, 5,player);
 		floor.getCurrentRoom().playerObjectId = player.getId();
 		floor.getCurrentRoom().initialize();
@@ -59,8 +63,6 @@ window.onload = function() {
 		gameObjects = floor.getCurrentRoom().getGameObjects();
 
 		map = game.add.text(882, 100, floor.getMap(), constants.mapfont);
-
-        turn = new Turn(player, floor);
 
     }
 
@@ -87,10 +89,10 @@ window.onload = function() {
 
          switch (mouseActionType){
             case "move" :
-                turn.queueMoveAction(cellX, cellY);
+                turnManager.queueMoveAction(cellX, cellY);
                 break;
             case "shoot" :
-                turn.queueShootAction(cellX, cellY);
+                turnManager.queueShootAction(cellX, cellY);
                 break;
         }
     }
@@ -107,16 +109,16 @@ function onKeyUp(event) {
    switch (event.keyCode) {
 
         case Phaser.Keyboard.LEFT:
-            turn.sendDirectionalInput(constants.Direction.Left);
+            turnManager.sendDirectionalInput(constants.Direction.Left);
             break;
          case Phaser.Keyboard.RIGHT:
-            turn.sendDirectionalInput(constants.Direction.Right);
+            turnManager.sendDirectionalInput(constants.Direction.Right);
             break;
          case Phaser.Keyboard.UP:
-            turn.sendDirectionalInput(constants.Direction.Up);
+            turnManager.sendDirectionalInput(constants.Direction.Up);
             break;
         case Phaser.Keyboard.DOWN:
-            turn.sendDirectionalInput(constants.Direction.Down);
+            turnManager.sendDirectionalInput(constants.Direction.Down);
             break;
     }
 
@@ -162,7 +164,7 @@ function onKeyUp(event) {
 
     //Actions
         case Phaser.Keyboard.SPACEBAR:
-            turn.runTurn();
+            turnManager.runTurn();
             //movementText.setText("");
             totalMoves = constants.actionQueueDepth;
             break;

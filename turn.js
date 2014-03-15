@@ -1,6 +1,6 @@
 
 //Manages queuing actions, their UI, as well as running the action phase event sequence.
-var Turn = function(player, floor) {
+var TurnManager = function(player, floor) {
 
 	var arrowSpriteGroup = game.add.group();
     var crossHairSpriteGroup = game.add.group();;
@@ -30,8 +30,11 @@ var Turn = function(player, floor) {
 	    turn.add(nextAction, constants.actionDuration);
 	turn.add(endActionPhase);
 
-
     var movementText = game.add.text(game.world.centerX + 25, 720, "", constants.font);
+
+    this.getTurn = function() {
+    	return turn;
+    }
 
 	this.sendDirectionalInput = function(direction) {
 		if(turn.isRunning())
@@ -106,5 +109,6 @@ var Turn = function(player, floor) {
 
         movementText.setText(movementText.text + row + col + " ");
     }
+
 
 }
