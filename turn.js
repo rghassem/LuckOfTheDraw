@@ -13,12 +13,14 @@ var TurnManager = function(player, floor) {
 	var turn = new EventSequence();
 	var usedInterrupt = false;
 
-	var nextAction = function() { floor.getCurrentRoom().nextAction(); }
-	var startActionPhase = function() { 
+	var nextAction = function() { console.log('nextAction'); floor.getCurrentRoom().nextAction(); }
+	var startActionPhase = function() {
+		console.log('changed to action phade');
 	    phaseText.content = "Phase: Action"; 
 	    usedInterrupt = false;
 	}
 	var endActionPhase = function() {
+		console.log('changed to planning phase');
 		floor.checkGameStatus();
 	    phaseText.content = "Phase: Planning";
 	    overlay.clear();
