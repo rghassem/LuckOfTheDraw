@@ -22,6 +22,10 @@ window.onload = function() {
         game.load.image('arrow', './art/arrow-sprite.png');
         game.load.image('crosshair', './art/crosshair.png');
 		game.load.image('wall', './art/wall.png');
+		game.load.image('doorLeft', './art/doorLeft.png');
+		game.load.image('doorRight', './art/doorRight.png');
+		game.load.image('doorUp', './art/doorUp.png');
+		game.load.image('doorDown', './art/doorDown.png');
 		game.load.image('enemy', './art/enemy.png');
 		game.load.image('player', './art/player.png');
         game.load.image('bullet', './art/bullet.png');

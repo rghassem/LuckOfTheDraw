@@ -132,41 +132,41 @@ var Floor = function(spec){
 		if(room) {
 			room.getExits().forEach(function(direction){
 				if(direction === constants.Direction.Up) {
-					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Up});
+					var d = Door({sprite:'doorUp',floor: that, direction: constants.Direction.Up});
 					room.add(d,5,0);
 					d.setActive(true);
 					pos = {row: 6, col:0};
-					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Up});
+					d = Door({sprite:'doorUp',floor: that, direction: constants.Direction.Up});
 					room.add(d,6,0);
 					d.setActive(true);
-					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Up});
+					d = Door({sprite:'doorUp',floor: that, direction: constants.Direction.Up});
 					room.add(d,7,0);
 					d.setActive(true);
 				}
 				if(direction === constants.Direction.Down) {
-					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Down});
+					var d = Door({sprite:'doorDown',floor: that, direction: constants.Direction.Down});
 					room.add(d,5,constants.roomHeight-1);
 					d.setActive(true);
-					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Down});
+					d = Door({sprite:'doorDown',floor: that, direction: constants.Direction.Down});
 					room.add(d,6,constants.roomHeight-1);
 					d.setActive(true);
-					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Down});
+					d = Door({sprite:'doorDown',floor: that, direction: constants.Direction.Down});
 					room.add(d,7,constants.roomHeight-1);
 					d.setActive(true);
 				}
 				if(direction === constants.Direction.Left) {
-					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Left});
+					var d = Door({sprite:'doorLeft',floor: that, direction: constants.Direction.Left});
 					room.add(d,0,4);
 					d.setActive(true);
-					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Left});
+					d = Door({sprite:'doorLeft',floor: that, direction: constants.Direction.Left});
 					room.add(d,0,5);
 					d.setActive(true);
 				}
 				if(direction === constants.Direction.Right) {
-					var d = Door({sprite:'wall',floor: that, direction: constants.Direction.Right});
+					var d = Door({sprite:'doorRight',floor: that, direction: constants.Direction.Right});
 					room.add(d,constants.roomWidth-1,4);
 					d.setActive(true);
-					d = Door({sprite:'wall',floor: that, direction: constants.Direction.Right});
+					d = Door({sprite:'doorRight',floor: that, direction: constants.Direction.Right});
 					room.add(d,constants.roomWidth-1,5);
 					d.setActive(true);
 				}
